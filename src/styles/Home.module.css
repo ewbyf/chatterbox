@@ -1,0 +1,44 @@
+.main {
+    height: 100vh;
+    background-image: url("/background.png");
+}
+
+.container {
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    position: absolute;
+    top: 15%;
+    left: 10%;
+}
+
+.title {
+    font-size: 38px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.descContainer {
+    padding: 0px 40px;
+}
+
+.desc {
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+
+.button {
+    /* background-color: #4AFFA8; */
+    /* background-color: #fff59e; */
+    background-color: rgb(255, 175, 110);
+    padding: 15px 25px;
+    margin-top: 30px;
+    border-radius: 25px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+}
