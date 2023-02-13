@@ -1,17 +1,21 @@
 .main {
     height: 100vh;
-    background-image: url("/background.png");
+    background: rgb(124,210,255);
+    background: linear-gradient(344deg, rgba(124,210,255,1) 0%, rgba(255,105,105,1) 45%, rgba(247,108,110,1) 56%, rgba(246,255,166,1) 100%);
+    /* background-color: #9cffd6; */
+    /* background-color: #ff5c5c; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
-    max-width: 800px;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
-    position: absolute;
-    top: 15%;
-    left: 10%;
+    align-self: flex-start;
+    margin-top: 100px;
+    z-index: 2;
 }
 
 .title {
@@ -22,7 +26,9 @@
 }
 
 .descContainer {
+    margin-top: 20px;
     padding: 0px 40px;
+    max-width: 800px;
 }
 
 .desc {
@@ -32,13 +38,28 @@
 }
 
 .button {
-    /* background-color: #4AFFA8; */
-    /* background-color: #fff59e; */
-    background-color: rgb(255, 175, 110);
+    background-color: rgb(255, 188, 134);
     padding: 15px 25px;
     margin-top: 30px;
     border-radius: 25px;
     font-size: 22px;
     font-weight: bold;
     color: #ffffff;
+    cursor: pointer;
+}
+
+.largeImage {
+    width: 800px;
+    z-index: 2;
+    margin-bottom: 100px;
+}
+
+.svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.logo {
+    width: 300px;
 }

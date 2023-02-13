@@ -1,0 +1,76 @@
+.main {
+    height: 100vh;
+    background: rgb(124,210,255);
+    background: linear-gradient(344deg, rgba(124,210,255,1) 0%, rgba(255,105,105,1) 45%, rgba(247,108,110,1) 56%, rgba(246,255,166,1) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 450px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 40px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.container label {
+    font-weight: bold;
+    margin-top: 25px;
+    margin-bottom: 5px  ;
+}
+
+.container input {
+    height: 40px;
+    width: 300px;
+    border-radius: 10px;
+    padding-left: 10px;
+    background-color: #e7e7e7;
+    border: 0px;
+}
+
+.login {
+    height: 50px;
+    width: 300px;
+    margin-top: 25px;
+    background-color: #ff5c5c;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+}
+
+.option {
+    margin: 20px 0px;
+    font-size: 15px;
+    color: #686868;
+}
+
+.link {
+    color: #ff5c5c;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.forgot {
+    font-size: 14px;
+    text-align: right;
+    margin-top: 5px;
+}
