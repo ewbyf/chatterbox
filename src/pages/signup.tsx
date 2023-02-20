@@ -24,7 +24,8 @@ export default function Signup() {
                 className={styles.container}
             >   
                 <div className={styles.signup}>
-                    <p className={styles.title}>Sign Up</p>
+                    <Image src="/logo.png" alt="logo" width={100} height={100}/>
+                    {/* <p className={styles.title}>Sign Up</p> */}
                     <form>
                         <label>Username</label>
                         <input type="text" required placeholder='Enter username'/>

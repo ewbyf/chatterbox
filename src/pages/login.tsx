@@ -33,18 +33,18 @@ export default function Login() {
                 className={styles.container}
             >   
                 <div className={styles.login}>
-                    <p className={styles.title}>Login</p>
+                    <Image src="/logo.png" alt="logo" width={100} height={100}/>
+                    {/* <p className={styles.title}>Login</p> */}
                     <form>
                         <label>Email</label>
                         <input type="text" required placeholder='Enter email'/>
 
                         <label>Password</label>
                         <input type="text" required placeholder='Enter password'/>
-                        <a className={`${styles.link} ${styles.forgot}`}>Forgot password?</a>
+                        <Link href="/resetpassword" className={`${styles.link} ${styles.forgot}`}>Forgot password?</Link>
 
                         <a className={styles.loginButton}>LOG IN</a>
                     </form>
-                    {/* <p className={styles.option}>Don't have an account? <a className={styles.link} onClick={() => setLogin(false)}>Sign up</a></p> */}
                     <p className={styles.option}>Don't have an account? <Link href="/signup" className={styles.link}>Sign up</Link></p>
                 </div>
             </motion.div>
