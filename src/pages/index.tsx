@@ -27,7 +27,10 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.left}>
-          {/* <img src="/logo.png" alt="logo" className={styles.logo}/> */}
+          <div className={styles.logo}>
+            <Image src="/logo.png" alt="logo" width={50} height={50}/>
+            <p>Chatterbox</p>
+          </div>
           <motion.p
             initial={{ opacity: 0, x: "-100vh" }}
             animate={{ opacity: 1, x: 0 }}
