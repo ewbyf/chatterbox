@@ -33,7 +33,7 @@ export default function Login() {
                 className={styles.container}
             >   
                 <div className={styles.login}>
-                    <p className={styles.title}>Login</p>
+                    <p className={styles.title}>Sign Up</p>
                     <form>
                         <label>Email</label>
                         <input type="text" required placeholder='Enter email'/>
@@ -44,8 +44,7 @@ export default function Login() {
 
                         <a className={styles.loginButton}>LOG IN</a>
                     </form>
-                    {/* <p className={styles.option}>Don't have an account? <a className={styles.link} onClick={() => setLogin(false)}>Sign up</a></p> */}
-                    <p className={styles.option}>Don't have an account? <Link href="/signup" className={styles.link}>Sign up</Link></p>
+                    <p className={styles.option}>Already have an account? <Link href="/login" className={styles.link}>Log in</Link></p>
                 </div>
             </motion.div>
         </main>

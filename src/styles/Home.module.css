@@ -1,12 +1,7 @@
 .main {
     height: 100vh;
-    /* background: rgb(124,210,255);
-    background: linear-gradient(344deg, rgba(124,210,255,1) 0%, rgba(255,105,105,1) 45%, rgba(247,108,110,1) 56%, rgba(246,255,166,1) 100%); */
-    /* background-color: #9cffd6; */
     background-color: white;
-    /* background-color: #3db8ff; */
     display: flex;
-    justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -59,10 +54,15 @@
     max-width: 240px;
     text-align: center;
     border-radius: 25px;
+    white-space: nowrap;
     font-size: 22px;
     font-weight: bold;
     color: #ffffff;
     cursor: pointer;
+}
+
+.button:hover {
+    background-color: #ff4141;
 }
 
 .largeImage {

@@ -1,6 +1,5 @@
 .main {
     height: 100vh;
-    background: rgb(124,210,255);
     background: linear-gradient(344deg, rgba(124,210,255,1) 0%, rgba(255,105,105,1) 45%, rgba(247,108,110,1) 56%, rgba(246,255,166,1) 100%);
     display: flex;
     justify-content: center;
@@ -16,6 +15,29 @@
     align-items: center;
     background-color: #ffffff;
     border-radius: 40px;
+}
+
+
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    
+    align-items: center;
+}
+
+@keyframes slideAway {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        right: 100%;
+        opacity: 0;
+    }
+}
+
+.slideAway {
+    display: none;
+    animation: slideAway 2s ease-out;
 }
 
 .title {
@@ -44,7 +66,7 @@
     border: 0px;
 }
 
-.login {
+.loginButton {
     height: 50px;
     width: 300px;
     margin-top: 25px;
@@ -57,6 +79,10 @@
     color: white;
 }
 
+.loginButton:hover {
+    background-color: #ff4141;
+}
+
 .option {
     margin: 20px 0px;
     font-size: 15px;
@@ -67,6 +93,13 @@
     color: #ff5c5c;
     font-weight: bold;
     cursor: pointer;
+}
+
+.link:hover {
+    color: #ff5c5c;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .forgot {
