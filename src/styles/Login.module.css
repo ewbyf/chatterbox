@@ -40,12 +40,6 @@
     animation: slideAway 2s ease-out;
 }
 
-.title {
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
 .container form {
     display: flex;
     flex-direction: column;

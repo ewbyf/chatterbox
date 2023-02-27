@@ -5,7 +5,7 @@ import Router from "next/router";
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const switchPage = () => {
+  const switchPage = (): void => {
     const token = localStorage.getItem("userToken");
     if (token) {
       Router.push({

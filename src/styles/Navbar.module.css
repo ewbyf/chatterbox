@@ -1,0 +1,63 @@
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+    background-color: rgb(20, 20, 20);
+}
+
+.nav .logo {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    border-radius: 10px;
+}
+
+.section:hover {
+    background-color: rgb(29, 29, 29);
+    cursor: pointer;
+}
+
+.expandText {
+    display: none;
+    opacity: 0;
+    color: #ff5c5c;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@keyframes fadeIn {
+    from{
+        opacity: 0;
+     }
+     to{
+         opacity: 1;
+     }
+}
+
+.nav:hover .expandText {
+    display: flex;
+    animation: fadeIn .5s;
+    opacity: 1;
+}
+
+.settings {
+    position: absolute;
+    bottom: 25px;
+    left: 15px;
+}

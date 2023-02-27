@@ -8,17 +8,17 @@ import Router from 'next/router';
 export default function MainApp() {
     const [userToken, setUserToken] = useState();
 
-    useEffect(() => {
-        const token = localStorage.getItem("userToken");
-        if (token) {
-          setUserToken(JSON.parse(token));
-        }
-        else {
-            Router.push({
-                pathname: "/login",
-            });
-        }
-    }, []);
+    // useEffect(() => {
+    //     const token = localStorage.getItem("userToken");
+    //     if (token) {
+    //       setUserToken(JSON.parse(token));
+    //     }
+    //     else {
+    //         Router.push({
+    //             pathname: "/login",
+    //         });
+    //     }
+    // }, []);
 
     return (
     <>
@@ -29,14 +29,7 @@ export default function MainApp() {
       </Head>
       <main className={styles.main}>
         <Navbar/>
-        {/* <div className={styles.container}>
-          <Image src="/logo.png" alt="logo" height={250} width={250}/>
-          <p className={styles.title}>STAY CONNECTED. ANYWHERE. ANYTIME.</p>
-          <div className={styles.descContainer}>
-            <p className={styles.desc}>Whether you are on your phone, laptop, or other device, Chatterbox allows you to chat with friends or meet new people at any time.</p>
-          </div>
-          <a className={styles.button} onClick={switchPage}>Start Your Chatter</a>
-        </div> */}
+        
       </main>
     </>
   )
