@@ -7,36 +7,41 @@ import Router from 'next/router'
 import Link from 'next/link'
 import { motion } from "framer-motion";
 import axios from "axios";
+import Alert from '@mui/material/Alert';
 
 export default function Signup() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const signupHandler = (): void => {
         axios.post("https://cs2300-backend-stage.us.aldryn.io/signup", {
-            // email,
+            email,
             username,
             password
         })
-        .then((resp) => {
-            console.log(resp.data);
-            localStorage.setItem("userToken", resp.data.token);
-            console.log(localStorage.getItem("userToken"));
-            // add token to localStorage
-            // send user to app
+        .then((resp: object): void => {
+            setSuccess(true);
+            setError(false);
+            setUsername('');
+            setPassword('');
+            setEmail('');
         })
-        .catch((err) => {
-            console.log("Error, username exists");
+        .catch((err): void => {
+            // switch case for error codes to set error message
+            setErrorMessage("An account with that username already exists.");
+            setError(true);
+            setSuccess(false);
         })
     }
 
     return (
     <>
         <Head>
-        <title>Chatterbox | Signup</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+            <title>Chatterbox | Signup</title>
         </Head>
         <main className={styles.main}>
             <motion.div
@@ -47,16 +52,22 @@ export default function Signup() {
                 className={styles.container}
             >   
                 <div className={styles.signup}>
-                    <Image src="/logo.png" alt="logo" width={100} height={100}/>
+                    <Image src="/logo.png" alt="logo" width={100} height={100} style={{marginBottom: "15px"}}/>
+                    {success && <Alert severity="success">
+                        Account successfully created!
+                    </Alert>}
+                    {error && <Alert severity="error">
+                        {errorMessage}
+                    </Alert>}
                     <form>
                         <label>Username</label>
                         <input type="text" required placeholder='Enter username' value={username} onChange={(e) => {setUsername(e.target.value)}} />
 
                         <label>Email</label>
-                        <input type="text" required placeholder='Enter email' onChange={(e) => {setEmail(e.target.value)}} />
+                        <input type="text" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}} />
 
                         <label>Password</label>
-                        <input type="text" required placeholder='Enter password' onChange={(e) => {setPassword(e.target.value)}} />
+                        <input type="text" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} />
 
                         <a className={styles.signupButton} onClick={signupHandler}>SIGN UP</a>
                     </form>

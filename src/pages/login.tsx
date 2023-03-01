@@ -7,19 +7,22 @@ import Router from 'next/router'
 import Link from 'next/link'
 import { motion } from "framer-motion"
 import axios from 'axios'
+import Alert from '@mui/material/Alert';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-    useEffect(() => {
-        const token = localStorage.getItem("userToken");
-        if (token) {
-            Router.push({
-                pathname: "/app",
-            });
-        }
-    }, []);
+    // useEffect(() => {
+    //     const token = localStorage.getItem("userToken");
+    //     if (token) {
+    //         Router.push({
+    //             pathname: "/app",
+    //         });
+    //     }
+    // }, []);
 
     const loginHandler = (): void => {
         axios.post("https://cs2300-backend-stage.us.aldryn.io/login", {
@@ -27,19 +30,22 @@ export default function Login() {
             password
         })
         .then((resp) => {
-            console.log(resp.data);
+            localStorage.setItem("userToken", resp.data.token);
+            Router.push({
+                pathname: "/app",
+            });
         })
         .catch((err) => {
-            console.log(err);
+            // switch case for error codes to set error message
+            setErrorMessage("Invalid email or password. Please try again.");
+            setError(true);
         })
     }
 
     return (
     <>
         <Head>
-        <title>Chatterbox | Login</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+            <title>Chatterbox | Login</title>
         </Head>
         <main className={styles.main}>
             <motion.div
@@ -50,8 +56,11 @@ export default function Login() {
                 className={styles.container}
             >   
                 <div className={styles.login}>
-                    <Image src="/logo.png" alt="logo" width={100} height={100}/>
-                    <form>
+                    <Image src="/logo.png" alt="logo" width={100} height={100} style={{marginBottom: "15px"}}/>
+                    {error && <Alert severity="error">
+                        {errorMessage}
+                    </Alert>}
+                    <form> 
                         <label>Email</label>
                         <input type="text" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}} />
 

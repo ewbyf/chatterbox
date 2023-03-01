@@ -2,8 +2,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/ResetPassword.module.css'
-import { useEffect, useState } from 'react'
-import Router from 'next/router'
+import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from "framer-motion";
 
@@ -17,9 +16,7 @@ export default function ForgotPassword() {
     return (
     <>
         <Head>
-        <title>Chatterbox | Reset Password</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+            <title>Chatterbox | Reset Password</title>
         </Head>
         <main className={styles.main}>
             <motion.div
@@ -30,7 +27,7 @@ export default function ForgotPassword() {
                 className={styles.container}
             >   
                 <div className={styles.forgotPassword}>
-                    <Image src="/logo.png" alt="logo" width={100} height={100}/>
+                    <Image src="/logo.png" alt="logo" width={100} height={100} style={{marginBottom: "15px"}}/>
                     <form>
                         <label>Email</label>
                         <input type="text" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}}/>

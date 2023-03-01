@@ -46,8 +46,8 @@
 
 .container label {
     font-weight: bold;
-    margin-top: 25px;
-    margin-bottom: 5px  ;
+    margin-top: 15px;
+    margin-bottom: 5px;
 }
 
 .container input {
@@ -62,7 +62,7 @@
 .signupButton {
     height: 50px;
     width: 300px;
-    margin-top: 35px;
+    margin-top: 25px;
     background-color: #ff5c5c;
     border-radius: 10px;
     display: flex;

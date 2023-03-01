@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   const switchPage = (): void => {
-    const token = localStorage.getItem("userToken");
+    const token : string|null = localStorage.getItem("userToken");
     if (token) {
       Router.push({
         pathname: "/app",
@@ -22,8 +22,6 @@ export default function Home() {
     <>
       <Head>
         <title>Chatterbox</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
         <div className={styles.left}>
