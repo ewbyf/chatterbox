@@ -2,8 +2,9 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
+import { ThemeUpdateContext } from '@/components/Layout';
 
-export default function Explore() {
+export default function Settings() {
     const [userToken, setUserToken] = useState('');
 
     useEffect(() => {
@@ -18,15 +19,16 @@ export default function Explore() {
         }
     }, []);
 
-
     return (
     <>
       <Head>
-        <title>Chatterbox | Explore</title>
+        <title>Chatterbox | Settings</title>
       </Head>
-      {/* <main className={styles.main}>
-        
-      </main> */}
+      <ThemeUpdateContext.Consumer>
+        {({ toggleTheme }) => (
+            <button onClick={toggleTheme}>sdaadas</button>
+        )}
+      </ThemeUpdateContext.Consumer>
     </>
   )
 }

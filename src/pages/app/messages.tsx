@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
-export default function Explore() {
+export default function Messages() {
     const [userToken, setUserToken] = useState('');
 
     useEffect(() => {
@@ -18,15 +18,11 @@ export default function Explore() {
         }
     }, []);
 
-
     return (
     <>
       <Head>
-        <title>Chatterbox | Explore</title>
+        <title>Chatterbox | Messages</title>
       </Head>
-      {/* <main className={styles.main}>
-        
-      </main> */}
     </>
   )
 }

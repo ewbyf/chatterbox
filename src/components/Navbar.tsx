@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from '@/styles/Navbar.module.css'
+import styles from '@/styles/components/Navbar.module.css'
 import { IoCompassOutline, IoPeopleOutline, IoChatbubbleEllipsesOutline, IoCogOutline } from "react-icons/io5";
 import { motion } from "framer-motion"
 import Link from 'next/link'
@@ -21,7 +21,7 @@ const Navbar = () => {
                 <div style={{display: "flex"}}>
                     <IoCompassOutline color='#ff5c5c' size={40} className={styles.icon}/>
                 </div>
-                <p className={styles.expandText}>DISCOVER</p>
+                <p className={styles.expandText}>EXPLORE</p>
             </Link>
             <Link href="/app/friends" className={styles.section}>
                 <div style={{display: "flex"}}>
