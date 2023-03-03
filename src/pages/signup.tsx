@@ -8,6 +8,10 @@ import Link from 'next/link'
 import { motion } from "framer-motion";
 import axios from "axios";
 import Alert from '@mui/material/Alert';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import Checkbox from '@mui/material/Checkbox';
+import { red } from '@mui/material/colors'
 
 export default function Signup() {
     const [username, setUsername] = useState('');
@@ -31,8 +35,7 @@ export default function Signup() {
             setEmail('');
         })
         .catch((err): void => {
-            // switch case for error codes to set error message
-            setErrorMessage("An account with that username already exists.");
+            setErrorMessage(err.response.data.message);
             setError(true);
             setSuccess(false);
         })
@@ -74,7 +77,13 @@ export default function Signup() {
                             Password
                             <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} />
                         </label>
-
+                        <FormControlLabel
+                            style={{flexDirection: "row", marginTop: "20px"}}
+                            control={<Checkbox required   sx={{'&.Mui-checked': {color: red[400]}}}/>}
+                            label="I agree to receive emails regarding my account details*"
+                            labelPlacement="end"
+                            componentsProps={{ typography: { variant: 'body2' } }}
+                            />
                         <a className={styles.signupButton} onClick={signupHandler}>SIGN UP</a>
                     </form>
                     <p className={styles.option}>Already have an account? <Link href="/login" className={styles.link}>Log in</Link></p>
