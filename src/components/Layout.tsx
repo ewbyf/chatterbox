@@ -3,36 +3,38 @@ import Theme from "./Theme";
 import React, { useEffect, useState, useContext } from 'react';
 
 interface Props {
-    children: JSX.Element
+    children: JSX.Element,
+    theme: boolean
 }
 
 export const ThemeUpdateContext = React.createContext({
     toggleTheme: (): void => {},
 });
 
-export default function Layout({ children }: Props) {
-    const [darkTheme, setDarkTheme] = useState(true);
+export default function Layout({ children, theme }: Props) {
+    const [darkTheme, setDarkTheme] = useState(theme);
 
-    useEffect(() => {
-        let storedTheme = localStorage.getItem("theme");
-        if (storedTheme == "dark") {
-            setDarkTheme(true);
-        }
-    }, [])
+    // useEffect(() => {
+    //     let storedTheme = localStorage.getItem("theme");
+    //     if (storedTheme == "dark") {
+    //         setDarkTheme(true);
+    //     }
+    // }, [])
 
     const toggleTheme = (): void => {
         if (darkTheme) {
-            localStorage.setItem("theme", "dark");
+            localStorage.setItem("theme", "light");
         }
         else {
-            localStorage.setItem("theme", "light");
+            localStorage.setItem("theme", "dark");
         }
         setDarkTheme(!darkTheme);
     }
 
+
     return (
         <>
-            <Navbar/>
+            <Navbar theme={darkTheme}/>
             <Theme theme={darkTheme}>
                 <ThemeUpdateContext.Provider value={{toggleTheme}}>
                     { children }

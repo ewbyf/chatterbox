@@ -24,9 +24,6 @@ export default function Explore() {
       <Head>
         <title>Chatterbox | Explore</title>
       </Head>
-      {/* <main className={styles.main}>
-        
-      </main> */}
     </>
   )
 }

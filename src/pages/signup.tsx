@@ -60,14 +60,20 @@ export default function Signup() {
                         {errorMessage}
                     </Alert>}
                     <form>
-                        <label>Username</label>
-                        <input type="text" required placeholder='Enter username' value={username} onChange={(e) => {setUsername(e.target.value)}} />
+                        <label>
+                            Username
+                            <input type="text" required placeholder='Enter username' value={username} onChange={(e) => {setUsername(e.target.value)}} />
+                        </label>
+                        
+                        <label>
+                            Email
+                            <input type="email" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}} />
+                        </label>
 
-                        <label>Email</label>
-                        <input type="text" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}} />
-
-                        <label>Password</label>
-                        <input type="text" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} />
+                        <label>
+                            Password
+                            <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} />
+                        </label>
 
                         <a className={styles.signupButton} onClick={signupHandler}>SIGN UP</a>
                     </form>

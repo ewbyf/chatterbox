@@ -37,7 +37,8 @@ export default function Login() {
         })
         .catch((err) => {
             // switch case for error codes to set error message
-            setErrorMessage("Invalid email or password. Please try again.");
+            console.log(err.response.data.message);
+            setErrorMessage(err.response.data.message);
             setError(true);
         })
     }

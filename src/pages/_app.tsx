@@ -3,13 +3,28 @@ import type { AppProps } from 'next/app'
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router"
 import Layout from '@/components/Layout';
+import { useEffect, useState } from 'react';
 
+
+ 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const [theme, setTheme] = useState(false);
+  const [initializing, setInitializing] = useState(true)
+  
+  useEffect(() => {
+    setTheme(localStorage.getItem("theme") == "light" ? false : true);
+    setInitializing(false);
+  }, [])
+
+  if (initializing) {
+    return null;
+  }
+
   if(router.pathname.startsWith(`/app`)) {
     return (
       <AnimatePresence mode="wait">
-        <Layout>
+        <Layout theme={theme}>
           <Component {...pageProps} key={router.pathname} />
         </Layout>
       </AnimatePresence>

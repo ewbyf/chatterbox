@@ -47,7 +47,9 @@
 .container label {
     font-weight: bold;
     margin-top: 15px;
-    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .container input {
@@ -57,6 +59,10 @@
     padding-left: 10px;
     background-color: #e7e7e7;
     border: 0px;
+}
+
+.container input:focus {
+    outline-color: #b9b9b9;
 }
 
 .signupButton {
