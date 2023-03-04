@@ -5,7 +5,7 @@ import Router from 'next/router';
 import { ThemeUpdateContext } from '@/components/Layout';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch, { SwitchProps } from '@mui/material/Switch';
+import Switch from '@mui/material/Switch';
 import { alpha, styled } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import styles from "@/styles/app/Settings.module.css";
@@ -67,7 +67,7 @@ export default function Settings() {
         </div>
 
         <div className={styles.preferences}>
-          <p>PREFERENCES</p>
+          <p className={styles.title}>PREFERENCES</p>
           <FormGroup>
             <ThemeUpdateContext.Consumer>
               {({ toggleTheme }) => (

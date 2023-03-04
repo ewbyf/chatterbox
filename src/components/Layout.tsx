@@ -1,6 +1,8 @@
 import Navbar from "./Navbar";
 import Theme from "./Theme";
 import React, { useEffect, useState, useContext } from 'react';
+import NotificationBell from "./NotificationBell";
+
 
 interface Props {
     children: JSX.Element,
@@ -35,6 +37,7 @@ export default function Layout({ children, theme }: Props) {
     return (
         <>
             <Navbar theme={darkTheme}/>
+            <NotificationBell theme={darkTheme} />
             <Theme theme={darkTheme}>
                 <ThemeUpdateContext.Provider value={{toggleTheme}}>
                     { children }

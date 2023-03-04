@@ -1,0 +1,14 @@
+.bellContainer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgb(172, 172, 172);
+}
+
+.dark:hover {
+    color: rgb(238, 238, 238);
+}
+
+.light:hover {
+    color: rgb(122, 122, 122);
+}

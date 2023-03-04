@@ -79,7 +79,7 @@ export default function Signup() {
                         </label>
                         <FormControlLabel
                             style={{flexDirection: "row", marginTop: "20px"}}
-                            control={<Checkbox required   sx={{'&.Mui-checked': {color: red[400]}}}/>}
+                            control={<Checkbox required sx={{'&.Mui-checked': {color: red[400]}}}/>}
                             label="I agree to receive emails regarding my account details*"
                             labelPlacement="end"
                             componentsProps={{ typography: { variant: 'body2' } }}
