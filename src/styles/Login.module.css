@@ -48,7 +48,7 @@
 .container label {
     font-weight: bold;
     margin-top: 15px;
-    margin-bottom: 5px  ;
+    margin-bottom: 5px;
 }
 
 .container input {
@@ -100,4 +100,30 @@
     font-size: 14px;
     text-align: right;
     margin-top: 5px;
+}
+
+@media (max-width: 700px) {
+    .container {
+        width: 350px;
+        height: 550px;
+    }
+    .loginButton {
+        height: 50px;
+        width: 250px;
+    }
+    .container input {
+        height: 40px;
+        width: 250px;
+        font-size: 12px;
+    }    
+    .option {
+        margin: 20px 0px;
+        font-size: 14px;
+    }
+    .forgot {
+        font-size: 13px;
+    }
+    .container label {
+        font-size: 15px;
+    }
 }
