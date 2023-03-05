@@ -3,8 +3,11 @@ import Image from "next/image";
 import styles from "@/styles/Home.module.css";
 import Router from "next/router";
 import { motion } from "framer-motion";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Home() {
+  const mobile = useMediaQuery('(max-width: 999px)')
+
   const switchPage = (): void => {
     const token : string|null = localStorage.getItem("userToken");
     if (token) {
@@ -26,7 +29,7 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.left}>
           <div className={styles.logo}>
-            <Image src="/logo.png" alt="logo" width={50} height={50}/>
+            <Image src="/logo.png" alt="logo" width={mobile ? 40 : 50} height={mobile ? 40 : 50}/>
             <p>Chatterbox</p>
           </div>
           <motion.p
@@ -85,7 +88,7 @@ export default function Home() {
         </div>
         <motion.div
           initial={{ opacity: 1, width: 0, minWidth: 0 }}
-          animate={{ opacity: 1, width: "50%" }}
+          animate={{ opacity: 1, width: (mobile ? "100%" : "50%") }}
           transition={{ duration: 1 }}
           className={styles.right}
         ></motion.div>

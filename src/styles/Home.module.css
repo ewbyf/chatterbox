@@ -7,6 +7,7 @@
 }
 
 .left {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,7 +31,7 @@
 }
 
 .title {
-    font-size: 64px;
+    font-size: 3.25vw;
     font-weight: bold;
     color: white;
     font-family: "Roboto";
@@ -42,7 +43,7 @@
 }
 
 .desc {
-    font-size: 26px;
+    font-size: 1.5vw;
     color: #464646;
     font-weight: bold;
 }
@@ -92,8 +93,50 @@
 @media (max-width: 999px) {
     .left {
         width: 100%;
+        padding: 0px 30px;
+        min-width: 0px;
+        align-items: center;
     }
-    .right {
-        width: 100%;
+    .logo {
+        font-size: 24px;
+        top: 25px;
+        left: 25px;
+    }
+    .title {
+        font-size: 4.25vw;
+    }
+    .desc {
+        text-align: center;
+        font-size: 2.5vw;
+    }
+    .button {
+        padding: 14px 22.5px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 700px) {
+    .left {
+        padding: 0px 30px;
+    }
+    .title {
+        font-size: 6.25vw;
+    }
+    .desc {
+        font-size: 3.5vw;
+    }
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 7.25vw;
+    }
+    .desc {
+        font-size: 3.5vw;
+    }
+    .button {
+        padding: 13px 20px;
+        font-size: 18px;
+        max-width: 200px;
     }
 }
