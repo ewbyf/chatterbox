@@ -79,6 +79,7 @@ export default function AccountMenu({ theme }: Props) {
             },
             bgcolor: theme ? "rgb(29, 29, 29)" : "",
             color: theme ? "lightgrey" : "",
+            borderRadius: "15px"
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}

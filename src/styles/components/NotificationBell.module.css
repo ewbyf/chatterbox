@@ -13,3 +13,21 @@
 .light:hover {
     color: rgb(122, 122, 122);
 }
+
+.titleContainer {
+    display: flex;
+    padding: 10px 20px 15px 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titleText {
+    font-weight: bold;
+    font-size: 17px;
+    color: rgb(255, 102, 102);
+}
+
+.close:hover {
+    color: rgb(255, 102, 102);
+    cursor: pointer;
+}
