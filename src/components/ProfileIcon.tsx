@@ -84,17 +84,17 @@ export default function AccountMenu({ theme }: Props) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => Router.push({pathname: "/app/profile"})} sx={{'&:hover': {backgroundColor: theme ? "#181818" : ""}}}>
           <Avatar/> Profile
         </MenuItem>
         <Divider sx={{ bgcolor: theme ? "lightgrey" : "" }}/>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => Router.push({pathname: "/app/settings"})} sx={{'&:hover': {backgroundColor: theme ? "#181818" : ""}}}>
           <ListItemIcon>
             <Settings fontSize="small" sx={{color: theme ? "lightgrey" : ""}}/>
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={logout}>
+        <MenuItem onClick={logout} sx={{'&:hover': {backgroundColor: theme ? "#181818" : ""}}}>
           <ListItemIcon>
             <Logout fontSize="small" sx={{color: theme ? "lightgrey" : ""}}/>
           </ListItemIcon>

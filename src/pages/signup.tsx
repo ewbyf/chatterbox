@@ -15,16 +15,24 @@ import { Typography } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Signup() {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [success, setSuccess] = useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [checked, setChecked] = useState<boolean>(false);
 
     const mobile = useMediaQuery('(max-width: 700px)');
 
     const signupHandler = (): void => {
+        if (!checked) {
+            setErrorMessage("You must agree to receiving emails to sign up");
+            setError(true);
+            setSuccess(false);
+            return;
+        }
+
         axios.post("https://cs2300-backend-stage.us.aldryn.io/signup", {
             email,
             username,
@@ -36,6 +44,7 @@ export default function Signup() {
             setUsername('');
             setPassword('');
             setEmail('');
+            setChecked(false);
         })
         .catch((err): void => {
             setErrorMessage(err.response.data.message);
@@ -82,7 +91,7 @@ export default function Signup() {
                         </label>
                         <FormControlLabel
                             style={{flexDirection: "row", marginTop: mobile ? "15px" : "20px", marginRight: "0px"}}
-                            control={<Checkbox required sx={{'&.Mui-checked': {color: red[400]}}}/>}
+                            control={<Checkbox required checked={checked} onChange={() => setChecked(!checked)} sx={{'&.Mui-checked': {color: red[400]}}}/>}
                             label={<Typography style={{fontSize: mobile ? "13px" : "14px"}}>I agree to receive emails regarding my account details<span style={{color: "red"}}>*</span></Typography>}
                             labelPlacement="end"
                             />

@@ -3,6 +3,7 @@
     top: 33px;
     right: 80px;
     color: rgb(172, 172, 172);
+    cursor: pointer;
 }
 
 .dark:hover {
