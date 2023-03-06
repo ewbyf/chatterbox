@@ -9,9 +9,10 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import Alert from '@mui/material/Alert';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import { red } from '@mui/material/colors'
+import { Typography } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Signup() {
     const [username, setUsername] = useState('');
@@ -20,6 +21,8 @@ export default function Signup() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    const mobile = useMediaQuery('(max-width: 700px)');
 
     const signupHandler = (): void => {
         axios.post("https://cs2300-backend-stage.us.aldryn.io/signup", {
@@ -55,11 +58,11 @@ export default function Signup() {
                 className={styles.container}
             >   
                 <div className={styles.signup}>
-                    <Image src="/logo.png" alt="logo" width={100} height={100} style={{marginBottom: "15px"}}/>
-                    {success && <Alert severity="success">
+                    <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{marginBottom: "15px"}}/>
+                    {success && <Alert severity="success" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         Account successfully created!
                     </Alert>}
-                    {error && <Alert severity="error">
+                    {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
                     <form>
@@ -78,11 +81,10 @@ export default function Signup() {
                             <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} />
                         </label>
                         <FormControlLabel
-                            style={{flexDirection: "row", marginTop: "20px"}}
+                            style={{flexDirection: "row", marginTop: mobile ? "15px" : "20px", marginRight: "0px"}}
                             control={<Checkbox required sx={{'&.Mui-checked': {color: red[400]}}}/>}
-                            label="I agree to receive emails regarding my account details*"
+                            label={<Typography style={{fontSize: mobile ? "13px" : "14px"}}>I agree to receive emails regarding my account details<span style={{color: "red"}}>*</span></Typography>}
                             labelPlacement="end"
-                            componentsProps={{ typography: { variant: 'body2' } }}
                             />
                         <a className={styles.signupButton} onClick={signupHandler}>SIGN UP</a>
                     </form>

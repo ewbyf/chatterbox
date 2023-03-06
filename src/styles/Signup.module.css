@@ -104,5 +104,27 @@
 }
 
 @media (max-width: 700px) {
-    
+    .container {
+        width: 350px;
+        height: 575px;
+    }
+    .container label {
+        max-width: 250px;
+        font-size: 14px;
+        margin-top: 12.5px;
+    }
+    .container input {
+        height: 35px;
+        width: 250px;
+        font-size: 12px;
+    } 
+    .signupButton {
+        height: 45px;
+        width: 250px;
+        margin-top: 15px;
+        font-size: 15px;
+    }
+    .option {
+        font-size: 14px;
+    }
 }

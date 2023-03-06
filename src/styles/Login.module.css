@@ -60,10 +60,14 @@
     border: 0px;
 }
 
+.container input:focus {
+    outline-color: #b9b9b9;
+}
+
 .loginButton {
     height: 50px;
     width: 300px;
-    margin-top: 25px;
+    margin-top: 20px;
     background-color: #ff5c5c;
     border-radius: 10px;
     display: flex;
@@ -105,25 +109,26 @@
 @media (max-width: 700px) {
     .container {
         width: 350px;
-        height: 550px;
+        height: 500px;
     }
-    .loginButton {
-        height: 50px;
-        width: 250px;
+    .container label {
+        font-size: 14px;
+        margin-top: 15px;
     }
     .container input {
-        height: 40px;
+        height: 35px;
         width: 250px;
         font-size: 12px;
     }    
     .option {
-        margin: 20px 0px;
         font-size: 14px;
     }
     .forgot {
         font-size: 13px;
     }
-    .container label {
+    .loginButton {
+        height: 45px;
+        width: 250px;
         font-size: 15px;
     }
 }

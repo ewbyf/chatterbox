@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import Theme from "./Theme";
 import React, { useEffect, useState, useContext } from 'react';
 import NotificationBell from "./NotificationBell";
-
+import ProfileIcon from "./ProfileIcon"
 
 interface Props {
     children: JSX.Element,
@@ -14,7 +14,7 @@ export const ThemeUpdateContext = React.createContext({
 });
 
 export default function Layout({ children, theme }: Props) {
-    const [darkTheme, setDarkTheme] = useState(theme);
+    const [darkTheme, setDarkTheme] = useState<boolean>(theme);
 
     // useEffect(() => {
     //     let storedTheme = localStorage.getItem("theme");
@@ -37,6 +37,7 @@ export default function Layout({ children, theme }: Props) {
     return (
         <>
             <Navbar theme={darkTheme}/>
+            <ProfileIcon theme={darkTheme}/>
             <NotificationBell theme={darkTheme} />
             <Theme theme={darkTheme}>
                 <ThemeUpdateContext.Provider value={{toggleTheme}}>

@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { motion } from "framer-motion"
 import axios from 'axios'
 import Alert from '@mui/material/Alert';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -15,14 +16,16 @@ export default function Login() {
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem("userToken");
-    //     if (token) {
-    //         Router.push({
-    //             pathname: "/app",
-    //         });
-    //     }
-    // }, []);
+    const mobile = useMediaQuery('(max-width: 700px)');
+
+    useEffect(() => {
+        const token = localStorage.getItem("userToken");
+        if (token) {
+            Router.push({
+                pathname: "/app",
+            });
+        }
+    }, []);
 
     const loginHandler = (): void => {
         axios.post("https://cs2300-backend-stage.us.aldryn.io/login", {
@@ -36,8 +39,6 @@ export default function Login() {
             });
         })
         .catch((err) => {
-            // switch case for error codes to set error message
-            console.log(err.response.data.message);
             setErrorMessage(err.response.data.message);
             setError(true);
         })
@@ -57,16 +58,16 @@ export default function Login() {
                 className={styles.container}
             >   
                 <div className={styles.login}>
-                    <Image src="/logo.png" alt="logo" width={100} height={100} style={{marginBottom: "15px"}}/>
-                    {error && <Alert severity="error">
+                    <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{marginBottom: "15px"}}/>
+                    {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
                     <form> 
                         <label>Email</label>
-                        <input type="text" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}} />
+                        <input type="email" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}} />
 
                         <label>Password</label>
-                        <input type="text" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+                        <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}}/>
                         <Link href="/resetpassword" className={`${styles.link} ${styles.forgot}`}>Forgot password?</Link>
 
                         <a className={styles.loginButton} onClick={loginHandler}>LOG IN</a>
