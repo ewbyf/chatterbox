@@ -9,19 +9,20 @@ interface Props {
     theme: boolean
 }
 
+
+
+export const ThemeContext = React.createContext({
+    darkTheme: true,
+});
+
 export const ThemeUpdateContext = React.createContext({
     toggleTheme: (): void => {},
 });
 
+
+
 export default function Layout({ children, theme }: Props) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
-
-    // useEffect(() => {
-    //     let storedTheme = localStorage.getItem("theme");
-    //     if (storedTheme == "dark") {
-    //         setDarkTheme(true);
-    //     }
-    // }, [])
 
     const toggleTheme = (): void => {
         if (darkTheme) {
@@ -40,9 +41,11 @@ export default function Layout({ children, theme }: Props) {
             <ProfileIcon theme={darkTheme}/>
             <NotificationBell theme={darkTheme} />
             <Theme theme={darkTheme}>
-                <ThemeUpdateContext.Provider value={{toggleTheme}}>
-                    { children }
-                </ThemeUpdateContext.Provider>
+                <ThemeContext.Provider value={{darkTheme}}>
+                    <ThemeUpdateContext.Provider value={{toggleTheme}}>
+                        { children }
+                    </ThemeUpdateContext.Provider>
+                </ThemeContext.Provider>
             </Theme>
         </>
     );

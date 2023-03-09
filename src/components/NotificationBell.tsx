@@ -17,8 +17,6 @@ interface Props {
   theme: boolean;
 }
 
-
-
 const NotificationBell = ({ theme }: Props) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [notifications, setNotifications] = useState([{message: "sdjsadjasdjas"}, {message: "testeteseaw"}]);
@@ -90,9 +88,9 @@ const NotificationBell = ({ theme }: Props) => {
             <p className={styles.titleText}>NOTIFICATIONS</p>
             <CloseIcon className={styles.close} onClick={handleClose} sx={{ color: theme ? "lightgrey" : "grey" }}/>
         </div>
+        <Divider sx={{ bgcolor: theme ? "lightgrey" : "" }} />
         {notifications.map((notification) => (
             <div key={notification.message}>
-                <Divider sx={{ bgcolor: theme ? "lightgrey" : "" }} />
                 <MenuItem
                     onClick={() => Router.push({ pathname: "/app/settings" })}
                     sx={{ "&:hover": { backgroundColor: theme ? "#181818" : "" } }}

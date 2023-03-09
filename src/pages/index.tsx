@@ -91,7 +91,14 @@ export default function Home() {
           animate={{ opacity: 1, width: (mobile ? "100%" : "50%") }}
           transition={{ duration: 1 }}
           className={styles.right}
-        ></motion.div>
+        >
+          {mobile && <p className={styles.rightTitle}>Chat with friends easily</p>}
+          <motion.img 
+              initial={{ opacity: 0}}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 2, delay: 1 }}
+          src="/graphic.png" alt="graphic" width={mobile ? 550 : 750} height={mobile ? 550 : 750}/>
+        </motion.div>
       </main>
     </>
   );

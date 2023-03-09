@@ -2,16 +2,16 @@
     position: absolute;
     top: 33px;
     right: 80px;
-    color: rgb(172, 172, 172);
+    color: #acacac;
     cursor: pointer;
 }
 
 .dark:hover {
-    color: rgb(238, 238, 238);
+    color: #eeeeee;
 }
 
 .light:hover {
-    color: rgb(122, 122, 122);
+    color: #7a7a7a;
 }
 
 .titleContainer {
@@ -24,10 +24,10 @@
 .titleText {
     font-weight: bold;
     font-size: 17px;
-    color: rgb(255, 102, 102);
+    color: #ff5c5c;
 }
 
 .close:hover {
-    color: rgb(255, 102, 102);
+    color: #ff5c5c;
     cursor: pointer;
 }

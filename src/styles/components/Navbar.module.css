@@ -34,7 +34,7 @@
 }
 
 .dark:hover {
-    background-color: rgb(29, 29, 29);
+    background-color: #1d1d1d;
 }
 
 .light:hover {
@@ -68,5 +68,8 @@
     position: absolute;
     bottom: 25px;
     left: 10px;
+}
+
+.settings:hover {
     width: 180px;
 }
