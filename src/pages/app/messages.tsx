@@ -3,29 +3,15 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
 import styles from "@/styles/app/Messages.module.css";
-import { ThemeContext } from '@/components/Layout';
+import { UserContext } from '@/components/Layout';
 
 export default function Messages() {
-    const [userToken, setUserToken] = useState('');
-
-    useEffect(() => {
-        const token = localStorage.getItem("userToken");
-        if (token) {
-          setUserToken(token);
-        }
-        else {
-            Router.push({
-                pathname: "/login",
-            });
-        }
-    }, []);
-
     return (
     <>
       <Head>
         <title>Chatterbox | Messages</title>
       </Head>
-      <ThemeContext.Consumer>
+      <UserContext.Consumer>
         {({ darkTheme }) => (
           <>
             <div className={`${styles.messageBubble} ${darkTheme ? styles.darkBackground : styles.lightBackground}`}>
@@ -36,7 +22,7 @@ export default function Messages() {
             </div>
           </>
         )}
-      </ThemeContext.Consumer>
+      </UserContext.Consumer>
     </>
   )
 }

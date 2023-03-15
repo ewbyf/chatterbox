@@ -9,6 +9,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useState } from "react";
 import Router from 'next/router'
+import { UserContext } from "@/components/Layout";
 
 interface Props {
   theme: boolean;
@@ -44,7 +45,12 @@ export default function AccountMenu({ theme }: Props) {
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
-          <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+          <UserContext.Consumer>
+            {({ user }) => (
+              <a onClick={() => console.log(user.avatar)}>dsdsadasda</a>
+              // <Avatar sx={{ width: 32, height: 32 }} src={user.avatar}>M</Avatar>
+            )}
+          </UserContext.Consumer>
         </IconButton>
       </Tooltip>
       <Menu
