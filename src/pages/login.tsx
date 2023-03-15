@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
 import { motion } from "framer-motion"
-import axios from 'axios'
+import api from '@/services/axiosConfig'
 import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -28,11 +28,12 @@ export default function Login() {
     }, []);
 
     const loginHandler = (): void => {
-        axios.post("https://cs2300-backend-stage.us.aldryn.io/login", {
+        api.post("login", {
             email,
             password
         })
         .then((resp) => {
+            console.log(resp);
             localStorage.setItem("userToken", resp.data.token);
             Router.push({
                 pathname: "/app",

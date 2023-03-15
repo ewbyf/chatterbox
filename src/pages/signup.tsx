@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
 import { motion } from "framer-motion";
-import axios from "axios";
 import Alert from '@mui/material/Alert';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { red } from '@mui/material/colors'
 import { Typography } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery';
+import api from '@/services/axiosConfig'
 
 export default function Signup() {
     const [username, setUsername] = useState<string>('');
@@ -33,7 +33,7 @@ export default function Signup() {
             return;
         }
 
-        axios.post("https://cs2300-backend-stage.us.aldryn.io/signup", {
+        api.post("signup", {
             email,
             username,
             password

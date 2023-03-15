@@ -4,7 +4,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import NotificationBell from "./NotificationBell";
 import ProfileIcon from "./ProfileIcon"
 import Router from "next/router";
-import axios from "axios";
+import api from "@/services/axiosConfig";
 
 interface Props {
     children: JSX.Element,
@@ -27,18 +27,17 @@ interface IUser {
     avatar: string;
 }
 
-
-
 export default function Layout({ children, theme }: Props) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
     const [user, setUser] = useState<IUser>({id: "", username: "", token: "", avatar: ""});
     const [initializing, setInitializing] = useState<boolean>(false);
 
     useEffect(() => {
+        console.log(api.defaults.baseURL);
         const getUser = async() => {
             const userToken = localStorage.getItem("userToken");
             if (userToken) {
-                await axios.get(`https://cs2300-backend-stage.us.aldryn.io/me?token=${userToken}`)
+                await api.get(`me?token=${userToken}`)
                 .then((snap) => {
                     setUser(snap.data);
                     setInitializing(false);

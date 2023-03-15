@@ -5,8 +5,6 @@ import { useRouter } from "next/router"
 import Layout from '@/components/Layout';
 import { useEffect, useState } from 'react';
 
-
- 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [theme, setTheme] = useState(false);
