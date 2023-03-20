@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const UserContext = React.createContext({
-    darkTheme: true,
+    darkTheme: false,
     user: {id: "", username: "", token: "", avatar: ""},
 });
 
@@ -66,17 +66,15 @@ export default function Layout({ children, theme }: Props) {
     if (initializing) return null;
 
     return (
-        <>
-            <Navbar theme={darkTheme}/>
-            <ProfileIcon theme={darkTheme}/>
-            <NotificationBell theme={darkTheme} />
-            <Theme theme={darkTheme}>
-                <UserContext.Provider value={{darkTheme, user}}>
-                    <ThemeUpdateContext.Provider value={{toggleTheme}}>
-                        { children }
-                    </ThemeUpdateContext.Provider>
-                </UserContext.Provider>
-            </Theme>
-        </>
+        <UserContext.Provider value={{darkTheme, user}}>
+            <ThemeUpdateContext.Provider value={{toggleTheme}}>
+                <Navbar/>
+                <ProfileIcon/>
+                <NotificationBell />
+                <Theme>
+                    { children }
+                </Theme>
+            </ThemeUpdateContext.Provider>
+        </UserContext.Provider>
     );
 }
