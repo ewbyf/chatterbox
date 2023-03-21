@@ -9,15 +9,20 @@ import {
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { UserContext } from "@/components/Layout";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
+  const router = useRouter();
+
   return (
     <UserContext.Consumer>
       {({ darkTheme }) => (
         <motion.nav
           className={styles.nav}
           style={
-            darkTheme ? { backgroundColor: "#141414" } : { backgroundColor: "#ececec" }
+            darkTheme
+              ? { backgroundColor: "#141414" }
+              : { backgroundColor: "#ececec" }
           }
           whileHover={{
             width: "200px",
@@ -34,48 +39,107 @@ const Navbar = () => {
           <Link
             href="/app"
             className={`${styles.section} ${
-                darkTheme ? styles.dark : styles.light
+              darkTheme ? styles.dark : styles.light
             }`}
           >
             <div style={{ display: "flex" }}>
               <IoCompassOutline
-                color="#ff5c5c"
+                color={
+                  router.pathname.startsWith(`/app/explore`)
+                    ? "#ff5c5c"
+                    : "gray"
+                }
                 size={40}
                 className={styles.icon}
               />
             </div>
-            <p className={styles.expandText}>EXPLORE</p>
+            <p
+              className={styles.expandText}
+              style={{
+                color: router.pathname.startsWith(`/app/explore`)
+                  ? "#ff5c5c"
+                  : "gray",
+              }}
+            >
+              EXPLORE
+            </p>
           </Link>
           <Link
             href="/app/friends"
             className={`${styles.section} ${
-                darkTheme ? styles.dark : styles.light
+              darkTheme ? styles.dark : styles.light
             }`}
           >
             <div style={{ display: "flex" }}>
-              <IoPeopleOutline color="#ff5c5c" size={40} />
+              <IoPeopleOutline
+                color={
+                  router.pathname.startsWith(`/app/friends`)
+                    ? "#ff5c5c"
+                    : "gray"
+                }
+                size={40}
+              />
             </div>
-            <p className={styles.expandText}>FRIENDS</p>
+            <p
+              className={styles.expandText}
+              style={{
+                color: router.pathname.startsWith(`/app/friends`)
+                  ? "#ff5c5c"
+                  : "gray",
+              }}
+            >
+              FRIENDS
+            </p>
           </Link>
           <Link
             href="/app/messages"
             className={`${styles.section} ${
-                darkTheme ? styles.dark : styles.light
+              darkTheme ? styles.dark : styles.light
             }`}
           >
             <div style={{ display: "flex" }}>
-              <IoChatbubbleEllipsesOutline color="#ff5c5c" size={40} />
+              <IoChatbubbleEllipsesOutline
+                color={
+                  router.pathname.startsWith(`/app/messages`)
+                    ? "#ff5c5c"
+                    : "gray"
+                }
+                size={40}
+              />
             </div>
-            <p className={styles.expandText}>MESSAGES</p>
+            <p
+              className={styles.expandText}
+              style={{
+                color: router.pathname.startsWith(`/app/messages`)
+                  ? "#ff5c5c"
+                  : "gray",
+              }}
+            >
+              MESSAGES
+            </p>
           </Link>
           <Link
             href="/app/settings"
             className={`${styles.section} ${
-                darkTheme ? styles.dark : styles.light
+              darkTheme ? styles.dark : styles.light
             } ${styles.settings}`}
           >
-            <IoCogOutline color="#ff5c5c" size={40} />
-            <p className={styles.expandText}>SETTINGS</p>
+            <IoCogOutline
+              color={
+                router.pathname.startsWith(`/app/settings`) ? "#ff5c5c" : "gray"
+              }
+              size={40}
+            />
+            <p
+              className={styles.expandText}
+              style={{
+                color: router.pathname.startsWith(`/app/settings`)
+                  ? "#ff5c5c"
+                  : "gray",
+              }}
+            >
+              SETTINGS
+            </p>
           </Link>
         </motion.nav>
       )}

@@ -12,7 +12,7 @@ export default function Home() {
     const token : string|null = localStorage.getItem("userToken");
     if (token) {
       Router.push({
-        pathname: "/app",
+        pathname: "/app/explore",
       });
     } else {
       Router.push({

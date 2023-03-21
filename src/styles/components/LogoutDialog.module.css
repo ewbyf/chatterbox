@@ -1,0 +1,28 @@
+.cancel {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-right: lightgray 1px solid;
+}
+
+.cancel:hover {
+    background-color: #e7e7e7;
+}
+
+.logout {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color:  #ff5c5c;
+}
+
+.logout:hover {
+    background-color:  #ff5c5c;
+    color: white;
+}

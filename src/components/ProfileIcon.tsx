@@ -10,9 +10,11 @@ import Logout from "@mui/icons-material/Logout";
 import { useState } from "react";
 import Router from "next/router";
 import { UserContext } from "@/components/Layout";
+import LogoutDialog from "./LogoutDialog";
 
 export default function ProfileIcon() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
@@ -22,16 +24,9 @@ export default function ProfileIcon() {
     setAnchorEl(null);
   };
 
-  const logout = () => {
-    localStorage.removeItem("userToken");
-    Router.push({
-      pathname: "/login",
-    });
-  };
-
   return (
     <UserContext.Consumer>
-      {({ darkTheme }) => (
+      {({ darkTheme, user }) => (
         <>
           <Tooltip title="Account" arrow>
             <IconButton
@@ -43,11 +38,7 @@ export default function ProfileIcon() {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <UserContext.Consumer>
-                {({ user }) => (
-                  <Avatar sx={{ width: 32, height: 32 }} src={user.avatar} />
-                )}
-              </UserContext.Consumer>
+              <Avatar sx={{ width: 32, height: 32 }} src={user.avatar} />
             </IconButton>
           </Tooltip>
           <Menu
@@ -94,7 +85,7 @@ export default function ProfileIcon() {
                 "&:hover": { backgroundColor: darkTheme ? "#181818" : "" },
               }}
             >
-              <Avatar /> Profile
+              <Avatar sx={{ width: 32, height: 32 }} src={user.avatar} /> Profile
             </MenuItem>
             <Divider sx={{ bgcolor: darkTheme ? "lightgrey" : "" }} />
             <MenuItem
@@ -112,7 +103,7 @@ export default function ProfileIcon() {
               Settings
             </MenuItem>
             <MenuItem
-              onClick={logout}
+              onClick={() => setOpenMenu(true)}
               sx={{
                 "&:hover": { backgroundColor: darkTheme ? "#181818" : "" },
               }}
@@ -126,6 +117,7 @@ export default function ProfileIcon() {
               Logout
             </MenuItem>
           </Menu>
+          <LogoutDialog open={openMenu} setOpen={setOpenMenu} />
         </>
       )}
     </UserContext.Consumer>

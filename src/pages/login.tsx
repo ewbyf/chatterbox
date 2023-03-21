@@ -36,7 +36,7 @@ export default function Login() {
             console.log(resp);
             localStorage.setItem("userToken", resp.data.token);
             Router.push({
-                pathname: "/app",
+                pathname: "/app/explore",
             });
         })
         .catch((err) => {

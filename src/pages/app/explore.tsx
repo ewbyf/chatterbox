@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
 export default function Explore() {
-
+  console.log("a")
 
     return (
     <>
