@@ -1,3 +1,5 @@
+/* PC */
+
 .nav {
     position: fixed;
     top: 0;
@@ -9,6 +11,7 @@
     justify-content: center;
     gap: 25px;
     background-color: #ececec;
+    z-index: 99;
 }
 
 .nav .logo {
@@ -33,13 +36,16 @@
     cursor: pointer;
 }
 
-.dark:hover {
-    background-color: #1d1d1d;
+@media (hover: hover) {
+    .dark:hover {
+        background-color: #1d1d1d;
+    }
+    
+    .light:hover {
+        background-color: rgb(204, 204, 204);
+    }
 }
 
-.light:hover {
-    background-color: rgb(204, 204, 204);
-}
 
 .expandText {
     display: none;
@@ -72,4 +78,19 @@
 
 .settings:hover {
     width: 180px;
+}
+
+/* Mobile */
+
+.navMobile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    background-color: #ececec;
+    z-index: 99;
 }

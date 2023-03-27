@@ -4,6 +4,7 @@
     right: 80px;
     color: #acacac;
     cursor: pointer;
+    z-index: 99;
 }
 
 .dark:hover {

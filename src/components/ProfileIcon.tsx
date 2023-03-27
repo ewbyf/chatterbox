@@ -33,7 +33,7 @@ export default function ProfileIcon() {
               style={{ position: "absolute", right: 20, top: 25 }}
               onClick={handleClick}
               size="small"
-              sx={{ ml: 2 }}
+              sx={{ ml: 2, zIndex: 99 }}
               aria-controls={open ? "account-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}

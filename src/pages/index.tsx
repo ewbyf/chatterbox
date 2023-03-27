@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Home() {
-  const mobile = useMediaQuery('(max-width: 999px)')
+  const mobile = useMediaQuery('(max-width: 999px)');
 
   const switchPage = (): void => {
     const token : string|null = localStorage.getItem("userToken");

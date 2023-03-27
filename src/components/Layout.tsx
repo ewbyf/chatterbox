@@ -33,7 +33,6 @@ export default function Layout({ children, theme }: Props) {
     const [initializing, setInitializing] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log(api.defaults.baseURL);
         const getUser = async() => {
             const userToken = localStorage.getItem("userToken");
             if (userToken) {

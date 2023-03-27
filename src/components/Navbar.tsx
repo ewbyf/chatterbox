@@ -10,9 +10,94 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { UserContext } from "@/components/Layout";
 import { useRouter } from "next/router";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Navbar = () => {
   const router = useRouter();
+  const mobile = useMediaQuery('(max-width: 800px)');
+
+  if (mobile) {
+    return (
+      <UserContext.Consumer>
+        {({ darkTheme }) => (
+          <nav
+            className={styles.navMobile}
+            style={
+              darkTheme
+                ? { backgroundColor: "#141414" }
+                : { backgroundColor: "#ececec" }
+            }
+          >
+            <Link
+              href="/app/explore"
+              className={`${styles.section} ${
+                darkTheme ? styles.dark : styles.light
+              }`}
+            >
+              <div style={{ display: "flex" }}>
+                <IoCompassOutline
+                  color={
+                    router.pathname.startsWith(`/app/explore`)
+                      ? "#ff5c5c"
+                      : "gray"
+                  }
+                  size={40}
+                  className={styles.icon}
+                />
+              </div>
+            </Link>
+            <Link
+              href="/app/friends"
+              className={`${styles.section} ${
+                darkTheme ? styles.dark : styles.light
+              }`}
+            >
+              <div style={{ display: "flex" }}>
+                <IoPeopleOutline
+                  color={
+                    router.pathname.startsWith(`/app/friends`)
+                      ? "#ff5c5c"
+                      : "gray"
+                  }
+                  size={40}
+                />
+              </div>
+            </Link>
+            <Link
+              href="/app/messages"
+              className={`${styles.section} ${
+                darkTheme ? styles.dark : styles.light
+              }`}
+            >
+              <div style={{ display: "flex" }}>
+                <IoChatbubbleEllipsesOutline
+                  color={
+                    router.pathname.startsWith(`/app/messages`)
+                      ? "#ff5c5c"
+                      : "gray"
+                  }
+                  size={40}
+                />
+              </div>
+            </Link>
+            <Link
+              href="/app/settings"
+              className={`${styles.section} ${
+                darkTheme ? styles.dark : styles.light
+              }`}
+            >
+              <IoCogOutline
+                color={
+                  router.pathname.startsWith(`/app/settings`) ? "#ff5c5c" : "gray"
+                }
+                size={40}
+              />
+            </Link>
+          </nav>
+        )}
+      </UserContext.Consumer>
+    )
+  }
 
   return (
     <UserContext.Consumer>
@@ -37,7 +122,7 @@ const Navbar = () => {
             </p>
           </div>
           <Link
-            href="/app"
+            href="/app/explore"
             className={`${styles.section} ${
               darkTheme ? styles.dark : styles.light
             }`}

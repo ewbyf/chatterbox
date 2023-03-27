@@ -11,10 +11,10 @@ import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [error, setError] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const mobile = useMediaQuery('(max-width: 700px)');
 
@@ -33,7 +33,6 @@ export default function Login() {
             password
         })
         .then((resp) => {
-            console.log(resp);
             localStorage.setItem("userToken", resp.data.token);
             Router.push({
                 pathname: "/app/explore",

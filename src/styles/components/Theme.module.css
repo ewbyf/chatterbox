@@ -1,13 +1,12 @@
 .dark {
     height: 100vh;
     background-color: #181818;
-    padding-left: 80px;
+    padding-top: 90px;
     color: white;
 }
 
 .light {
     height: 100vh;
     background-color: white;
-    padding-left: 80px;
     color: black;
 }
