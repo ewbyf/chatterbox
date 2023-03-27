@@ -11,6 +11,9 @@ import Link from "next/link";
 import { UserContext } from "@/components/Layout";
 import { useRouter } from "next/router";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Avatar from "@mui/material/Avatar";
+import { IoNotifications } from "react-icons/io5";
+import { Badge } from "@mui/material";
 
 const Navbar = () => {
   const router = useRouter();
@@ -19,7 +22,7 @@ const Navbar = () => {
   if (mobile) {
     return (
       <UserContext.Consumer>
-        {({ darkTheme }) => (
+        {({ darkTheme, user }) => (
           <nav
             className={styles.navMobile}
             style={
@@ -41,7 +44,7 @@ const Navbar = () => {
                       ? "#ff5c5c"
                       : "gray"
                   }
-                  size={40}
+                  size={35}
                   className={styles.icon}
                 />
               </div>
@@ -59,7 +62,7 @@ const Navbar = () => {
                       ? "#ff5c5c"
                       : "gray"
                   }
-                  size={40}
+                  size={35}
                 />
               </div>
             </Link>
@@ -76,22 +79,32 @@ const Navbar = () => {
                       ? "#ff5c5c"
                       : "gray"
                   }
-                  size={40}
+                  size={35}
                 />
               </div>
             </Link>
             <Link
-              href="/app/settings"
+              href="/app/notifications"
+              className={`${styles.section} ${
+                darkTheme ? styles.dark : styles.light
+              }`}
+            >             
+              <Badge color="error" variant="dot" overlap="circular">
+                <IoNotifications 
+                color={
+                  router.pathname.startsWith(`/app/notifications`)
+                    ? "#ff5c5c"
+                    : "gray"
+                } size={35}/>
+              </Badge>
+            </Link>
+            <Link
+              href="/app/account"
               className={`${styles.section} ${
                 darkTheme ? styles.dark : styles.light
               }`}
             >
-              <IoCogOutline
-                color={
-                  router.pathname.startsWith(`/app/settings`) ? "#ff5c5c" : "gray"
-                }
-                size={40}
-              />
+              <Avatar sx={{ width: 35, height: 35 }} src={user.avatar} />
             </Link>
           </nav>
         )}
@@ -101,7 +114,7 @@ const Navbar = () => {
 
   return (
     <UserContext.Consumer>
-      {({ darkTheme }) => (
+      {({ darkTheme, user }) => (
         <motion.nav
           className={styles.nav}
           style={
@@ -122,7 +135,7 @@ const Navbar = () => {
             </p>
           </div>
           <Link
-            href="/app/explore"
+            href="/app/explore "
             className={`${styles.section} ${
               darkTheme ? styles.dark : styles.light
             }`}
@@ -204,26 +217,22 @@ const Navbar = () => {
             </p>
           </Link>
           <Link
-            href="/app/settings"
+            href="/app/account"
             className={`${styles.section} ${
               darkTheme ? styles.dark : styles.light
             } ${styles.settings}`}
           >
-            <IoCogOutline
-              color={
-                router.pathname.startsWith(`/app/settings`) ? "#ff5c5c" : "gray"
-              }
-              size={40}
-            />
+              <Avatar sx={{ width: 40, height: 40 }} src={user.avatar} />
             <p
               className={styles.expandText}
               style={{
-                color: router.pathname.startsWith(`/app/settings`)
+                color: router.pathname.startsWith(`/app/account`)
                   ? "#ff5c5c"
                   : "gray",
+                
               }}
             >
-              SETTINGS
+              ACCOUNT
             </p>
           </Link>
         </motion.nav>

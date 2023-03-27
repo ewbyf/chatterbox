@@ -1,16 +1,13 @@
-import { UserContext } from "@/components/Layout";
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { IoArrowBackOutline } from "react-icons/io5";
 
+interface Props {
+    handler?: () => void;
+}
 
-const BackArrow = () => {
-    const backHandler = () => {
-        
-    }
-
+const BackArrow = ({ handler }: Props) => {
     return (
-        <div>
-        </div>
-    );
+        <IoArrowBackOutline size={25} onClick={handler} color="gray"/>
+    ); 
 }
  
 export default BackArrow;

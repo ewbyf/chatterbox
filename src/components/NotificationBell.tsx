@@ -9,7 +9,6 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import CloseIcon from "@mui/icons-material/Close";
-
 import { useState } from "react";
 import Router from "next/router";
 import { UserContext } from "@/components/Layout";
@@ -93,20 +92,23 @@ const NotificationBell = () => {
                 sx={{ color: darkTheme ? "lightgrey" : "grey" }}
               />
             </div>
-            <Divider sx={{ bgcolor: darkTheme ? "lightgrey" : "" }} />
+            <Divider sx={{ bgcolor: darkTheme ? "#2E2E2E" : "", margin: 0 }}/>
             {notifications.map((notification) => (
-              <div key={notification.message}>
-                <MenuItem
-                  onClick={() => Router.push({ pathname: "/app/settings" })}
-                  sx={{
-                    "&:hover": { backgroundColor: darkTheme ? "#181818" : "" },
-                  }}
-                  style={{ height: "75px" }}
-                >
-                  <ListItemIcon></ListItemIcon>
-                  {notification.message}
-                </MenuItem>
-              </div>
+              <>      
+                <div key={notification.message}>
+                  <MenuItem
+                    onClick={() => Router.push({ pathname: "/app/settings" })}
+                    sx={{
+                      "&:hover": { backgroundColor: darkTheme ? "#181818" : "" },
+                    }}
+                    style={{ height: "75px" }}
+                  >
+                    <ListItemIcon></ListItemIcon>
+                    {notification.message}
+                  </MenuItem>
+                </div>
+                <Divider sx={{ bgcolor: darkTheme ? "#2E2E2E" : "" }} />
+              </>
             ))}
           </Menu>
         </>

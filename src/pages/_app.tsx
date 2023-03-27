@@ -4,6 +4,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router"
 import Layout from '@/components/Layout';
 import { useEffect, useState } from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

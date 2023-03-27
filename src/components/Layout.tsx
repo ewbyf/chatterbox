@@ -2,9 +2,9 @@ import Navbar from "./Navbar";
 import Theme from "./Theme";
 import React, { useEffect, useState, useContext } from 'react';
 import NotificationBell from "./NotificationBell";
-import ProfileIcon from "./ProfileIcon"
 import Router from "next/router";
 import api from "@/services/axiosConfig";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface Props {
     children: JSX.Element,
@@ -31,6 +31,7 @@ export default function Layout({ children, theme }: Props) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
     const [user, setUser] = useState<IUser>({id: "", username: "", token: "", avatar: ""});
     const [initializing, setInitializing] = useState<boolean>(false);
+    const mobile = useMediaQuery('(max-width: 800px)');
 
     useEffect(() => {
         const getUser = async() => {
@@ -68,8 +69,7 @@ export default function Layout({ children, theme }: Props) {
         <UserContext.Provider value={{darkTheme, user}}>
             <ThemeUpdateContext.Provider value={{toggleTheme}}>
                 <Navbar/>
-                <ProfileIcon/>
-                <NotificationBell />
+                {!mobile && <NotificationBell />}
                 <Theme>
                     { children }
                 </Theme>

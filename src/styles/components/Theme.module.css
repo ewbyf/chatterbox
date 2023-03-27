@@ -8,5 +8,6 @@
 .light {
     height: 100vh;
     background-color: white;
+    padding-top: 90px;
     color: black;
 }

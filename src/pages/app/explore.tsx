@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Header from '@/components/Header';
 
 export default function Explore() {
@@ -12,7 +12,7 @@ export default function Explore() {
         <title>Chatterbox | Explore</title>
       </Head>
       <main>
-        <Header>Explore Page</Header>
+        <Header back handler={() => {console.log("A")}}>Explore Page</Header>
       </main>
     </>
   )
