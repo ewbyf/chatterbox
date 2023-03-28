@@ -1,24 +1,43 @@
+@font-face {
+    font-family: MarkPro;
+    src: url('../../../public/fonts/MarkPro-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: bold;
+}
+
 .main {
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 60px 20px 20px 20px;
 }
 
-.title {
-    font-size: 20px;
+.id {
+    font-size: 18px;
     font-weight: bold;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    padding: 5px 10px;
+    transform: translate(0, -50%);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .account {
     height: 500px;
+    width: 35%;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
-    width: 30%;
+    align-items: center;
     gap: 10px;
 }
 
 .box {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding: 6px 8px;
@@ -26,6 +45,22 @@
     font-size: 14px;
     border: 1px gray solid;
     color: gray;
+    height: 57.5px;
+    width: 100%;
+    font-family: MarkPro;
+    font-size: 12px;
+}
+
+.darkEditable, .lightEditable {
+    cursor: text;
+}
+
+.darkEditable:hover {
+    background-color: #1d1d1d;
+}
+
+.lightEditable:hover {
+    background-color: #ececec;
 }
 
 .input {
@@ -45,9 +80,11 @@
     height: 500px;
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 35%;
+    min-width: 300px;
     gap: 10px;
     align-items: flex-start;
+
 }
 
 .options {
@@ -66,6 +103,8 @@
     justify-content: center;
     padding: 12.5px 20px;
     border-radius: 10px;
+    font-size: 13px;
+    font-family: MarkPro;
 }
 
 .button:hover {
@@ -94,4 +133,10 @@
 
 .delete:hover {
     background-color: #dc4545;
+}
+
+@media screen and (max-width: 800px) {
+    .main {
+        padding-top: 30px;
+    }
 }

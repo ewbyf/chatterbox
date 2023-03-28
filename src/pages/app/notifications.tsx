@@ -32,7 +32,7 @@ const Notifications = () => {
       <UserContext.Consumer>
         {({ darkTheme }) => (
           <>
-              <Header>NOTIFICATIONS</Header>
+              <Header center>NOTIFICATIONS</Header>
               {notifications.map((notification) => (
                 <>      
                   <div key={notification.message}>
