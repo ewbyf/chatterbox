@@ -1,0 +1,18 @@
+.button {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    padding: 12.5px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: MarkPro;
+    text-align: center;
+    flex: 1;
+}
+
+.button:hover {
+    cursor: pointer;
+    filter: brightness(85%);
+}

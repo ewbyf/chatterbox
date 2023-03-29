@@ -92,10 +92,9 @@ const NotificationBell = () => {
                 sx={{ color: darkTheme ? "lightgrey" : "grey" }}
               />
             </div>
-            <Divider sx={{ bgcolor: darkTheme ? "#2E2E2E" : "", margin: 0 }}/>
             {notifications.map((notification) => (
-              <>      
-                <div key={notification.message}>
+              <div key={notification.message}>      
+                  <Divider sx={{ bgcolor: darkTheme ? "#2E2E2E" : "", margin: 0 }}/>
                   <MenuItem
                     onClick={() => Router.push({ pathname: "/app/settings" })}
                     sx={{
@@ -106,9 +105,7 @@ const NotificationBell = () => {
                     <ListItemIcon></ListItemIcon>
                     {notification.message}
                   </MenuItem>
-                </div>
-                <Divider sx={{ bgcolor: darkTheme ? "#2E2E2E" : "" }} />
-              </>
+              </div>
             ))}
           </Menu>
         </>

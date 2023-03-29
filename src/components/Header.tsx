@@ -17,7 +17,7 @@ const Header = ({ children, back, handler, center }: Props) => {
         return (
             <UserContext.Consumer>
             {({ darkTheme }) => (
-                <div className={styles.header} style={{paddingLeft: (mobile ? "20px" : "100px"), borderColor: (darkTheme ? "#2E2E2E" : "#C9C9C9 "), backgroundColor: (darkTheme ? "#181818" : "white"), justifyContent: (center ? "center" : "")}}>
+                <div className={styles.header} style={{padding: (mobile ? "0 20px" : "0 100px"), borderColor: (darkTheme ? "#2E2E2E" : "#C9C9C9 "), backgroundColor: (darkTheme ? "#181818" : "white"), justifyContent: (center ? "center" : "")}}>
                     {mobile && back && <BackArrow handler={handler}/>}
                     {children}
                 </div>

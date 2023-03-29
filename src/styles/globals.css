@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+@font-face {
+  font-family: MarkPro;
+  src: url('../../public/fonts/MarkPro-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: bold;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -21,4 +28,15 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 10px;
 }

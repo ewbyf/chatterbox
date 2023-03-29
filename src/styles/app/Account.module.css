@@ -1,16 +1,10 @@
-@font-face {
-    font-family: MarkPro;
-    src: url('../../../public/fonts/MarkPro-Bold.otf') format('opentype');
-    font-weight: 700;
-    font-style: bold;
-}
-
 .main {
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 60px 20px 20px 20px;
+    padding: 60px 20px 40px 20px;
+    overflow-y: scroll;
 }
 
 .id {
@@ -27,13 +21,20 @@
 }
 
 .account {
-    height: 500px;
     width: 35%;
     min-width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 40px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 10px;
+    width: 100%;
 }
 
 .box {
@@ -69,70 +70,15 @@
     outline: none;
     font-size: 17px;
     margin-top: 5px;
+    font-family: Nunito;
+    font-weight: bold;
 }
 
-.box:focus-within {
-    border-color: #ff5c5c;
-    color: #ff5c5c;
-}
-
-.preferences {
-    height: 500px;
-    display: flex;
-    flex-direction: column;
-    width: 35%;
-    min-width: 300px;
-    gap: 10px;
-    align-items: flex-start;
-
-}
-
-.options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-}
-
-.button {
-    width: 100%;
+.buttonRow {
     display: flex;
     gap: 5px;
-    align-items: center;
     justify-content: center;
-    padding: 12.5px 20px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-family: MarkPro;
-}
-
-.button:hover {
-    cursor: pointer;
-}
-
-.darkLogout {
-    background-color: rgb(38, 38, 38);
-}
-
-.darkLogout:hover {
-    background-color: rgb(32, 32, 32);
-}
-
-.lightLogout {
-    background-color: lightgray;
-}
-
-.lightLogout:hover {
-    background-color: rgb(170, 170, 170);
-}
-
-.delete {
-    background-color: #ff5c5c;
-}
-
-.delete:hover {
-    background-color: #dc4545;
+    width: 100%;
 }
 
 @media screen and (max-width: 800px) {

@@ -13,11 +13,11 @@ interface Props {
 
 export const UserContext = React.createContext({
     darkTheme: false,
-    user: {id: "", username: "", token: "", avatar: ""},
+    user: {id: "", username: "", token: "", avatar: "", email: ""},
 });
 
 export const ThemeUpdateContext = React.createContext({
-    toggleTheme: (): void => {},
+    toggleTheme: (val: string): void => {},
 });
 
 interface IUser {
@@ -25,11 +25,12 @@ interface IUser {
     username: string;
     token: string;
     avatar: string;
+    email: string;
 }
 
 export default function Layout({ children, theme }: Props) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
-    const [user, setUser] = useState<IUser>({id: "", username: "", token: "", avatar: ""});
+    const [user, setUser] = useState<IUser>({id: "", username: "", token: "", avatar: "", email: ""});
     const [initializing, setInitializing] = useState<boolean>(false);
     const mobile = useMediaQuery('(max-width: 800px)');
 
@@ -53,8 +54,8 @@ export default function Layout({ children, theme }: Props) {
         getUser();
     }, [])
 
-    const toggleTheme = (): void => {
-        if (darkTheme) {
+    const toggleTheme = (val: string): void => {
+        if (val == "light") {
             localStorage.setItem("theme", "light");
         }
         else {

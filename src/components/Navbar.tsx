@@ -14,6 +14,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Avatar from "@mui/material/Avatar";
 import { IoNotifications } from "react-icons/io5";
 import { Badge } from "@mui/material";
+import Status from "./Status";
 
 const Navbar = () => {
   const router = useRouter();
@@ -222,7 +223,9 @@ const Navbar = () => {
               darkTheme ? styles.dark : styles.light
             } ${styles.settings}`}
           >
+            <Status status="online">
               <Avatar sx={{ width: 40, height: 40 }} src={user.avatar} />
+            </Status>
             <p
               className={styles.expandText}
               style={{
