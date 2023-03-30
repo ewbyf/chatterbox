@@ -1,0 +1,55 @@
+.box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px gray solid;
+    gap: 10px;
+    font-weight: bold;
+}
+
+
+.id {
+    padding: 5px 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.icons {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    gap: 15px;
+}
+
+.iconCircle {
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.x {
+    color: #ff5c5c;
+    background-color: rgb(36, 36, 36);
+}
+
+.check {
+    color: #05B770;
+    background-color: rgb(36, 36, 36);
+}
+
+.x:hover {
+    background-color: #ff5c5c;
+    color: rgb(36, 36, 36);
+}
+
+.check:hover {
+    background-color: #05B770;
+    color: rgb(36, 36, 36); 
+}

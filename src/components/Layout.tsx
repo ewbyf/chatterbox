@@ -6,19 +6,10 @@ import Router from "next/router";
 import api from "@/services/axiosConfig";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-interface Props {
+interface IProps {
     children: JSX.Element,
     theme: boolean
 }
-
-export const UserContext = React.createContext({
-    darkTheme: false,
-    user: {id: "", username: "", token: "", avatar: "", email: ""},
-});
-
-export const ThemeUpdateContext = React.createContext({
-    toggleTheme: (val: string): void => {},
-});
 
 interface IUser {
     id: string;
@@ -28,10 +19,25 @@ interface IUser {
     email: string;
 }
 
-export default function Layout({ children, theme }: Props) {
+interface IUserContext {
+    darkTheme: boolean;
+    user: IUser;
+}  
+
+export const UserContext = React.createContext<IUserContext>({
+    darkTheme: false,
+    user: {id: "", username: "", token: "", avatar: "", email: ""},
+});
+
+export const ThemeUpdateContext = React.createContext({
+    toggleTheme: (val: string): void => {},
+});
+
+
+export default function Layout({ children, theme }: IProps) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
     const [user, setUser] = useState<IUser>({id: "", username: "", token: "", avatar: "", email: ""});
-    const [initializing, setInitializing] = useState<boolean>(false);
+    const [initializing, setInitializing] = useState<boolean>(true);
     const mobile = useMediaQuery('(max-width: 800px)');
 
     useEffect(() => {

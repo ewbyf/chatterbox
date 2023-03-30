@@ -2,17 +2,13 @@
     position: absolute;
     top: 33px;
     right: 33px;
-    color: #acacac;
+    color: gray;
     cursor: pointer;
     z-index: 99;
 }
 
-.dark:hover {
-    color: #eeeeee;
-}
-
-.light:hover {
-    color: #7a7a7a;
+.bellContainer:hover {
+    color: rgb(152, 152, 152);
 }
 
 .titleContainer {

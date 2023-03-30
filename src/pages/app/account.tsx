@@ -1,7 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import Router from "next/router";
 import { ThemeUpdateContext, UserContext } from "@/components/Layout";
 import styles from "@/styles/app/Account.module.css";
 import LogoutDialog from "../../components/LogoutDialog";
@@ -15,6 +13,7 @@ import Button from "@/components/Button";
 
 import Dropdown from "@/components/Dropdown";
 import MenuItem from '@mui/material/MenuItem';
+import TextInput from "@/components/TextInput";
 
 export default function Account() {
     const [openLogout, setOpenLogout] = useState<boolean>(false);
@@ -31,34 +30,11 @@ export default function Account() {
             <div className={styles.account}>
                 <div className={styles.section}>
                     <Avatar sx={{ width: 100, height: 100, mb: 2 }} src={user.avatar} />
-                    <label className={`${styles.box} ${darkTheme ? styles.darkEditable : styles.lightEditable}`}>
-                        USERNAME
-                        <input
-                            value={user.username}
-                            className={styles.input}
-                            style={darkTheme ? { color: "white" } : { color: "black" }}
-                        />
-                        <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{user.id}</p>                  
-                    </label>
-                    <label className={styles.box}>
-                        EMAIL
-                        <input
-                            disabled
-                            value={user.email}
-                            className={styles.input}
-                            style={darkTheme ? { color: "white", maxWidth: "275px" } : { color: "black", maxWidth: "275px" }}
-                        />
-                    </label>
-                    <label className={styles.box}>
-                        PASSWORD
-                        <input
-                            type="password"
-                            value="filler"
-                            className={styles.input}
-                            style={darkTheme ? { color: "white" } : { color: "black" }}
-                            disabled
-                        />
-                    </label>
+                    <TextInput label="USERNAME" value={user.username} placeholder="Enter username">
+                        <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{user.id}</p>          
+                    </TextInput>
+                    <TextInput label="EMAIL" value={user.email} disabled={true}/>
+                    <TextInput label="PASSWORD" value="filler" disabled={true}/>
                     <div className={styles.buttonRow}>
                         <Button text="CHANGE EMAIL" dark="rgb(38, 38, 38)" light="lightgray" icon={<EmailIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
                         <Button text="CHANGE PASSWORD" dark="rgb(38, 38, 38)" light="lightgray" icon={<LockIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>

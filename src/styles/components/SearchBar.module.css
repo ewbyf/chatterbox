@@ -1,0 +1,38 @@
+.box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    border: 1px gray solid;
+    color: gray;
+    height: 57.5px;
+    width: 100%;
+    font-family: MarkPro;
+    font-size: 12px;
+    cursor: text;
+}
+
+.box:focus-within {
+    border-width: 2px;
+    padding: 5px 9px;
+}
+
+.darkEditable:hover {
+    background-color: #1d1d1d;
+}
+
+.lightEditable:hover {
+    background-color: #ececec;
+}
+
+.input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    font-family: Nunito;
+    font-weight: bold;
+    padding-left: 9px;
+}

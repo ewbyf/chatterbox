@@ -1,0 +1,69 @@
+.main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 35px 20px 40px 20px;
+    /* overflow-y: scroll; */
+}
+
+.options {
+    display: flex;
+    gap: 90px;
+    justify-content: center;
+}
+
+.optionsTitle {
+    font-family: MarkPro;
+    font-size: 20px;
+    color: gray;
+    cursor: pointer;
+    border-bottom: 2px solid;
+    padding: 5px;
+    border-color: transparent;
+}
+
+.optionsTitle:hover {
+    color: rgb(152, 152, 152);
+}
+
+.section {
+    height: 100%;
+    width: 35%;
+    min-width: 325px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0px;
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-family: MarkPro;
+    color: gray;
+}
+
+.friends {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px;
+    gap: 10px;
+    width: 100%;
+}
+
+.requests {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px;
+    gap: 10px;
+    width: 100%;
+}
+
+.friendRequest {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 15px;
+    gap: 10px;
+    font-weight: bold;
+}

@@ -34,9 +34,7 @@ const NotificationBell = () => {
       {({ darkTheme }) => (
         <>
           <div
-            className={`${styles.bellContainer} ${
-              darkTheme ? styles.dark : styles.light
-            }`}
+            className={styles.bellContainer}
             onClick={openNotifications}
           >
             <Tooltip title="Notifications" arrow>
