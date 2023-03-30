@@ -6,11 +6,12 @@ interface Props {
     value: string;
     disabled?: boolean;
     placeholder?: string;
+    password?: boolean;
     children?: JSX.Element;
     onChange?: (value: string) => any,
 }
 
-const TextInput = ({ label, value, disabled, placeholder, children, onChange }: Props) => {
+const TextInput = ({ label, value, disabled, placeholder, password, children, onChange }: Props) => {
     const changeHandler = !onChange ? undefined : (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
     };
@@ -23,6 +24,7 @@ const TextInput = ({ label, value, disabled, placeholder, children, onChange }: 
                     <input
                         disabled={disabled}
                         placeholder={placeholder}
+                        type={password ? "password" : ""}
                         value={value}
                         className={styles.input}
                         onChange={changeHandler}

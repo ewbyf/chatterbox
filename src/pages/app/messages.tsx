@@ -1,25 +1,43 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Router from 'next/router';
 import styles from "@/styles/app/Messages.module.css";
 import { UserContext } from '@/components/Layout';
-import Header from '@/components/Header';
-import Button from '@/components/Button';
-import TextInput from '@/components/TextInput';
 import api from '@/services/axiosConfig';
 
-export default function Messages() {
-  const [searchField, setSearchField] = useState<string>('');
+import Header from '@/components/Header';
+import SearchBar from '@/components/SearchBar';
+import FriendBox from '@/components/FriendBox';
 
-  const addFriend = (token: string, id: Number) => {
-    api.post("/request-friend", {token, id})
+interface IFriend {
+  avatar: string;
+  id: Number;
+  username: string;
+  channelId: Number;
+}
+
+export default function Messages() {
+  const [searchField, setSearchField] = useState<string>("");
+  const [friends, setFriends] = useState<Array<IFriend>>();
+  const {user} = useContext(UserContext);
+  const [init, setInit] = useState(true);
+
+  useEffect(() => {
+    getFriends();
+  }, [])
+
+  const getFriends = async() => {
+    api.get(`/friends?token=${user.token}`)
     .then((resp) => {
-      console.log(resp);
+      setFriends(resp.data);
+      setInit(false);
     })
     .catch((err) => {
       console.log(err.response.data.message);
-    });
+    })
   }
+
+  if (init) return null;
 
   return (
   <>
@@ -29,12 +47,21 @@ export default function Messages() {
     <UserContext.Consumer>
       {({ darkTheme, user }) => (
         <main className={styles.main}>
-        <Header center>FRIENDS</Header>
+        <Header center>MESSAGES</Header>
         <div className={styles.leftSection}>
-          <p className={styles.sectionTitle}>ADD FRIENDS</p>
+          <p className={styles.sectionTitle}>DIRECT MESSAGES</p>
           <div className={styles.addFriend}>
-            <TextInput label="ADD FRIEND" value={searchField} placeholder="Enter friend ID" onChange={(val) => setSearchField(val)}/>
-            <Button text="SEARCH" dark="#ff5c5c" light="#ff5c5c" onClick={() => addFriend(user.token, Number(searchField))}/>
+            <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
+            {
+              friends && <>
+                {friends.map((friend) => (
+                  <>
+                  <FriendBox friend={friend}/>
+                  <FriendBox friend={friend} notSelected/>
+                  </>
+                ))}
+              </>
+            }
           </div>
         </div>
         <div className={styles.rightSection}>

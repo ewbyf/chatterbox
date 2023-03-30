@@ -5,14 +5,13 @@ import styles from "@/styles/app/Friends.module.css";
 import { UserContext } from "@/components/Layout";
 import api from "@/services/axiosConfig";
 
-import TextInput from "@/components/TextInput";
-import Button from "@/components/Button";
 import Header from "@/components/Header";
 import Dropdown from "@/components/Dropdown";
 import { MenuItem } from "@mui/material";
 import FriendBox from "@/components/FriendBox";
-import SearchIcon from '@mui/icons-material/SearchRounded';
 import SearchBar from "@/components/SearchBar";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 interface IRequest {
   from: {
@@ -32,11 +31,16 @@ interface IFriend {
 
 export default function Friends() {
   const [searchField, setSearchField] = useState<string>("");
-  const [friendsSelected, setFriendsSelected] = useState<boolean>(true);
+  const [friendsSelected, setFriendsSelected] = useState<Number>(1);
   const [friends, setFriends] = useState<Array<IFriend>>([]);
   const [requests, setRequests] = useState<Array<IRequest>>([]);
   const [dropdown, setDropdown] = useState<"all" | "online" | "blocked">("all");
+  const [init, setInit] = useState<boolean>(true);
   const {user} = useContext(UserContext);
+
+  const tabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setFriendsSelected(newValue);
+  };
 
   useEffect(() => {
     getFriends();
@@ -68,6 +72,7 @@ export default function Friends() {
     api.get(`/friend-requests?token=${user.token}`)
     .then((resp) => {
       setRequests(resp.data);
+      setInit(false);
     })
     .catch((err) => {
       console.log(err.response.data.message);
@@ -78,7 +83,7 @@ export default function Friends() {
     api.post("/accept-request", {token: user.token, id})
     .then((resp) => {
       console.log(resp);
-      setRequests(requests.filter(request => request.from.id != id))
+      setRequests(requests!.filter(request => request.from.id != id))
     })
     .catch((err) => {
       console.log(err.response.data.message);
@@ -89,7 +94,7 @@ export default function Friends() {
     api.post("/accept-request", {token: user.token, id})
     .then((resp) => {
       console.log(resp);
-      setRequests(requests.filter(request => request.from.id != id))
+      setRequests(requests!.filter(request => request.from.id != id))
     })
     .catch((err) => {
       console.log(err.response.data.message);
@@ -100,6 +105,7 @@ export default function Friends() {
     console.log(val);
   }
 
+  if (init) return null;
 
   return (
     <>
@@ -111,43 +117,57 @@ export default function Friends() {
           <main className={styles.main}>
             <Header center>FRIENDS</Header>
             <div className={styles.options}>
-              <p
-                onClick={() => setFriendsSelected(true)}
-                className={styles.optionsTitle}
-                style={{
-                  borderColor: friendsSelected ? "#ff5c5c" : "",
-                  color: friendsSelected ? "#ff5c5c" : "",
-                }}
-              >
-                FRIENDS
-              </p>
-              <p
-                onClick={() => setFriendsSelected(false)}
-                className={styles.optionsTitle}
-                style={{
-                  borderColor: !friendsSelected ? "#ff5c5c" : "",
-                  color: !friendsSelected ? "#ff5c5c" : "",
-                }}
-              >
-                REQUESTS
-              </p>
+              <Tabs
+                  value={friendsSelected}
+                  onChange={tabChange}
+                  sx={{  '& .MuiTabs-indicator': {
+                    display: 'flex',
+                    justifyContent: 'center',
+                    backgroundColor: '#ff5c5c',
+                  },
+                  }}
+                >
+                  <Tab value={1} label="FRIENDS" 
+                  sx={{
+                    color: "gray",
+                    fontFamily: "MarkPro",
+                    fontSize: "18px",
+                    marginRight: "50px",
+                    '&.Mui-selected': {
+                      color: '#ff5c5c',
+                    },
+                    '&.Mui-focusVisible': {
+                      backgroundColor: 'rgba(100, 95, 228, 0.32)',
+                    },
+                  }}/>
+                  <Tab value={2} label="REQUESTS" sx={{
+                    color: "gray",
+                    fontFamily: "MarkPro",
+                    fontSize: "18px",
+                    '&.Mui-selected': {
+                      color: '#ff5c5c',
+                    },
+                    '&.Mui-focusVisible': {
+                      backgroundColor: 'rgba(100, 95, 228, 0.32)',
+                    },
+                  }} />
+                </Tabs>
             </div>
 
             <div className={styles.section}>
-              {friendsSelected && <div className={styles.friends}>
+              {friendsSelected === 1 && 
+              <div className={styles.friends}>
                 <Dropdown title="SHOW FRIENDS" value={dropdown} onChange={(e) => setDropdown(e.target.value)}>
                   [<MenuItem value="all">All</MenuItem>, <MenuItem value="online">Online</MenuItem>, <MenuItem value="blocked">Blocked</MenuItem>]
                 </Dropdown>
                 <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
-
-                <p className={styles.sectionTitle} style={{marginTop: "20px"}}>{dropdown.toUpperCase()} - {friends.length}</p>
-                {friends.map((friend) => (
-                  <FriendBox friend={friend}/>
-                ))}
-                
+                  <p className={styles.sectionTitle} style={{marginTop: "20px"}}>{dropdown.toUpperCase()} - {friends.length}</p>
+                  {friends.map((friend) => (
+                    <FriendBox friend={friend}/>
+                  ))}
               </div>}
         
-              {!friendsSelected && <div className={styles.requests}>
+              {friendsSelected === 2 && <div className={styles.requests}>
                 <p className={styles.sectionTitle}>FIND YOUR FRIENDS</p>
                 <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
                 <p className={styles.sectionTitle} style={{marginTop: "20px"}}>RECEIVED REQUESTS</p>

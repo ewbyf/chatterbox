@@ -15,9 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
     setInitializing(false);
   }, [])
 
-  if (initializing) {
-    return null;
-  }
+  if (initializing) return null;
 
   if(router.pathname.startsWith(`/app`)) {
     return (

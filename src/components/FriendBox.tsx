@@ -15,16 +15,17 @@ interface IFriend {
 interface Props {
     friend: IFriend;
     request?: boolean;
+    notSelected?: boolean;
     accept?: (id: Number) => any;
     reject?: (id: Number) => any;
 }
 
-const FriendBox = ({ friend, request, accept, reject }: Props) => {
+const FriendBox = ({ friend, request, notSelected, accept, reject }: Props) => {
     return (
         <UserContext.Consumer>
             {({ darkTheme }) => (
-                <div className={styles.box}>
-                    <Avatar sx={{ width: 40, height: 40 }} src={friend.avatar} />
+                <div className={`${styles.box} ${notSelected ? styles.hoverEffect : null}`} style={{border: notSelected ? "none" : "1px gray solid"}}>
+                    <Avatar sx={{ width: 35, height: 35 }} src={friend.avatar} />
                     <p>{friend.username}</p>
                     <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{friend.id.toString()}</p>
                     {request && 

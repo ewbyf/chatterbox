@@ -34,7 +34,7 @@ export default function Account() {
                         <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{user.id}</p>          
                     </TextInput>
                     <TextInput label="EMAIL" value={user.email} disabled={true}/>
-                    <TextInput label="PASSWORD" value="filler" disabled={true}/>
+                    <TextInput label="PASSWORD" value="filler" disabled={true} password/>
                     <div className={styles.buttonRow}>
                         <Button text="CHANGE EMAIL" dark="rgb(38, 38, 38)" light="lightgray" icon={<EmailIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
                         <Button text="CHANGE PASSWORD" dark="rgb(38, 38, 38)" light="lightgray" icon={<LockIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>

@@ -4,11 +4,13 @@
     align-items: center;
     padding: 15px;
     border-radius: 10px;
-    border: 1px gray solid;
     gap: 10px;
     font-weight: bold;
 }
 
+.hoverEffect:hover {
+    background-color: #202020;
+}
 
 .id {
     padding: 5px 10px;
