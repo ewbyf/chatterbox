@@ -10,6 +10,12 @@
 
 .hoverEffect:hover {
     background-color: #202020;
+    cursor: pointer;
+}
+
+.selected {
+    border: 1px gray solid;
+    padding: 14px;
 }
 
 .id {

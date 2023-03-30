@@ -19,14 +19,18 @@ interface IFriend {
 export default function Messages() {
   const [searchField, setSearchField] = useState<string>("");
   const [friends, setFriends] = useState<Array<IFriend>>();
+  const [init, setInit] = useState<boolean>(true);
+  const [selectedFriendId, setSelectedFriendId] = useState<Number>(0);
+  const [selectedFriend, setSelectedFriend] = useState<IFriend>();
+
   const {user} = useContext(UserContext);
-  const [init, setInit] = useState(true);
+
 
   useEffect(() => {
     getFriends();
   }, [])
 
-  const getFriends = async() => {
+  const getFriends = () => {
     api.get(`/friends?token=${user.token}`)
     .then((resp) => {
       setFriends(resp.data);
@@ -35,6 +39,11 @@ export default function Messages() {
     .catch((err) => {
       console.log(err.response.data.message);
     })
+  }
+
+  const selectFriend = (friend: IFriend) => {
+    setSelectedFriendId(friend.id);
+    setSelectedFriend(friend);
   }
 
   if (init) return null;
@@ -56,7 +65,7 @@ export default function Messages() {
               friends && <>
                 {friends.map((friend) => (
                   <>
-                  <FriendBox friend={friend}/>
+                  <FriendBox notSelected={selectedFriendId !== friend.id} friend={friend} key={friend.id.toString()} onClick={() => selectFriend(friend)}/>
                   <FriendBox friend={friend} notSelected/>
                   </>
                 ))}
