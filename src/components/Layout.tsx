@@ -49,6 +49,12 @@ export default function Layout({ children, theme }: IProps) {
                     setUser(snap.data);
                     setInitializing(false);
                 })
+                .catch((err) => {
+                    localStorage.removeItem("userToken");
+                    Router.push({
+                        pathname: "/login",
+                     });
+                })
             }
             else {
                 Router.push({

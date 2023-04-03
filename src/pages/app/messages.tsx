@@ -18,7 +18,7 @@ interface IFriend {
 
 export default function Messages() {
   const [searchField, setSearchField] = useState<string>("");
-  const [friends, setFriends] = useState<Array<IFriend>>();
+  const [friends, setFriends] = useState<Array<IFriend>>([]);
   const [init, setInit] = useState<boolean>(true);
   const [selectedFriendId, setSelectedFriendId] = useState<Number>(0);
   const [selectedFriend, setSelectedFriend] = useState<IFriend>();
@@ -62,7 +62,7 @@ export default function Messages() {
           <div className={styles.addFriend}>
             <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
             {
-              friends && <>
+              friends.length > 0 && <>
                 {friends.map((friend) => (
                   <>
                   <FriendBox notSelected={selectedFriendId !== friend.id} friend={friend} key={friend.id.toString()} onClick={() => selectFriend(friend)}/>
@@ -70,6 +70,9 @@ export default function Messages() {
                   </>
                 ))}
               </>
+            }
+            {
+              friends.length === 0 && <p style={{textAlign: "center"}}>You have no friends :(</p>
             }
           </div>
         </div>
