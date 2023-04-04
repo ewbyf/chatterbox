@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import { Avatar } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import Button from "@/components/Button";
+import api from "@/services/axiosConfig";
 
 import Dropdown from "@/components/Dropdown";
 import MenuItem from '@mui/material/MenuItem';
@@ -18,7 +19,12 @@ import TextInput from "@/components/TextInput";
 export default function Account() {
     const [openLogout, setOpenLogout] = useState<boolean>(false);
 
-  return (
+    const changeAvatar = () => {
+
+        api.post("/")
+    }
+
+    return (
     <>
         <Head>
         <title>Chatterbox | Account</title>
@@ -30,6 +36,7 @@ export default function Account() {
             <div className={styles.account}>
                 <div className={styles.section}>
                     <Avatar sx={{ width: 100, height: 100, mb: 2 }} src={user.avatar} />
+                    <Button type="input" text="CHANGE AVATAR" dark="rgb(38, 38, 38)" light="lightgray" icon={<LockIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => changeAvatar()}/>
                     <TextInput label="USERNAME" value={user.username} placeholder="Enter username">
                         <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{user.id}</p>          
                     </TextInput>
