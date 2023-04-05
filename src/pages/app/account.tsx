@@ -1,27 +1,37 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeUpdateContext, UserContext } from "@/components/Layout";
 import styles from "@/styles/app/Account.module.css";
+import api from "@/services/axiosConfig";
 import LogoutDialog from "../../components/LogoutDialog";
-import Logout from "@mui/icons-material/Logout";
+import { Avatar } from "@mui/material";
+import MenuItem from '@mui/material/MenuItem';
+import EmailIcon from '@mui/icons-material/Email';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LockIcon from '@mui/icons-material/Lock';
+import Logout from "@mui/icons-material/Logout";
+import PersonIcon from '@mui/icons-material/Person';
 import Header from "@/components/Header";
-import { Avatar } from "@mui/material";
-import EmailIcon from '@mui/icons-material/Email';
 import Button from "@/components/Button";
-import api from "@/services/axiosConfig";
-
 import Dropdown from "@/components/Dropdown";
-import MenuItem from '@mui/material/MenuItem';
 import TextInput from "@/components/TextInput";
 
 export default function Account() {
     const [openLogout, setOpenLogout] = useState<boolean>(false);
+    const { updateUser } = useContext(UserContext);
 
-    const changeAvatar = () => {
-
-        api.post("/")
+    const changeAvatar = (avatar: File) => {
+        const token = localStorage.getItem("userToken");
+        const formData = new FormData();
+        formData.append("token", token!);
+        formData.append("file", avatar);
+        api.patch("/set-avatar", formData)
+        .then((resp) => {
+            updateUser();
+        })
+        .catch((err) => {
+            console.log(err.response.data.message);
+        })
     }
 
     return (
@@ -36,7 +46,7 @@ export default function Account() {
             <div className={styles.account}>
                 <div className={styles.section}>
                     <Avatar sx={{ width: 100, height: 100, mb: 2 }} src={user.avatar} />
-                    <Button type="input" text="CHANGE AVATAR" dark="rgb(38, 38, 38)" light="lightgray" icon={<LockIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => changeAvatar()}/>
+                    <Button type="input" text="CHANGE AVATAR" dark="rgb(38, 38, 38)" light="lightgray" icon={<PersonIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={(e: any) => changeAvatar(e.target.files[0])}/>
                     <TextInput label="USERNAME" value={user.username} placeholder="Enter username">
                         <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{user.id}</p>          
                     </TextInput>

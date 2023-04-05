@@ -22,15 +22,17 @@ interface IUser {
 interface IUserContext {
     darkTheme: boolean;
     user: IUser;
+    updateUser: () => void;
 }  
 
 export const UserContext = React.createContext<IUserContext>({
     darkTheme: false,
     user: {id: "", username: "", token: "", avatar: "", email: ""},
+    updateUser: () => {},
 });
 
 export const ThemeUpdateContext = React.createContext({
-    toggleTheme: (val: string): void => {},
+    toggleTheme: (val: string) => {},
 });
 
 
@@ -66,7 +68,15 @@ export default function Layout({ children, theme }: IProps) {
         getUser();
     }, [])
 
-    const toggleTheme = (val: string): void => {
+    const updateUser = () => {
+        const userToken = localStorage.getItem("userToken");
+        api.get(`me?token=${userToken}`)
+        .then((snap) => {
+            setUser(snap.data);
+        })
+    }
+
+    const toggleTheme = (val: string) => {
         if (val == "light") {
             localStorage.setItem("theme", "light");
         }
@@ -79,7 +89,7 @@ export default function Layout({ children, theme }: IProps) {
     if (initializing) return null;
 
     return (
-        <UserContext.Provider value={{darkTheme, user}}>
+        <UserContext.Provider value={{darkTheme, user, updateUser}}>
             <ThemeUpdateContext.Provider value={{toggleTheme}}>
                 <Navbar/>
                 {!mobile && <NotificationBell />}

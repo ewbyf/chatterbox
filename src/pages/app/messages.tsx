@@ -4,10 +4,10 @@ import Router from 'next/router';
 import styles from "@/styles/app/Messages.module.css";
 import { UserContext } from '@/components/Layout';
 import api from '@/services/axiosConfig';
-
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import FriendBox from '@/components/FriendBox';
+import { Avatar } from "@mui/material";
 
 interface IFriend {
   avatar: string;
@@ -34,6 +34,7 @@ export default function Messages() {
     api.get(`/friends?token=${user.token}`)
     .then((resp) => {
       setFriends(resp.data);
+      console.log(resp.data)
       setInit(false);
     })
     .catch((err) => {
@@ -58,7 +59,9 @@ export default function Messages() {
         <main className={styles.main}>
         <Header center>MESSAGES</Header>
         <div className={styles.leftSection}>
-          <p className={styles.sectionTitle}>DIRECT MESSAGES</p>
+          <p className={styles.leftSectionTitle}>
+            DIRECT MESSAGES
+          </p>
           <div className={styles.addFriend}>
             <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
             {
@@ -77,12 +80,26 @@ export default function Messages() {
           </div>
         </div>
         <div className={styles.rightSection}>
-          <div className={`${styles.messageBubble} ${darkTheme ? styles.darkBackground : styles.lightBackground}`}>
+          {selectedFriend && 
+            <>
+              <div className={styles.rightSectionTitle}>
+                <Avatar sx={{ width: 30, height: 30 }} src={selectedFriend.avatar} />
+                {selectedFriend.username}
+                <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>
+                  #{selectedFriend.id.toString()}
+                </p>
+              </div>
+              <div className={styles.messageBox}>
+                
+              </div>
+            </>
+          }
+          {/* <div className={`${styles.messageBubble} ${darkTheme ? styles.darkBackground : styles.lightBackground}`}>
             <p>dsadsadjasdasdsadajlsdkjl</p>
           </div>
           <div className={styles.userMessageBubble}>
             <p>dsadsadjasdasdsadajlsdkjl</p>
-          </div>
+          </div> */}
         </div>
       </main>
       )}

@@ -169,6 +169,7 @@ export default function Friends() {
         
               {friendsSelected === 2 && <div className={styles.requests}>
                 <p className={styles.sectionTitle}>FIND YOUR FRIENDS</p>
+                <p onClick={() => addFriend(Number(searchField))}>dasjdasjkdasjda</p>
                 <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
                 <p className={styles.sectionTitle} style={{marginTop: "20px"}}>RECEIVED REQUESTS</p>
                 {requests.map((request) => (

@@ -7,7 +7,7 @@ interface Props {
     icon?: JSX.Element;
     text: string;
     type?: string;
-    onClick: () => any;
+    onClick: (e?: any) => void;
 }
 
 const Button = ({ dark, light, icon, text, type, onClick }: Props) => {
@@ -22,7 +22,11 @@ const Button = ({ dark, light, icon, text, type, onClick }: Props) => {
                     </div>
                     }
                     {type === "input" &&
-                        <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" onChange={onClick}/>
+                        <label className={styles.label} style={{backgroundColor: (darkTheme ? dark : light)}}>
+                            {icon}
+                            <p>{text}</p>
+                            <input type="file" id="avatar" name="avatar" accept="image/*" onChange={onClick} className={styles.input}/>
+                        </label>
                     }
                 </>
             )}
