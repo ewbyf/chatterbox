@@ -22,14 +22,15 @@ export default function Messages() {
   const [searchField, setSearchField] = useState<string>("");
   const [friends, setFriends] = useState<Array<IFriend>>([]);
   const [init, setInit] = useState<boolean>(true);
-  const [selectedFriendId, setSelectedFriendId] = useState<Number>(0);
   const [selectedFriend, setSelectedFriend] = useState<IFriend>();
+  const [message, setMessage] = useState<string>('');
 
   const {user} = useContext(UserContext);
 
 
   useEffect(() => {
     getFriends();
+    getMessages();
   }, [])
 
   const getFriends = () => {
@@ -44,17 +45,37 @@ export default function Messages() {
     })
   }
 
-  const selectFriend = (friend: IFriend) => {
-    setSelectedFriendId(friend.id);
-    setSelectedFriend(friend);
+  const sendMessage = () => {
+    api.post("/create-message", {
+      channelId: selectedFriend?.channelId,
+      content: message,
+      token: user.token,
+    })
+    .then((resp) => {
+      setMessage('');
+      console.log(resp)
+    })
+    .catch((err) => {
+      console.log(err.response.data.message)
+    })
   }
 
-  const sendMessage = () => {
-    console.log('a')
+  const getMessages = () => {
+    api.get("/messages", { params: {
+      token: user.token,
+      channelId: selectedFriend?.channelId,
+    }})
+    .then((resp) => {
+      console.log(resp)
+    })
+    .catch((err) => {
+      console.log(err.response.data.message)
+    })
   }
 
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
   };
@@ -80,7 +101,7 @@ export default function Messages() {
               friends.length > 0 && <>
                 {friends.map((friend) => (
                   <>
-                  <FriendBox notSelected={selectedFriendId !== friend.id} friend={friend} key={friend.id.toString()} onClick={() => selectFriend(friend)}/>
+                  <FriendBox notSelected={selectedFriend?.id !== friend.id} friend={friend} key={friend.id.toString()} onClick={() => setSelectedFriend(friend)}/>
                   <FriendBox friend={friend} notSelected/>
                   </>
                 ))}
@@ -102,7 +123,7 @@ export default function Messages() {
                 </p>
               </div>
               <div className={styles.messageBox}>
-                <TextareaAutosize className={styles.enterMessage} minRows={1} maxRows={6} placeholder="Enter message..." onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => onKeyDownHandler(e)}/>
+                <TextareaAutosize className={styles.enterMessage} minRows={1} maxRows={6} placeholder="Enter message..." onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => onKeyDownHandler(e)} onChange={(e) => setMessage(e.target.value)} value={message}/>
                 <SendIcon fontSize="medium" sx={{ color: "#ff5c5c", '&:hover': {filter: "brightness(85%)"} }} onClick={sendMessage}/>
               </div>
             </>

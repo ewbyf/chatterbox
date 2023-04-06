@@ -18,12 +18,11 @@ import TextInput from "@/components/TextInput";
 
 export default function Account() {
     const [openLogout, setOpenLogout] = useState<boolean>(false);
-    const { updateUser } = useContext(UserContext);
+    const { updateUser, user } = useContext(UserContext);
 
     const changeAvatar = (avatar: File) => {
-        const token = localStorage.getItem("userToken");
         const formData = new FormData();
-        formData.append("token", token!);
+        formData.append("token", user.token);
         formData.append("file", avatar);
         api.patch("/set-avatar", formData)
         .then((resp) => {
@@ -35,9 +34,8 @@ export default function Account() {
     }
 
     const removeAvatar = () => {
-        const token = localStorage.getItem("userToken");
         api.post("/reset-avatar", {
-            token
+            token: user.token
         })
         .then((resp) => {
             console.log(resp);
