@@ -12,7 +12,7 @@ interface IProps {
 }
 
 interface IUser {
-    id: string;
+    id: number;
     username: string;
     token: string;
     avatar: string;
@@ -27,7 +27,7 @@ interface IUserContext {
 
 export const UserContext = React.createContext<IUserContext>({
     darkTheme: false,
-    user: {id: "", username: "", token: "", avatar: "", email: ""},
+    user: {id: 0, username: "", token: "", avatar: "", email: ""},
     updateUser: () => {},
 });
 
@@ -38,7 +38,7 @@ export const ThemeUpdateContext = React.createContext({
 
 export default function Layout({ children, theme }: IProps) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
-    const [user, setUser] = useState<IUser>({id: "", username: "", token: "", avatar: "", email: ""});
+    const [user, setUser] = useState<IUser>({id: 0, username: "", token: "", avatar: "", email: ""});
     const [initializing, setInitializing] = useState<boolean>(true);
     const mobile = useMediaQuery('(max-width: 800px)');
 

@@ -13,16 +13,17 @@ import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 interface IFriend {
   avatar: string;
-  id: Number;
+  id: number;
   username: string;
-  channelId: Number;
+  channelId: number;
 }
 
 interface IMessage {
-  avatar: string,
+  authorId: number,
   channelId: number,
+  content: string,
+  createdAt: string,
   id: number,
-  username: string,
 }
 
 export default function Messages() {
@@ -43,7 +44,6 @@ export default function Messages() {
     api.get(`/friends?token=${user.token}`)
     .then((resp) => {
       setFriends(resp.data);
-      console.log(resp.data)
       setInit(false);
     })
     .catch((err) => {
@@ -59,7 +59,6 @@ export default function Messages() {
     })
     .then((resp) => {
       setMessage('');
-      console.log(resp)
     })
     .catch((err) => {
       console.log(err.response.data.message)
@@ -72,7 +71,8 @@ export default function Messages() {
       channelId,
     }})
     .then((resp) => {
-      console.log(resp)
+      setMessageList(resp.data);
+      console.log(resp.data)
     })
     .catch((err) => {
       console.log(err.response.data.message)
@@ -134,12 +134,17 @@ export default function Messages() {
                 </p>
               </div>
               <div className={styles.messages}>
-                <div className={styles.messageBubble} style={{backgroundColor: darkTheme ? "#292929" : "#c0c0c0"}}>
-                  <p>dsadsadjasdasdsadajlsdkjl</p>
-                </div>
-                <div className={styles.userMessageBubble}>
-                  <p>dsadsadjasdasdsadajlsdkjl</p>
-                </div>
+                {messageList.map((msg) => (
+                  <>
+                    {msg.authorId != user.id && <div className={styles.messageBubble} style={{backgroundColor: darkTheme ? "#292929" : "#c0c0c0"}}>
+                      <p>{msg.content}</p>
+                    </div>}
+                    {msg.authorId === user.id && <div className={styles.userMessageBubble}>
+                      <p>{msg.content}</p>
+                    </div>}
+                  </>
+                ))
+                }
               </div>
               <div className={styles.messageBox}>
                 <TextareaAutosize className={styles.enterMessage} minRows={1} maxRows={6} placeholder="Enter message..." onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => onKeyDownHandler(e)} onChange={(e) => setMessage(e.target.value)} value={message}/>
