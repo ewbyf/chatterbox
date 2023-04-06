@@ -18,7 +18,6 @@ export default function Signup() {
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [success, setSuccess] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [checked, setChecked] = useState<boolean>(false);
@@ -29,7 +28,6 @@ export default function Signup() {
         if (!checked) {
             setErrorMessage("You must agree to receiving emails to sign up");
             setError(true);
-            setSuccess(false);
             return;
         }
 
@@ -39,17 +37,19 @@ export default function Signup() {
             password
         })
         .then((resp: object): void => {
-            setSuccess(true);
             setError(false);
             setUsername('');
             setPassword('');
             setEmail('');
             setChecked(false);
+            Router.push({
+                pathname: "/login",
+                query: {keyword: "success"}
+            });
         })
         .catch((err): void => {
             setErrorMessage(err.response.data.message);
             setError(true);
-            setSuccess(false);
         })
     }
 
@@ -68,9 +68,6 @@ export default function Signup() {
             >   
                 <div className={styles.signup}>
                     <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{marginBottom: "15px"}}/>
-                    {success && <Alert severity="success" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
-                        Account successfully created!
-                    </Alert>}
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}

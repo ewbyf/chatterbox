@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Login.module.css'
 import { useEffect, useState } from 'react'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import Link from 'next/link'
 import { motion } from "framer-motion"
 import api from '@/services/axiosConfig'
@@ -14,11 +14,17 @@ export default function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+
+    const router = useRouter();
 
     const mobile = useMediaQuery('(max-width: 700px)');
 
     useEffect(() => {
+        if (router.query.keyword === "success") {
+            setSuccess(true);
+        }
         const token = localStorage.getItem("userToken");
         if (token) {
             Router.push({
@@ -59,6 +65,9 @@ export default function Login() {
             >   
                 <div className={styles.login}>
                     <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{marginBottom: "15px"}}/>
+                    {success && <Alert severity="success" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
+                        Account successfully created!
+                    </Alert>}
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
