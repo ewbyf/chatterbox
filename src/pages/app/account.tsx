@@ -34,6 +34,19 @@ export default function Account() {
         })
     }
 
+    const removeAvatar = () => {
+        const token = localStorage.getItem("userToken");
+        api.post("/reset-avatar", {
+            token
+        })
+        .then((resp) => {
+            console.log(resp);
+        })
+        .catch((err) => {
+            console.log(err.response.data.message);
+        })
+    }
+
     return (
     <>
         <Head>
@@ -46,7 +59,10 @@ export default function Account() {
             <div className={styles.account}>
                 <div className={styles.section}>
                     <Avatar sx={{ width: 100, height: 100, mb: 2 }} src={user.avatar} />
-                    <Button type="input" text="CHANGE AVATAR" dark="rgb(38, 38, 38)" light="lightgray" icon={<PersonIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={(e: any) => changeAvatar(e.target.files[0])}/>
+                    <div className={styles.buttonRow}>
+                        <Button type="input" text="CHANGE AVATAR" dark="rgb(38, 38, 38)" light="lightgray" icon={<PersonIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={(e: any) => changeAvatar(e.target.files[0])}/>
+                        <Button text="REMOVE AVATAR" dark="#ff5c5c" light="#ff5c5c" icon={<DeleteIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={removeAvatar}/>
+                    </div>
                     <TextInput label="USERNAME" value={user.username} placeholder="Enter username">
                         <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{user.id}</p>          
                     </TextInput>

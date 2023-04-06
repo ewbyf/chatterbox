@@ -8,6 +8,8 @@ import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import FriendBox from '@/components/FriendBox';
 import { Avatar } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 interface IFriend {
   avatar: string;
@@ -46,6 +48,16 @@ export default function Messages() {
     setSelectedFriendId(friend.id);
     setSelectedFriend(friend);
   }
+
+  const sendMessage = () => {
+    console.log('a')
+  }
+
+  const onKeyDownHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      sendMessage();
+    }
+  };
 
   if (init) return null;
 
@@ -90,7 +102,8 @@ export default function Messages() {
                 </p>
               </div>
               <div className={styles.messageBox}>
-                
+                <TextareaAutosize className={styles.enterMessage} minRows={1} maxRows={6} placeholder="Enter message..." onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => onKeyDownHandler(e)}/>
+                <SendIcon fontSize="medium" sx={{ color: "#ff5c5c", '&:hover': {filter: "brightness(85%)"} }} onClick={sendMessage}/>
               </div>
             </>
           }

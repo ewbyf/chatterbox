@@ -43,6 +43,7 @@
     flex-direction: column;
     align-items: center;
     width: 300px;
+    overflow-y: scroll;
 }
 
 .rightSection {
@@ -52,7 +53,7 @@
     flex-direction: column;
     align-items: center;
     flex: 3;
-    background-color: rgb(28, 28, 28);
+    background-color: #1c1c1c;
 }
 
 .leftSectionTitle {
@@ -61,7 +62,7 @@
     padding-bottom: 10px;
     width: 100%;
     text-align: center;
-    border-bottom: rgb(46, 46, 46) solid 1px;
+    border-bottom: #2e2e2e solid 1px;
     color: #ff5c5c;
     height: 65px;
     padding-top: 30px;
@@ -75,7 +76,7 @@
     font-family: MarkPro;
     width: 100%;
     text-align: center;
-    border-bottom: rgb(46, 46, 46) solid 1px;
+    border-bottom: #2e2e2e solid 1px;
     height: 65px;
     padding-top: 10px;
     gap: 10px;
@@ -96,10 +97,32 @@
 }
 
 .messageBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     bottom: 0;
-    height: 50px;
+    min-height: 60px;
     width: 100%;
-    margin: 10px;
-    background-color: gray;
+    background-color: #1c1c1c;
+    padding: 0px 25px 20px 25px;
+    gap: 15px;
+}
+
+.enterMessage {
+    background-color: #2e2e2e;
+    color: white;
+    font-size: 15px;
+    font-family: Nunito;
+    padding: 12px 15px;
+    border-radius: 5px;
+    width: 100%;
+    min-height: 18px;
+    outline: none;
+    border: none;
+    resize: none;
+}
+
+.enterMessage::-webkit-input-placeholder {
+    transform-origin: 0% 50%;
 }
