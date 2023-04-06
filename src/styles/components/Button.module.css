@@ -12,9 +12,9 @@
     flex: 1;
 }
 
-.button p {
+/* .button p {
     padding-top: 4px;
-}
+} */
 
 .button:hover, .label:hover {
     cursor: pointer;
@@ -39,6 +39,6 @@
     flex: 1;
 }
 
-.label p {
+/* .label p {
     padding-top: 4px;
-}
+} */

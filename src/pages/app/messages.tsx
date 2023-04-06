@@ -18,19 +18,25 @@ interface IFriend {
   channelId: Number;
 }
 
+interface IMessage {
+  avatar: string,
+  channelId: number,
+  id: number,
+  username: string,
+}
+
 export default function Messages() {
   const [searchField, setSearchField] = useState<string>("");
-  const [friends, setFriends] = useState<Array<IFriend>>([]);
+  const [friends, setFriends] = useState<IFriend[]>([]);
   const [init, setInit] = useState<boolean>(true);
   const [selectedFriend, setSelectedFriend] = useState<IFriend>();
   const [message, setMessage] = useState<string>('');
+  const [messageList, setMessageList] = useState<IMessage[]>([]);
 
   const {user} = useContext(UserContext);
 
-
   useEffect(() => {
     getFriends();
-    getMessages();
   }, [])
 
   const getFriends = () => {
@@ -60,10 +66,10 @@ export default function Messages() {
     })
   }
 
-  const getMessages = () => {
+  const getMessages = (channelId: Number) => {
     api.get("/messages", { params: {
       token: user.token,
-      channelId: selectedFriend?.channelId,
+      channelId,
     }})
     .then((resp) => {
       console.log(resp)
@@ -71,6 +77,11 @@ export default function Messages() {
     .catch((err) => {
       console.log(err.response.data.message)
     })
+  }
+
+  const selectFriend = async(friend: IFriend) => {
+    setSelectedFriend(friend);
+    getMessages(friend.channelId);
   }
 
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -101,7 +112,7 @@ export default function Messages() {
               friends.length > 0 && <>
                 {friends.map((friend) => (
                   <>
-                  <FriendBox notSelected={selectedFriend?.id !== friend.id} friend={friend} key={friend.id.toString()} onClick={() => setSelectedFriend(friend)}/>
+                  <FriendBox notSelected={selectedFriend?.id !== friend.id} friend={friend} key={friend.id.toString()} onClick={() => selectFriend(friend)}/>
                   <FriendBox friend={friend} notSelected/>
                   </>
                 ))}
@@ -122,18 +133,20 @@ export default function Messages() {
                   #{selectedFriend.id.toString()}
                 </p>
               </div>
+              <div className={styles.messages}>
+                <div className={styles.messageBubble} style={{backgroundColor: darkTheme ? "#292929" : "#c0c0c0"}}>
+                  <p>dsadsadjasdasdsadajlsdkjl</p>
+                </div>
+                <div className={styles.userMessageBubble}>
+                  <p>dsadsadjasdasdsadajlsdkjl</p>
+                </div>
+              </div>
               <div className={styles.messageBox}>
                 <TextareaAutosize className={styles.enterMessage} minRows={1} maxRows={6} placeholder="Enter message..." onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => onKeyDownHandler(e)} onChange={(e) => setMessage(e.target.value)} value={message}/>
                 <SendIcon fontSize="medium" sx={{ color: "#ff5c5c", '&:hover': {filter: "brightness(85%)"} }} onClick={sendMessage}/>
               </div>
             </>
           }
-          {/* <div className={`${styles.messageBubble} ${darkTheme ? styles.darkBackground : styles.lightBackground}`}>
-            <p>dsadsadjasdasdsadajlsdkjl</p>
-          </div>
-          <div className={styles.userMessageBubble}>
-            <p>dsadsadjasdasdsadajlsdkjl</p>
-          </div> */}
         </div>
       </main>
       )}

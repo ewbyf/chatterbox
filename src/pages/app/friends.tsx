@@ -5,6 +5,7 @@ import styles from "@/styles/app/Friends.module.css";
 import { UserContext } from "@/components/Layout";
 import api from "@/services/axiosConfig";
 
+import Button from "@/components/Button";
 import Header from "@/components/Header";
 import Dropdown from "@/components/Dropdown";
 import { MenuItem } from "@mui/material";
@@ -12,6 +13,7 @@ import FriendBox from "@/components/FriendBox";
 import SearchBar from "@/components/SearchBar";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 interface IRequest {
   from: {
@@ -169,8 +171,8 @@ export default function Friends() {
         
               {friendsSelected === 2 && <div className={styles.requests}>
                 <p className={styles.sectionTitle}>FIND YOUR FRIENDS</p>
-                <p onClick={() => addFriend(Number(searchField))}>dasjdasjkdasjda</p>
                 <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
+                <Button text="ADD FRIEND" dark="#ff5c5c" light="#ff5c5c" icon={<PersonAddIcon  fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => addFriend(Number(searchField))}/>
                 <p className={styles.sectionTitle} style={{marginTop: "20px"}}>RECEIVED REQUESTS</p>
                 {requests.map((request) => (
                   <FriendBox friend={request.from} request accept={acceptRequest} reject={rejectRequest}/>
