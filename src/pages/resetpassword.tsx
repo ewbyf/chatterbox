@@ -11,20 +11,43 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@/components/Button'
 
 export default function ForgotPassword() {
-    const router = useRouter();
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [password2, setPassword2] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [change, setChange] = useState(false);
 
     const mobile = useMediaQuery('(max-width: 700px)');
+    const nonce = window.location.search.replace("?nonce=", "")
 
     useEffect(() => {
-        console.log(window.location.search.replace("?nonce=", "")); // here
+        if (nonce) {
+            // if api get
+            console.log('das')
+            setChange(true);
+        }
     }, [])
 
-    const resetHandler = (): void => {
+    const resetHandler = () => {
         console.log("reset");
+    }
+
+    const newPasswordHandler = () => {
+        if (password === password2) {
+            if (password === "") {
+                setError(true);
+                setErrorMessage("Please enter a password");
+            }
+            else {
+
+            }
+        }
+        else {
+            setError(true);
+            setErrorMessage("Passwords do not match");
+        }
     }
 
     return (
@@ -40,7 +63,7 @@ export default function ForgotPassword() {
                 transition={{ type: "tween", duration: .5 }} 
                 className={styles.container}
             >   
-                <div className={styles.forgotPassword}>
+                {!change && <div className={styles.forgotPassword}>
                     <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{marginBottom: "15px"}}/>
                     {success && <Alert severity="success" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         Account successfully created!
@@ -55,7 +78,26 @@ export default function ForgotPassword() {
                         <Button dark="#ff5c5c" light="#ff5c5c" text="RESET PASSWORD" onClick={resetHandler}/>
                     </form>
                     <Link href="/login" className={styles.link}>{"<"} Back to login</Link>
-                </div>
+                </div>}
+                {change && <div className={styles.forgotPassword}>
+                    <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{marginBottom: "15px"}}/>
+                    {success && <Alert severity="success" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
+                        Account successfully created!
+                    </Alert>}
+                    {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
+                        {errorMessage}
+                    </Alert>}
+                    <form>
+                        <label>New Password</label>
+                        <input type="text" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} style={{marginBottom: 0}}/>
+
+                        <label>Confirm Password</label>
+                        <input type="text" required placeholder='Reenter password' value={password2} onChange={(e) => {setPassword2(e.target.value)}}/>
+
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="CHANGE PASSWORD" onClick={newPasswordHandler}/>
+                    </form>
+                    <Link href="/login" className={styles.link}>{"<"} Back to login</Link>
+                </div>}
             </motion.div>
         </main>
     </>

@@ -7,8 +7,7 @@
 }
 
 .container {
-    width: 500px;
-    height: 675px;
+    padding: 60px 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -90,8 +89,7 @@
 
 @media (max-width: 700px) {
     .container {
-        width: 350px;
-        height: 575px;
+        padding: 40px 50px;
     }
     .container label {
         max-width: 250px;

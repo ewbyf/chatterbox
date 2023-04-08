@@ -8,8 +8,7 @@
 }
 
 .container {
-    width: 450px;
-    height: 600px;
+    padding: 85px 75px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -114,8 +113,7 @@
 
 @media (max-width: 700px) {
     .container {
-        width: 350px;
-        height: 500px;
+        padding: 50px;
     }
     .container label {
         font-size: 14px;
