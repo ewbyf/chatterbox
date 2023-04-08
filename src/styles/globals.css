@@ -3,10 +3,11 @@
 
 @font-face {
   font-family: MarkPro;
-  src: url('../../public/fonts/MarkPro-Bold.otf') format('opentype');
+  src: url('../../public/fonts/MarkPro-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: bold;
 }
+
 
 * {
   box-sizing: border-box;

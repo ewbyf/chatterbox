@@ -86,7 +86,7 @@ export default function Layout({ children, theme }: IProps) {
         setDarkTheme(!darkTheme);
     }
 
-    if (initializing) return null;
+    if (initializing) return null; // loading screen here
 
     return (
         <UserContext.Provider value={{darkTheme, user, updateUser}}>

@@ -1,18 +1,20 @@
 /* eslint-disable react/no-unescaped-entities */
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '@/styles/Signup.module.css'
-import { useEffect, useState } from 'react'
-import Router from 'next/router'
-import Link from 'next/link'
+import Head from 'next/head';
+import Image from 'next/image';
+import styles from '@/styles/Signup.module.css';
+import { useEffect, useState } from 'react';
+import Router from 'next/router';
+import Link from 'next/link';
 import { motion } from "framer-motion";
 import Alert from '@mui/material/Alert';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { red } from '@mui/material/colors'
-import { Typography } from '@mui/material'
+import { red } from '@mui/material/colors';
+import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import api from '@/services/axiosConfig'
+import api from '@/services/axiosConfig';
+import Button from '@/components/Button';
+import TextInput from '@/components/TextInput';
 
 export default function Signup() {
     const [username, setUsername] = useState<string>('');
@@ -87,12 +89,12 @@ export default function Signup() {
                             <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} />
                         </label>
                         <FormControlLabel
-                            style={{flexDirection: "row", marginTop: mobile ? "15px" : "20px", marginRight: "0px"}}
+                            style={{flexDirection: "row", marginTop: mobile ? "15px" : "20px", marginRight: "0px", marginBottom: "20px"}}
                             control={<Checkbox required checked={checked} onChange={() => setChecked(!checked)} sx={{'&.Mui-checked': {color: red[400]}}}/>}
                             label={<Typography style={{fontSize: mobile ? "13px" : "14px"}}>I agree to receive emails regarding my account details<span style={{color: "red"}}>*</span></Typography>}
                             labelPlacement="end"
                             />
-                        <a className={styles.signupButton} onClick={signupHandler}>SIGN UP</a>
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="SIGN UP" onClick={signupHandler}/>
                     </form>
                     <p className={styles.option}>Already have an account? <Link href="/login" className={styles.link}>Log in</Link></p>
                 </div>

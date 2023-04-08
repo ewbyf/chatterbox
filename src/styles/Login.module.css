@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
 }
 
 .container {
@@ -23,6 +24,10 @@
     flex-direction: column;
     justify-content: center;    
     align-items: center;
+}
+
+.login label {
+    color: black;
 }
 
 @keyframes slideAway {
@@ -104,6 +109,7 @@
     font-size: 14px;
     text-align: right;
     margin-top: 5px;
+    margin-bottom: 20px;
 }
 
 @media (max-width: 700px) {

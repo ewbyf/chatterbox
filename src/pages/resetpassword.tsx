@@ -2,19 +2,26 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/ResetPassword.module.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { motion } from "framer-motion";
 import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Button from '@/components/Button'
 
 export default function ForgotPassword() {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
 
     const mobile = useMediaQuery('(max-width: 700px)');
+
+    useEffect(() => {
+        console.log(window.location.search.replace("?nonce=", "")); // here
+    }, [])
 
     const resetHandler = (): void => {
         console.log("reset");
@@ -45,7 +52,7 @@ export default function ForgotPassword() {
                         <label>Email</label>
                         <input type="text" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}}/>
 
-                        <a className={styles.resetButton} onClick={resetHandler}>RESET PASSWORD</a>
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="RESET PASSWORD" onClick={resetHandler}/>
                     </form>
                     <Link href="/login" className={styles.link}>{"<"} Back to login</Link>
                 </div>

@@ -22,6 +22,7 @@
     flex-direction: column;
     justify-content: center;    
     align-items: center;
+    color: white;
 }
 
 @keyframes slideAway {
@@ -52,6 +53,7 @@
     flex-direction: column;
     gap: 5px;
     max-width: 300px;
+    color: black;
 }
 
 .container input {
@@ -65,23 +67,6 @@
 
 .container input:focus {
     outline-color: #b9b9b9;
-}
-
-.signupButton {
-    height: 50px;
-    width: 300px;
-    margin-top: 20px;
-    background-color: #ff5c5c;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: white;
-}
-
-.signupButton:hover {
-    background-color: #ff4141;
 }
 
 .option {

@@ -9,6 +9,7 @@ import { motion } from "framer-motion"
 import api from '@/services/axiosConfig'
 import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Button from '@/components/Button'
 
 export default function Login() {
     const [email, setEmail] = useState<string>('');
@@ -20,7 +21,7 @@ export default function Login() {
     const router = useRouter();
 
     const mobile = useMediaQuery('(max-width: 700px)');
-
+    
     useEffect(() => {
         if (router.query.keyword === "success") {
             setSuccess(true);
@@ -78,8 +79,7 @@ export default function Login() {
                         <label>Password</label>
                         <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}}/>
                         <Link href="/resetpassword" className={`${styles.link} ${styles.forgot}`}>Forgot password?</Link>
-
-                        <a className={styles.loginButton} onClick={loginHandler}>LOG IN</a>
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="LOG IN" onClick={loginHandler}/>
                     </form>
                     <p className={styles.option}>Don't have an account? <Link href="/signup" className={styles.link}>Sign up</Link></p>
                 </div>
