@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@/components/Button'
+import api from '@/services/axiosConfig'
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -20,18 +21,33 @@ export default function ForgotPassword() {
     const [change, setChange] = useState(false);
 
     const mobile = useMediaQuery('(max-width: 700px)');
-    const nonce = window.location.search.replace("?nonce=", "")
+    const nonce = window.location.search.replace("?nonce=", "");
 
     useEffect(() => {
         if (nonce) {
-            // if api get
-            console.log('das')
-            setChange(true);
+            api.get("/valid-nonce", { params: {
+                nonce
+            }})
+            .then((resp) => {
+                setChange(true);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
     }, [])
 
     const resetHandler = () => {
-        console.log("reset");
+        api.post("/reset-password", {
+            email
+        })
+        .then((resp) => {
+            setSuccess(true);
+            setEmail('');
+        })
+        .catch((err) => {
+            console.log(err.response.data)
+        })
     }
 
     const newPasswordHandler = () => {
@@ -41,7 +57,17 @@ export default function ForgotPassword() {
                 setErrorMessage("Please enter a password");
             }
             else {
-
+                api.post("/set-password", {
+                    nonce,
+                    password
+                })
+                .then((resp) => {
+                    setSuccess(true);
+                    setError(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
             }
         }
         else {
@@ -66,7 +92,7 @@ export default function ForgotPassword() {
                 {!change && <div className={styles.forgotPassword}>
                     <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{marginBottom: "15px"}}/>
                     {success && <Alert severity="success" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
-                        Account successfully created!
+                        Password reset email has been sent!
                     </Alert>}
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
@@ -81,22 +107,21 @@ export default function ForgotPassword() {
                 </div>}
                 {change && <div className={styles.forgotPassword}>
                     <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{marginBottom: "15px"}}/>
-                    {success && <Alert severity="success" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
-                        Account successfully created!
+                    {success && <Alert severity="success" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center", maxWidth: "350px"}}>
+                        Password successfully reset! You may now close this window and log in.
                     </Alert>}
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
-                    <form>
+                    {!success && <form>
                         <label>New Password</label>
-                        <input type="text" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} style={{marginBottom: 0}}/>
+                        <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} style={{marginBottom: 0}}/>
 
                         <label>Confirm Password</label>
-                        <input type="text" required placeholder='Reenter password' value={password2} onChange={(e) => {setPassword2(e.target.value)}}/>
+                        <input type="password" required placeholder='Reenter password' value={password2} onChange={(e) => {setPassword2(e.target.value)}}/>
 
                         <Button dark="#ff5c5c" light="#ff5c5c" text="CHANGE PASSWORD" onClick={newPasswordHandler}/>
-                    </form>
-                    <Link href="/login" className={styles.link}>{"<"} Back to login</Link>
+                    </form>}
                 </div>}
             </motion.div>
         </main>
