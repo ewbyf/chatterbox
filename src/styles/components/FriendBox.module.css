@@ -8,8 +8,13 @@
     font-weight: bold;
 }
 
-.hoverEffect:hover {
+.hoverEffectDark:hover {
     background-color: #202020;
+    cursor: pointer;
+}
+
+.hoverEffectLight:hover {
+    background-color: rgb(182, 182, 182);
     cursor: pointer;
 }
 

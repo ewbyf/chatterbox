@@ -14,6 +14,7 @@ import SearchBar from "@/components/SearchBar";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface IRequest {
   from: {
@@ -39,6 +40,8 @@ export default function Friends() {
   const [dropdown, setDropdown] = useState<"all" | "online" | "blocked">("all");
   const [init, setInit] = useState<boolean>(true);
   const {user} = useContext(UserContext);
+  const mobile = useMediaQuery('(max-width: 800px)');
+
 
   const tabChange = (event: React.SyntheticEvent, newValue: number) => {
     setFriendsSelected(newValue);
@@ -117,7 +120,7 @@ export default function Friends() {
       <UserContext.Consumer>
         {({ darkTheme, user }) => (
           <main className={styles.main}>
-            <Header center>FRIENDS</Header>
+            <Header center>
             <div className={styles.options}>
               <Tabs
                   value={friendsSelected}
@@ -155,8 +158,46 @@ export default function Friends() {
                   }} />
                 </Tabs>
             </div>
+            </Header>
+            {!mobile && <div className={styles.options}>
+              <Tabs
+                  value={friendsSelected}
+                  onChange={tabChange}
+                  sx={{  '& .MuiTabs-indicator': {
+                    display: 'flex',
+                    justifyContent: 'center',
+                    backgroundColor: '#ff5c5c',
+                  },
+                  }}
+                >
+                  <Tab value={1} label="FRIENDS" 
+                  sx={{
+                    color: "gray",
+                    fontFamily: "MarkPro",
+                    fontSize: "18px",
+                    marginRight: "50px",
+                    '&.Mui-selected': {
+                      color: '#ff5c5c',
+                    },
+                    '&.Mui-focusVisible': {
+                      backgroundColor: 'rgba(100, 95, 228, 0.32)',
+                    },
+                  }}/>
+                  <Tab value={2} label="REQUESTS" sx={{
+                    color: "gray",
+                    fontFamily: "MarkPro",
+                    fontSize: "18px",
+                    '&.Mui-selected': {
+                      color: '#ff5c5c',
+                    },
+                    '&.Mui-focusVisible': {
+                      backgroundColor: 'rgba(100, 95, 228, 0.32)',
+                    },
+                  }} />
+                </Tabs>
+            </div>}
 
-            <div className={styles.section}>
+            <div className={styles.section} style={{padding: mobile ? "0px" : "30px 0px"}}>
               {friendsSelected === 1 && 
               <div className={styles.friends}>
                 <Dropdown title="SHOW FRIENDS" value={dropdown} onChange={(e) => setDropdown(e.target.value)}>
@@ -165,7 +206,7 @@ export default function Friends() {
                 <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
                   <p className={styles.sectionTitle} style={{marginTop: "20px"}}>{dropdown.toUpperCase()} - {friends.length}</p>
                   {friends.map((friend) => (
-                    <FriendBox friend={friend}/>
+                    <FriendBox friend={friend} onClick={() => Router.push({pathname: "/app/messages", query: {selected: friend.id.toString()}})}/>
                   ))}
               </div>}
         

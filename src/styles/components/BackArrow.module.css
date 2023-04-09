@@ -1,0 +1,7 @@
+.back {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translate(0, -50%);
+}

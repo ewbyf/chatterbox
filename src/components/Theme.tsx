@@ -12,7 +12,7 @@ export default function Theme({ children }: Props) {
   return (
     <UserContext.Consumer>
       {({ darkTheme }) => (
-        <div className={darkTheme ? styles.dark : styles.light} style={(mobile ? {paddingBottom: "80px", paddingTop: "80px"} : {paddingLeft: "80px"})}>{children}</div>
+        <div className={darkTheme ? styles.dark : styles.light} style={(mobile ? {paddingBottom: "75px", paddingTop: "80px"} : {paddingLeft: "80px"})}>{children}</div>
       )}
     </UserContext.Consumer>
   );

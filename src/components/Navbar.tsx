@@ -45,7 +45,7 @@ const Navbar = () => {
                       ? "#ff5c5c"
                       : "gray"
                   }
-                  size={35}
+                  size={32.5}
                   className={styles.icon}
                 />
               </div>
@@ -63,7 +63,7 @@ const Navbar = () => {
                       ? "#ff5c5c"
                       : "gray"
                   }
-                  size={35}
+                  size={32.5}
                 />
               </div>
             </Link>
@@ -80,7 +80,7 @@ const Navbar = () => {
                       ? "#ff5c5c"
                       : "gray"
                   }
-                  size={35}
+                  size={32.5}
                 />
               </div>
             </Link>
@@ -96,7 +96,7 @@ const Navbar = () => {
                   router.pathname.startsWith(`/app/notifications`)
                     ? "#ff5c5c"
                     : "gray"
-                } size={35}/>
+                } size={27.5}/>
               </Badge>
             </Link>
             <Link
@@ -105,7 +105,7 @@ const Navbar = () => {
                 darkTheme ? styles.dark : styles.light
               }`}
             >
-              <Avatar sx={{ width: 35, height: 35 }} src={user.avatar} />
+              <Avatar sx={{ width: 32.5, height: 32.5 }} src={user.avatar} />
             </Link>
           </nav>
         )}

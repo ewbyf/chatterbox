@@ -2,8 +2,6 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    /* padding: 60px 20px 40px 20px; */
-    /* overflow-y: scroll; */
 }
 
 .leftSection {
@@ -11,8 +9,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
-    overflow-y: scroll;
 }
 
 .rightSection {
@@ -22,7 +18,6 @@
     flex-direction: column;
     align-items: center;
     flex: 3;
-    background-color: #1c1c1c;
 }
 
 .leftSectionTitle {
@@ -31,7 +26,7 @@
     padding-bottom: 10px;
     width: 100%;
     text-align: center;
-    border-bottom: #2e2e2e solid 1px;
+    border-bottom: solid 1px;
     color: #ff5c5c;
     height: 65px;
     padding-top: 30px;
@@ -45,24 +40,62 @@
     font-family: MarkPro;
     width: 100%;
     text-align: center;
-    border-bottom: #2e2e2e solid 1px;
+    border-bottom: solid 1px;
     height: 65px;
-    padding-top: 10px;
+    padding: 15px;
     gap: 10px;
 }
 
+
 .id {
-    padding: 5px 10px;
+    padding: 2.5px 10px;
     border-radius: 10px;
     display: flex;
     justify-content: center;
+    align-items: center;
+    font-size: 18px;
 }
 
 .addFriend {
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 15px;
     gap: 10px;
+    overflow-y: scroll;
+}
+
+.messages {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 15px;
+    padding-bottom: 83px;
+    overflow-y: scroll;
+}
+
+.messageBubble, .userMessageBubble {
+    min-width: 40px;
+    max-width: 75%;
+    border-radius: 20px;
+    padding: 6px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-all;
+    white-space: pre-line;
+}
+
+/* .messageBubble {
+    filter: drop-shadow(5px 7px 6px rgba(0,0,0,0.65));
+}    */
+
+.userMessageBubble {
+    background-color: #ff5c5c;
+    margin-left: auto;
+    /* filter: drop-shadow(-5px 7px 6px rgba(0,0,0,0.65)); */
 }
 
 .messageBox {
@@ -73,14 +106,11 @@
     bottom: 0;
     min-height: 60px;
     width: 100%;
-    background-color: #1c1c1c;
-    padding: 0px 25px 20px 25px;
+    padding: 10px 15px 20px 15px;
     gap: 15px;
 }
 
 .enterMessage {
-    background-color: #2e2e2e;
-    color: white;
     font-size: 15px;
     font-family: Nunito;
     padding: 12px 15px;
@@ -96,29 +126,5 @@
     transform-origin: 0% 50%;
 }
 
-.messages {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px 10px;
-}
-
-.messageBubble {
-    width: 300px;
-    height: 50px;
-    border-radius: 20px;
-    padding: 10px;
-    filter: drop-shadow(5px 7px 6px rgba(0,0,0,0.65));
-}   
-
-.userMessageBubble {
-    background-color: #ff5c5c;
-    margin-left: auto;
-    width: 300px;
-    height: 50px;
-    border-radius: 20px;
-    padding: 10px;
-    filter: drop-shadow(-5px 7px 6px rgba(0,0,0,0.65));
+@media screen and (max-width: 800px) {
 }

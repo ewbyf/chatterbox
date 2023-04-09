@@ -12,7 +12,7 @@ export default function Explore() {
         <title>Chatterbox | Explore</title>
       </Head>
       <main>
-        <Header back handler={() => {console.log("A")}}>Explore Page</Header>
+        <Header back center handler={() => {console.log("A")}}>Explore Page</Header>
       </main>
     </>
   )

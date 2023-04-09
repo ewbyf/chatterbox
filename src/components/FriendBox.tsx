@@ -25,7 +25,7 @@ const FriendBox = ({ friend, request, notSelected, accept, reject, onClick }: Pr
     return (
         <UserContext.Consumer>
             {({ darkTheme }) => (
-                <div className={`${styles.box} ${!request ? styles.hoverEffect : null} ${notSelected ? null : styles.selected}`} onClick={onClick}>
+                <div className={`${styles.box} ${!request ? (darkTheme ? styles.hoverEffectDark : styles.hoverEffectLight) : null} ${notSelected ? null : styles.selected}`} onClick={onClick}>
                     <Avatar sx={{ width: 35, height: 35 }} src={friend.avatar} />
                     <p>{friend.username}</p>
                     <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{friend.id.toString()}</p>
