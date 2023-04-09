@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import Theme from "./Theme";
 import React, { useEffect, useState, useContext } from 'react';
 import NotificationBell from "./NotificationBell";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import api from "@/services/axiosConfig";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -40,7 +40,9 @@ export default function Layout({ children, theme }: IProps) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
     const [user, setUser] = useState<IUser>({id: 0, username: "", token: "", avatar: "", email: ""});
     const [initializing, setInitializing] = useState<boolean>(true);
+    const [noOverlap, setNoOverlap] = useState<boolean>(false);
     const mobile = useMediaQuery('(max-width: 800px)');
+    const router = useRouter();
 
     useEffect(() => {
         const getUser = async() => {
@@ -53,13 +55,13 @@ export default function Layout({ children, theme }: IProps) {
                 })
                 .catch((err) => {
                     localStorage.removeItem("userToken");
-                    Router.push({
+                    router.push({
                         pathname: "/login",
                      });
                 })
             }
             else {
-                Router.push({
+                router.push({
                     pathname: "/login",
                  });
             }
@@ -67,6 +69,15 @@ export default function Layout({ children, theme }: IProps) {
 
         getUser();
     }, [])
+
+    useEffect(() => {
+        if(router.pathname.startsWith(`/app/messages`) || router.pathname.startsWith(`/app/explore`)) {
+            setNoOverlap(true);
+        }
+        else {
+            setNoOverlap(false);
+        }
+    }, [router])
 
     const updateUser = () => {
         const userToken = localStorage.getItem("userToken");
@@ -88,15 +99,18 @@ export default function Layout({ children, theme }: IProps) {
 
     if (initializing) return null; // loading screen here
 
+
     return (
+        <div style={{display: "flex", height: "100vh"}}>
         <UserContext.Provider value={{darkTheme, user, updateUser}}>
             <ThemeUpdateContext.Provider value={{toggleTheme}}>
-                <Navbar/>
+                <Navbar noOverlap={noOverlap}/>
                 {!mobile && <NotificationBell />}
-                <Theme>
+                <Theme noOverlap={noOverlap}>
                     { children }
                 </Theme>
             </ThemeUpdateContext.Provider>
         </UserContext.Provider>
+    </div>
     );
 }

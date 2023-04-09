@@ -16,7 +16,7 @@ import { IoNotifications } from "react-icons/io5";
 import { Badge } from "@mui/material";
 import Status from "./Status";
 
-const Navbar = () => {
+const Navbar = ({ noOverlap }: {noOverlap: boolean}) => {
   const router = useRouter();
   const mobile = useMediaQuery('(max-width: 800px)');
 
@@ -118,11 +118,10 @@ const Navbar = () => {
       {({ darkTheme, user }) => (
         <motion.nav
           className={styles.nav}
-          style={
-            darkTheme
-              ? { backgroundColor: "#141414" }
-              : { backgroundColor: "#ececec" }
-          }
+          style={{
+            backgroundColor: darkTheme ? "#141414" : "#ececec",
+            position: noOverlap ? "relative" : "fixed"
+          }}
           whileHover={{
             width: "200px",
           }}
