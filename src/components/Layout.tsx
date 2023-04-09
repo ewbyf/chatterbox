@@ -31,6 +31,11 @@ export const UserContext = React.createContext<IUserContext>({
     updateUser: () => {},
 });
 
+export const SocketContext = React.createContext<{socket: WebSocket | undefined}>({
+    socket: undefined,
+});
+
+
 export const ThemeUpdateContext = React.createContext({
     toggleTheme: (val: string) => {},
 });
@@ -43,6 +48,23 @@ export default function Layout({ children, theme }: IProps) {
     const [noOverlap, setNoOverlap] = useState<boolean>(false);
     const mobile = useMediaQuery('(max-width: 800px)');
     const router = useRouter();
+
+    const socket = new WebSocket(`wss://${process.env.NEXT_PUBLIC_WEBSOCKET_URL}`);
+
+    useEffect(() => {
+        const sendMsg = () => {
+          const userToken = localStorage.getItem("userToken");
+          if (userToken) {
+              socket?.send(JSON.stringify({ type: 'CONNECT', token: userToken }));
+          }
+        }
+    
+        socket?.addEventListener('open', sendMsg);
+    
+        return () => {
+          socket?.removeEventListener('open', sendMsg);
+        }
+    }, []);
 
     useEffect(() => {
         const getUser = async() => {
@@ -104,11 +126,13 @@ export default function Layout({ children, theme }: IProps) {
         <div style={{display: "flex", height: "100vh"}}>
         <UserContext.Provider value={{darkTheme, user, updateUser}}>
             <ThemeUpdateContext.Provider value={{toggleTheme}}>
-                <Navbar noOverlap={noOverlap}/>
-                {!mobile && <NotificationBell />}
-                <Theme noOverlap={noOverlap}>
-                    { children }
-                </Theme>
+                <SocketContext.Provider value={{socket}}>
+                    <Navbar noOverlap={noOverlap}/>
+                    {!mobile && <NotificationBell />}
+                    <Theme noOverlap={noOverlap}>
+                        { children }
+                    </Theme>
+                </SocketContext.Provider>
             </ThemeUpdateContext.Provider>
         </UserContext.Provider>
     </div>

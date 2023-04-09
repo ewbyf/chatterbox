@@ -47,22 +47,42 @@
     cursor: pointer;
 }
 
-.x {
+.xDark {
     color: #ff5c5c;
     background-color: rgb(36, 36, 36);
 }
 
-.check {
+.checkDark {
     color: #05B770;
     background-color: rgb(36, 36, 36);
 }
 
-.x:hover {
+.xDark:hover {
     background-color: #ff5c5c;
     color: rgb(36, 36, 36);
 }
 
-.check:hover {
+.checkDark:hover {
     background-color: #05B770;
     color: rgb(36, 36, 36); 
+}
+
+.xLight {
+    color: #ff5c5c;
+    background-color: rgb(202, 202, 202);
+}
+
+.checkLight {
+    color: #05B770;
+    background-color: rgb(202, 202, 202);
+}
+
+.xLight:hover {
+    background-color: #ff5c5c;
+    color: rgb(202, 202, 202);
+}
+
+.checkLight:hover {
+    background-color: #05B770;
+    color: rgb(202, 202, 202);
 }

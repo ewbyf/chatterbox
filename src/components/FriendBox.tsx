@@ -32,12 +32,12 @@ const FriendBox = ({ friend, request, notSelected, accept, reject, onClick }: Pr
                     {request && 
                     <div className={styles.icons}>
                         <Tooltip title="Reject" arrow>
-                            <div onClick={reject ? () => reject(friend.id) : undefined} className={`${styles.iconCircle} ${styles.x}`}>
+                            <div onClick={reject ? () => reject(friend.id) : undefined} className={`${styles.iconCircle} ${darkTheme ? styles.xDark : styles.xLight}`}>
                                 <CancelIcon fontSize="medium"/>
                             </div>
                         </Tooltip>
                         <Tooltip title="Accept" arrow>
-                            <div onClick={accept ? () => accept(friend.id) : undefined} className={`${styles.iconCircle} ${styles.check}`}>
+                            <div onClick={accept ? () => accept(friend.id) : undefined} className={`${styles.iconCircle} ${darkTheme ? styles.checkDark : styles.checkLight}`}>
                                 <CheckIcon fontSize="medium"/>
                             </div>
                         </Tooltip>

@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useEffect, useState, useContext } from "react";
 import Router from "next/router";
 import styles from "@/styles/app/Friends.module.css";
-import { UserContext } from "@/components/Layout";
+import { UserContext, SocketContext } from "@/components/Layout";
 import api from "@/services/axiosConfig";
 
 import Button from "@/components/Button";
@@ -34,13 +34,29 @@ interface IFriend {
 
 export default function Friends() {
   const [searchField, setSearchField] = useState<string>("");
-  const [friendsSelected, setFriendsSelected] = useState<Number>(1);
+  const [friendsSelected, setFriendsSelected] = useState<number>(1);
   const [friends, setFriends] = useState<Array<IFriend>>([]);
   const [requests, setRequests] = useState<Array<IRequest>>([]);
   const [dropdown, setDropdown] = useState<"all" | "online" | "blocked">("all");
   const [init, setInit] = useState<boolean>(true);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
   const {user} = useContext(UserContext);
+  const {socket} = useContext(SocketContext);
   const mobile = useMediaQuery('(max-width: 800px)');
+
+  useEffect(() => {
+    const print = (e: MessageEvent) => {
+      console.log(e);
+    }
+    socket?.addEventListener('message', print)
+
+    return () => {
+      socket?.removeEventListener('message', print);
+    }
+  }, []);
 
 
   const tabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -52,15 +68,36 @@ export default function Friends() {
     getRequests();
   }, [])
 
-  const addFriend = (id: Number) => {
-    api
-      .post("/request-friend", { token: user.token, id })
+  const addFriend = (field: string) => {
+    if (field.charAt(0) === "#") {
+      field = field.replace("#", "");
+      api
+      .post("/request-friend", { token: user.token, id: Number(field) })
       .then((resp) => {
-        console.log(resp);
+        setSuccess(true);
+        setError(false);
+        setSearchField('');
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        setErrorMessage(err.response.data.message);
+        setError(true);
+        setSuccess(false);
       });
+    }
+    else {
+      api
+      .post("/request-friend", { token: user.token, username: field })
+      .then((resp) => {
+        setSuccess(true);
+        setError(false);
+        setSearchField('');
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.message);
+        setError(true);
+        setSuccess(false);
+      });
+    }
   };
 
   const getFriends = () => {
@@ -87,8 +124,8 @@ export default function Friends() {
   const acceptRequest = (id: Number) => {
     api.post("/accept-request", {token: user.token, id})
     .then((resp) => {
-      console.log(resp);
-      setRequests(requests!.filter(request => request.from.id != id))
+      setRequests(requests!.filter(request => request.from.id != id));
+      setFriends([...friends, resp.data])
     })
     .catch((err) => {
       console.log(err.response.data.message);
@@ -98,7 +135,6 @@ export default function Friends() {
   const rejectRequest = (id: Number) => {
     api.post("/accept-request", {token: user.token, id})
     .then((resp) => {
-      console.log(resp);
       setRequests(requests!.filter(request => request.from.id != id))
     })
     .catch((err) => {
@@ -212,8 +248,14 @@ export default function Friends() {
         
               {friendsSelected === 2 && <div className={styles.requests}>
                 <p className={styles.sectionTitle}>FIND YOUR FRIENDS</p>
+                {success && <p style={{color: "#5CC78E", fontWeight: "bold", fontSize: "17px"}}>
+                  Friend request succesfully sent!
+                </p>}
+                {error && <p style={{color: "#ff5c5c", fontWeight: "bold", fontSize: "17px"}}>
+                  {errorMessage}
+                </p>}
                 <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
-                <Button text="ADD FRIEND" dark="#ff5c5c" light="#ff5c5c" icon={<PersonAddIcon  fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => addFriend(Number(searchField))}/>
+                <Button text="ADD FRIEND" dark="#ff5c5c" light="#ff5c5c" icon={<PersonAddIcon  fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => addFriend(searchField)}/>
                 <p className={styles.sectionTitle} style={{marginTop: "20px"}}>RECEIVED REQUESTS</p>
                 {requests.map((request) => (
                   <FriendBox friend={request.from} request accept={acceptRequest} reject={rejectRequest}/>
