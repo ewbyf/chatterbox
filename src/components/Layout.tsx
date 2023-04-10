@@ -1,22 +1,16 @@
 import Navbar from "./Navbar";
 import Theme from "./Theme";
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
 import NotificationBell from "./NotificationBell";
 import Router, { useRouter } from "next/router";
 import api from "@/services/axiosConfig";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+import { IUser } from "../interfaces";
+
 interface IProps {
     children: JSX.Element,
     theme: boolean
-}
-
-interface IUser {
-    id: number;
-    username: string;
-    token: string;
-    avatar: string;
-    email: string;
 }
 
 interface IUserContext {
@@ -40,7 +34,6 @@ export const ThemeUpdateContext = React.createContext({
     toggleTheme: (val: string) => {},
 });
 
-
 export default function Layout({ children, theme }: IProps) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
     const [user, setUser] = useState<IUser>({id: 0, username: "", token: "", avatar: "", email: ""});
@@ -49,7 +42,30 @@ export default function Layout({ children, theme }: IProps) {
     const mobile = useMediaQuery('(max-width: 800px)');
     const router = useRouter();
 
-    const socket = new WebSocket(`wss://${process.env.NEXT_PUBLIC_WEBSOCKET_URL}`);
+    const socket = useMemo(() =>new WebSocket(`wss://${process.env.NEXT_PUBLIC_WEBSOCKET_URL}`), []);
+
+    useEffect(() => {
+        const tabClose = () => {
+            socket.close();
+        }
+
+        window.addEventListener('unload', tabClose);
+        return () => {
+            window.removeEventListener('unload', tabClose);
+        }
+    })
+
+    useEffect(() => {
+        const print = async(e: MessageEvent) => {
+            console.log(JSON.parse(e.data));
+        }
+        socket?.addEventListener('message', print)
+    
+        return () => {
+          socket?.removeEventListener('message', print);
+        }
+      }, []);
+    
 
     useEffect(() => {
         const sendMsg = () => {

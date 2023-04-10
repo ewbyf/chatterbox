@@ -3,28 +3,29 @@ import { useEffect, useState } from "react";
 
 interface Props {
     children?: JSX.Element;
-    status: "online" | "dnd" | "invisible" | "idle";
+    status: "ONLINE" | "DO_NOT_DISTURB" | "OFFLINE" | "IDLE";
+    bg: string;
   }
 
-const Status = ({ children, status }: Props) => {
-    const [color, setColor] = useState<string>('');
+const Status = ({ children, status, bg }: Props) => {
+    const [color, setColor] = useState<string>('gray');
 
     useEffect(() => {
         switch(status) {
-            case "online":
+            case "ONLINE":
                 setColor("#05B770");
                 break;
-            case "dnd":
+            case "DO_NOT_DISTURB":
                 setColor("#ff5c5c");
                 break;
-            case "idle":
+            case "IDLE":
                 setColor("#F7C600");
                 break;
             default:
                 setColor("gray");
                 break;
         }
-    }, [])
+    }, [status])
 
 
     return (
@@ -42,7 +43,7 @@ const Status = ({ children, status }: Props) => {
                     minWidth: 0,
                     padding: 0,
                     backgroundColor: color,
-                    border: "black 2.5px solid"
+                    border: `${bg} 2.5px solid`
                 }
             }}
         >

@@ -2,30 +2,19 @@ import Head from 'next/head'
 import { useEffect, useState, useContext, useRef } from 'react';
 import Router, { useRouter } from 'next/router';
 import styles from "@/styles/app/Messages.module.css";
-import { UserContext } from '@/components/Layout';
+import { UserContext, SocketContext } from '@/components/Layout';
 import api from '@/services/axiosConfig';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import FriendBox from '@/components/FriendBox';
+import Status from '@/components/Status';
 import { Avatar } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { IFriend, IMessage } from "../../interfaces";
+import { statusChangeMessages } from "@/utils/StatusChange";
 
-interface IFriend {
-  avatar: string;
-  id: number;
-  username: string;
-  channelId: number;
-}
-
-interface IMessage {
-  authorId: number,
-  channelId: number,
-  content: string,
-  createdAt: string,
-  id: number,
-}
 
 export default function Messages() {
   const [searchField, setSearchField] = useState<string>("");
@@ -37,10 +26,28 @@ export default function Messages() {
   const [messageInit, setMessageInit] = useState<boolean>(true);
 
   const {user} = useContext(UserContext);
+  const {socket} = useContext(SocketContext);
   const mobile = useMediaQuery('(max-width: 800px)');
   const anchorRef = useRef<null | HTMLDivElement>(null);
   const router = useRouter();
+  
+  
+  useEffect(() => {
+    const changeStatus = async(e: MessageEvent) => {
+      console.log(JSON.parse(e.data));
 
+      const obj = JSON.parse(e.data);
+
+      if (obj.type == "STATUS_CHANGE") {
+        statusChangeMessages(friends, user, setFriends, obj, selectedFriend, setSelectedFriend, router.query.selected);
+      }
+    }
+    socket?.addEventListener('message', changeStatus)
+
+    return () => {
+      socket?.removeEventListener('message', changeStatus);
+    }
+  }, []);
 
   useEffect(() => {
     getFriends();
@@ -134,7 +141,9 @@ export default function Messages() {
         {selectedFriend && 
         <Header center back handler={() => setSelectedFriend(undefined)}>
           <>
-            <Avatar sx={{ width: 30, height: 30 }} src={selectedFriend.avatar} />
+            <Status bg={darkTheme ? "#1c1c1c" : "#f1f1f1"} status={selectedFriend.status}>
+              <Avatar sx={{ width: 30, height: 30 }} src={selectedFriend.avatar} />
+            </Status>
             <p style={{color: darkTheme ? "white" : "black"}}>{selectedFriend.username}</p>
             <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>
               #{selectedFriend.id.toString()}
@@ -165,7 +174,9 @@ export default function Messages() {
           {selectedFriend && 
             <>
               {!mobile && <div className={styles.rightSectionTitle} style={{borderColor: darkTheme ? "#2e2e2e" : "#c4c4c4"}}>
-                <Avatar sx={{ width: 30, height: 30 }} src={selectedFriend.avatar} />
+                <Status bg={darkTheme ? "#1c1c1c" : "#f1f1f1"} status={selectedFriend.status}>
+                  <Avatar sx={{ width: 30, height: 30 }} src={selectedFriend.avatar} />
+                </Status>
                 {selectedFriend.username}
                 <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>
                   #{selectedFriend.id.toString()}

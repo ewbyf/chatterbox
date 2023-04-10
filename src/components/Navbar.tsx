@@ -105,7 +105,9 @@ const Navbar = ({ noOverlap }: {noOverlap: boolean}) => {
                 darkTheme ? styles.dark : styles.light
               }`}
             >
-              <Avatar sx={{ width: 32.5, height: 32.5 }} src={user.avatar} />
+              <Status status="ONLINE" bg={darkTheme ? "#141414" : "#ececec"}>
+                <Avatar sx={{ width: 32.5, height: 32.5 }} src={user.avatar} />
+              </Status>
             </Link>
           </nav>
         )}
@@ -222,7 +224,7 @@ const Navbar = ({ noOverlap }: {noOverlap: boolean}) => {
               darkTheme ? styles.dark : styles.light
             } ${styles.settings}`}
           >
-            <Status status="online">
+            <Status status="ONLINE" bg={darkTheme ? "#141414" : "#ececec"}>
               <Avatar sx={{ width: 40, height: 40 }} src={user.avatar} />
             </Status>
             <p

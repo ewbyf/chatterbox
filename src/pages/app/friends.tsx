@@ -16,21 +16,8 @@ import Tab from '@mui/material/Tab';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-interface IRequest {
-  from: {
-    avatar: string;
-    id: Number;
-    username: string;
-  }
-  timestamp: string;
-}
-
-interface IFriend {
-  avatar: string;
-  id: Number;
-  username: string;
-  channelId: Number;
-}
+import { IFriend, IRequest } from "../../interfaces";
+import { statusChange } from "@/utils/StatusChange";
 
 export default function Friends() {
   const [searchField, setSearchField] = useState<string>("");
@@ -48,25 +35,48 @@ export default function Friends() {
   const mobile = useMediaQuery('(max-width: 800px)');
 
   useEffect(() => {
-    const print = (e: MessageEvent) => {
-      console.log(e);
+    const changeStatus = async(e: MessageEvent) => {
+      console.log(JSON.parse(e.data));
+
+      const obj = JSON.parse(e.data);
+
+      if (obj.type == "STATUS_CHANGE") {
+        statusChange(friends, user, setFriends, obj);
+      }
     }
-    socket?.addEventListener('message', print)
+    socket?.addEventListener('message', changeStatus)
 
     return () => {
-      socket?.removeEventListener('message', print);
+      socket?.removeEventListener('message', changeStatus);
     }
   }, []);
-
-
-  const tabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setFriendsSelected(newValue);
-  };
+  
 
   useEffect(() => {
     getFriends();
     getRequests();
   }, [])
+
+  const getFriends = async() => {
+    await api.get(`/friends?token=${user.token}`)
+    .then((resp) => {
+      setFriends(resp.data);
+    })
+    .catch((err) => {
+      console.log(err.response.data.message);
+    })
+  }
+
+  const getRequests = () => {
+    api.get(`/friend-requests?token=${user.token}`)
+    .then((resp) => {
+      setRequests(resp.data);
+      setInit(false);
+    })
+    .catch((err) => {
+      console.log(err.response.data.message);
+    })
+  }
 
   const addFriend = (field: string) => {
     if (field.charAt(0) === "#") {
@@ -99,27 +109,6 @@ export default function Friends() {
       });
     }
   };
-
-  const getFriends = () => {
-    api.get(`/friends?token=${user.token}`)
-    .then((resp) => {
-      setFriends(resp.data);
-    })
-    .catch((err) => {
-      console.log(err.response.data.message);
-    })
-  }
-
-  const getRequests = () => {
-    api.get(`/friend-requests?token=${user.token}`)
-    .then((resp) => {
-      setRequests(resp.data);
-      setInit(false);
-    })
-    .catch((err) => {
-      console.log(err.response.data.message);
-    })
-  }
   
   const acceptRequest = (id: Number) => {
     api.post("/accept-request", {token: user.token, id})
@@ -145,6 +134,10 @@ export default function Friends() {
   const searchFriends = (val: string) => {
     console.log(val);
   }
+
+  const tabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setFriendsSelected(newValue);
+  };
 
   if (init) return null;
 
