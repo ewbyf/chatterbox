@@ -65,7 +65,7 @@ export default function Messages() {
         if (router.query.selected) {
           selectFriend(resp.data.find((friend: IFriend) => friend.id.toString() === router.query.selected));
         }
-        else {
+        else if (!mobile) {
           selectFriend(resp.data[0]);
         }
       }
