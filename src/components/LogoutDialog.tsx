@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Router from "next/router";
 import styles from "@/styles/components/LogoutDialog.module.css";
-import { SocketContext } from '@/components/Layout';
+import { SocketContext } from "../pages/_app";
 import { useContext } from 'react';
 
 interface Props {
@@ -17,10 +17,10 @@ interface Props {
 }
 
 const LogoutDialog = ({ open, setOpen }: Props) => {
-  const {socket} = useContext(SocketContext);
+  const {closeSocket} = useContext(SocketContext);
 
   const logout = () => {
-    socket?.close();
+    closeSocket();
     localStorage.removeItem("userToken");
     Router.push({
       pathname: "/login",

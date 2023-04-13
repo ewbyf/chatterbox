@@ -5,7 +5,7 @@ import NotificationBell from "./NotificationBell";
 import Router, { useRouter } from "next/router";
 import api from "@/services/axiosConfig";
 import useMediaQuery from '@mui/material/useMediaQuery';
-
+import { SocketContext } from "@/pages/_app";
 import { IUser } from "../interfaces";
 
 interface IProps {
@@ -25,10 +25,6 @@ export const UserContext = React.createContext<IUserContext>({
     updateUser: () => {},
 });
 
-export const SocketContext = React.createContext<{socket: WebSocket | undefined}>({
-    socket: undefined,
-});
-
 
 export const ThemeUpdateContext = React.createContext({
     toggleTheme: (val: string) => {},
@@ -41,46 +37,18 @@ export default function Layout({ children, theme }: IProps) {
     const [noOverlap, setNoOverlap] = useState<boolean>(false);
     const mobile = useMediaQuery('(max-width: 800px)');
     const router = useRouter();
-
-    const socket = useMemo(() =>new WebSocket(`wss://${process.env.NEXT_PUBLIC_WEBSOCKET_URL}`), []);
+    const {socket, openSocket, closeSocket} = useContext(SocketContext);
 
     useEffect(() => {
         const tabClose = () => {
-            socket.close();
+            closeSocket();
         }
-
+  
         window.addEventListener('unload', tabClose);
         return () => {
             window.removeEventListener('unload', tabClose);
         }
     })
-
-    useEffect(() => {
-        const print = async(e: MessageEvent) => {
-            console.log(JSON.parse(e.data));
-        }
-        socket?.addEventListener('message', print)
-    
-        return () => {
-          socket?.removeEventListener('message', print);
-        }
-      }, []);
-    
-
-    useEffect(() => {
-        const sendMsg = () => {
-          const userToken = localStorage.getItem("userToken");
-          if (userToken) {
-              socket?.send(JSON.stringify({ type: 'CONNECT', token: userToken }));
-          }
-        }
-    
-        socket?.addEventListener('open', sendMsg);
-    
-        return () => {
-          socket?.removeEventListener('open', sendMsg);
-        }
-    }, []);
 
     useEffect(() => {
         const getUser = async() => {
@@ -89,6 +57,7 @@ export default function Layout({ children, theme }: IProps) {
                 await api.get(`me?token=${userToken}`)
                 .then((snap) => {
                     setUser(snap.data);
+                    openSocket();
                     setInitializing(false);
                 })
                 .catch((err) => {
@@ -140,17 +109,15 @@ export default function Layout({ children, theme }: IProps) {
 
     return (
         <div style={{display: "flex", height: "100vh"}}>
-        <UserContext.Provider value={{darkTheme, user, updateUser}}>
-            <ThemeUpdateContext.Provider value={{toggleTheme}}>
-                <SocketContext.Provider value={{socket}}>
-                    <Navbar noOverlap={noOverlap}/>
-                    {!mobile && <NotificationBell />}
-                    <Theme noOverlap={noOverlap}>
-                        { children }
-                    </Theme>
-                </SocketContext.Provider>
-            </ThemeUpdateContext.Provider>
-        </UserContext.Provider>
-    </div>
+            <UserContext.Provider value={{darkTheme, user, updateUser}}>
+                <ThemeUpdateContext.Provider value={{toggleTheme}}>
+                        <Navbar noOverlap={noOverlap}/>
+                        {!mobile && <NotificationBell />}
+                        <Theme noOverlap={noOverlap}>
+                            { children }
+                        </Theme>
+                </ThemeUpdateContext.Provider>
+            </UserContext.Provider>
+        </div>
     );
 }

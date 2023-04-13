@@ -2,7 +2,8 @@ import Head from 'next/head'
 import { useEffect, useState, useContext, useRef } from 'react';
 import Router, { useRouter } from 'next/router';
 import styles from "@/styles/app/Messages.module.css";
-import { UserContext, SocketContext } from '@/components/Layout';
+import { UserContext } from '@/components/Layout';
+import { SocketContext } from "../_app";
 import api from '@/services/axiosConfig';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';

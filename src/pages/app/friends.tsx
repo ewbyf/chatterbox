@@ -2,7 +2,8 @@ import Head from "next/head";
 import { useEffect, useState, useContext } from "react";
 import Router from "next/router";
 import styles from "@/styles/app/Friends.module.css";
-import { UserContext, SocketContext } from "@/components/Layout";
+import { UserContext } from "@/components/Layout";
+import { SocketContext } from "../_app";
 import api from "@/services/axiosConfig";
 
 import Button from "@/components/Button";
