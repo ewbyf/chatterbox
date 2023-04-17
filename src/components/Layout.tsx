@@ -13,15 +13,29 @@ interface IProps {
     theme: boolean
 }
 
+interface Status {
+    id: number;
+    status: "ONLINE" | "OFFLINE" | "IDLE" | "DO_NOT_DISTURB";
+}
+
+interface Notifications {
+    id: number;
+    status: "ONLINE" | "OFFLINE" | "IDLE" | "DO_NOT_DISTURB";
+}
+
 interface IUserContext {
     darkTheme: boolean;
     user: IUser;
+    notifications: Notifications[];
+    statuses: Status[];
     updateUser: () => void;
 }  
 
 export const UserContext = React.createContext<IUserContext>({
     darkTheme: false,
     user: {id: 0, username: "", token: "", avatar: "", email: ""},
+    notifications: [],
+    statuses: [],
     updateUser: () => {},
 });
 
@@ -38,6 +52,28 @@ export default function Layout({ children, theme }: IProps) {
     const mobile = useMediaQuery('(max-width: 800px)');
     const router = useRouter();
     const {socket, openSocket, closeSocket} = useContext(SocketContext);
+    const [notifications, setNotifications] = useState<Notifications[]>([]);
+    const [statuses, setStatuses] = useState<Status[]>([]);
+
+    useEffect(() => {
+        const changeStatus = async(e: MessageEvent) => {
+          console.log(JSON.parse(e.data));
+    
+          const obj = JSON.parse(e.data);
+    
+          if (obj.type == "STATUS_CHANGE") {
+            setStatuses([...statuses, obj])
+            console.log(obj)
+          }
+        }
+        socket?.addEventListener('message', changeStatus)
+    
+        return () => {
+          socket?.removeEventListener('message', changeStatus);
+        }
+    }, []);
+
+
 
     useEffect(() => {
         const tabClose = () => {
@@ -109,7 +145,7 @@ export default function Layout({ children, theme }: IProps) {
 
     return (
         <div style={{display: "flex", height: "100vh"}}>
-            <UserContext.Provider value={{darkTheme, user, updateUser}}>
+            <UserContext.Provider value={{darkTheme, user, notifications, statuses, updateUser}}>
                 <ThemeUpdateContext.Provider value={{toggleTheme}}>
                         <Navbar noOverlap={noOverlap}/>
                         {!mobile && <NotificationBell />}

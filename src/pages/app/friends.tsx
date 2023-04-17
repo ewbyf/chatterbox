@@ -34,24 +34,7 @@ export default function Friends() {
   const {user} = useContext(UserContext);
   const {socket} = useContext(SocketContext);
   const mobile = useMediaQuery('(max-width: 800px)');
-
-  useEffect(() => {
-    const changeStatus = async(e: MessageEvent) => {
-      console.log(JSON.parse(e.data));
-
-      const obj = JSON.parse(e.data);
-
-      if (obj.type == "STATUS_CHANGE") {
-        statusChange(friends, user, setFriends, obj);
-      }
-    }
-    socket?.addEventListener('message', changeStatus)
-
-    return () => {
-      socket?.removeEventListener('message', changeStatus);
-    }
-  }, []);
-  
+   
 
   useEffect(() => {
     getFriends();
@@ -236,7 +219,7 @@ export default function Friends() {
                 <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)}/>
                   <p className={styles.sectionTitle} style={{marginTop: "20px"}}>{dropdown.toUpperCase()} - {friends.length}</p>
                   {friends.map((friend) => (
-                    <FriendBox friend={friend} onClick={() => Router.push({pathname: "/app/messages", query: {selected: friend.id.toString()}})}/>
+                    <FriendBox friend={friend} onClick={() => Router.push({pathname: "/app/messages", query: {selected: friend.id.toString()}})} key={friend.id}/>
                   ))}
               </div>}
         
@@ -252,7 +235,7 @@ export default function Friends() {
                 <Button text="ADD FRIEND" dark="#ff5c5c" light="#ff5c5c" icon={<PersonAddIcon  fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => addFriend(searchField)}/>
                 <p className={styles.sectionTitle} style={{marginTop: "20px"}}>RECEIVED REQUESTS</p>
                 {requests.map((request) => (
-                  <FriendBox friend={request.from} request accept={acceptRequest} reject={rejectRequest}/>
+                  <FriendBox friend={request.from} request accept={acceptRequest} reject={rejectRequest} key={request.from.id}/>
                 ))}
                 {requests.length === 0 && <p>You have not received any friend requests</p>}
 
