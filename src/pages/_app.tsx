@@ -27,7 +27,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const closeSocket = () => {
     opened = false;
-    console.log(socket)
     socket?.close();
     setSocket(null);
   }
@@ -41,7 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
     const sendMsg = () => {
       const userToken = localStorage.getItem("userToken");
       if (userToken) {
-          socket?.send(JSON.stringify({ type: 'CONNECT', token: userToken }));
+        socket?.send(JSON.stringify({ type: 'CONNECT', token: userToken }));
       }
     }
 
@@ -51,18 +50,6 @@ export default function App({ Component, pageProps }: AppProps) {
       socket?.removeEventListener('open', sendMsg);
     }
   }, [socket]);
-
-  useEffect(() => {
-      const print = async(e: MessageEvent) => {
-          console.log(JSON.parse(e.data));
-      }
-      socket?.addEventListener('message', print)
-  
-      return () => {
-        socket?.removeEventListener('message', print);
-      }
-    }, [socket]);
-  
 
   if (initializing) return null;
 
