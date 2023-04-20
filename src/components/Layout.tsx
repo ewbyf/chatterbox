@@ -6,7 +6,8 @@ import Router, { useRouter } from 'next/router';
 import api from '@/services/axiosConfig';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { SocketContext } from '@/pages/_app';
-import { IUser } from '../interfaces';
+import { IUser, Notification } from '../interfaces';
+
 
 interface IProps {
     children: JSX.Element;
@@ -18,15 +19,10 @@ interface Status {
     status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
 }
 
-interface Notifications {
-    id: number;
-    status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
-}
-
 interface IUserContext {
     darkTheme: boolean;
     user: IUser;
-    notifications: Notifications[];
+    notifications: Notification[];
     friendStatus: Status | null;
     updateUser: () => void;
 }
@@ -51,7 +47,7 @@ export default function Layout({ children, theme }: IProps) {
     const mobile = useMediaQuery('(max-width: 800px)');
     const router = useRouter();
     const { socket, openSocket, closeSocket } = useContext(SocketContext);
-    const [notifications, setNotifications] = useState<Notifications[]>([]);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
     const [friendStatus, setFriendStatus] = useState<Status | null>(null);
 
     useEffect(() => {
@@ -62,9 +58,10 @@ export default function Layout({ children, theme }: IProps) {
 
             if (obj.type == 'STATUS_CHANGE') {
                 setFriendStatus(obj);
-            } else if (obj.type == 'MESSAGE') {
-                console.log(obj);
-                setNotifications([...notifications, obj]);
+            }
+            else if (obj.type == 'MESSAGE') {
+                console.log(notifications);
+                setNotifications((notifications) => [...notifications, obj]);
             }
         }
         socket?.addEventListener('message', changeStatus);
@@ -95,7 +92,7 @@ export default function Layout({ children, theme }: IProps) {
         return () => {
           socket?.removeEventListener('close', sendMsg);
         }
-      });
+    });
     
 
     useEffect(() => {
@@ -106,8 +103,15 @@ export default function Layout({ children, theme }: IProps) {
                     .get(`me?token=${userToken}`)
                     .then((snap) => {
                         setUser(snap.data);
-                        openSocket();
-                        setInitializing(false);
+                        api.get(`notifications?token=${userToken}`)
+                        .then((resp) => {
+                            setNotifications(resp.data);
+                            openSocket();
+                            setInitializing(false);
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        });
                     })
                     .catch((err) => {
                         localStorage.removeItem('userToken');
@@ -156,7 +160,7 @@ export default function Layout({ children, theme }: IProps) {
             <UserContext.Provider value={{ darkTheme, user, notifications, friendStatus, updateUser }}>
                 <ThemeUpdateContext.Provider value={{ toggleTheme }}>
                     <Navbar noOverlap={noOverlap} />
-                    {!mobile && <NotificationBell />}
+                    {!mobile && <NotificationBell notificationsList={notifications}/>}
                     <Theme noOverlap={noOverlap}>{children}</Theme>
                 </ThemeUpdateContext.Provider>
             </UserContext.Provider>

@@ -30,3 +30,8 @@ export interface IUser {
     avatar: string;
     email: string;
 }
+
+export interface Notification {
+    message: IMessage;
+    type: 'MESSAGE';
+}

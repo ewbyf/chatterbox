@@ -26,29 +26,15 @@ export default function Messages() {
   const [messageList, setMessageList] = useState<IMessage[]>([]);
   const [messageInit, setMessageInit] = useState<boolean>(true);
 
-  const {user} = useContext(UserContext);
+  const {user, friendStatus} = useContext(UserContext);
   const {socket} = useContext(SocketContext);
   const mobile = useMediaQuery('(max-width: 800px)');
   const anchorRef = useRef<null | HTMLDivElement>(null);
   const router = useRouter();
   
-  
   useEffect(() => {
-    const changeStatus = async(e: MessageEvent) => {
-      console.log(JSON.parse(e.data));
-
-      const obj = JSON.parse(e.data);
-
-      if (obj.type == "STATUS_CHANGE") {
-        statusChangeMessages(friends, user, setFriends, obj, selectedFriend, setSelectedFriend, router.query.selected);
-      }
-    }
-    socket?.addEventListener('message', changeStatus)
-
-    return () => {
-      socket?.removeEventListener('message', changeStatus);
-    }
-  }, []);
+    if (friendStatus) statusChangeMessages(friends, user, setFriends, friendStatus, selectedFriend, setSelectedFriend, router.query.selected);
+  }, [socket])
 
   useEffect(() => {
     getFriends();

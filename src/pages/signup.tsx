@@ -73,7 +73,7 @@ export default function Signup() {
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
-                    <form>
+                    <form onSubmit={(e) => e.preventDefault()}>
                         <label>
                             Username
                             <input type="text" required placeholder='Enter username' value={username} onChange={(e) => {setUsername(e.target.value)}} />
@@ -94,7 +94,7 @@ export default function Signup() {
                             label={<Typography style={{fontSize: mobile ? "13px" : "14px"}}>I agree to receive emails regarding my account details<span style={{color: "red"}}>*</span></Typography>}
                             labelPlacement="end"
                             />
-                        <Button dark="#ff5c5c" light="#ff5c5c" text="SIGN UP" onClick={signupHandler}/>
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="SIGN UP" submit onClick={signupHandler}/>
                     </form>
                     <p className={styles.option}>Already have an account? <Link href="/login" className={styles.link}>Log in</Link></p>
                 </div>

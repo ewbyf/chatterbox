@@ -46,7 +46,8 @@ export default function ForgotPassword() {
             setEmail('');
         })
         .catch((err) => {
-            console.log(err.response.data)
+            setError(true);
+            setErrorMessage("Please enter a valid email");
         })
     }
 
@@ -97,11 +98,11 @@ export default function ForgotPassword() {
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
-                    <form>
+                    <form onSubmit={(e) => e.preventDefault()}>
                         <label>Email</label>
                         <input type="text" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}}/>
 
-                        <Button dark="#ff5c5c" light="#ff5c5c" text="RESET PASSWORD" onClick={resetHandler}/>
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="RESET PASSWORD" submit onClick={resetHandler}/>
                     </form>
                     <Link href="/login" className={styles.link}>{"<"} Back to login</Link>
                 </div>}
@@ -113,14 +114,14 @@ export default function ForgotPassword() {
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
-                    {!success && <form>
+                    {!success && <form onSubmit={(e) => e.preventDefault()}>
                         <label>New Password</label>
                         <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} style={{marginBottom: 0}}/>
 
                         <label>Confirm Password</label>
                         <input type="password" required placeholder='Reenter password' value={password2} onChange={(e) => {setPassword2(e.target.value)}}/>
 
-                        <Button dark="#ff5c5c" light="#ff5c5c" text="CHANGE PASSWORD" onClick={newPasswordHandler}/>
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="CHANGE PASSWORD" submit onClick={newPasswordHandler}/>
                     </form>}
                 </div>}
             </motion.div>

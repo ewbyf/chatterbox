@@ -7,15 +7,16 @@ interface Props {
     icon?: JSX.Element;
     text: string;
     type?: string;
+    submit?: boolean;
     onClick: (e?: any) => void;
 }
 
-const Button = ({ dark, light, icon, text, type, onClick }: Props) => {
+const Button = ({ dark, light, icon, text, type, submit, onClick }: Props) => {
     return (
         <UserContext.Consumer>
             {({ darkTheme }) => (
                 <>
-                    {type != "input" &&
+                    {type != "input" && !submit &&
                     <div className={styles.button} style={{backgroundColor: (darkTheme ? dark : light)}} onClick={onClick}>
                         {icon}
                         <p>{text}</p>
@@ -27,6 +28,12 @@ const Button = ({ dark, light, icon, text, type, onClick }: Props) => {
                             <p>{text}</p>
                             <input type="file" id="avatar" name="avatar" accept="image/*" onChange={onClick} className={styles.input}/>
                         </label>
+                    }
+                    {submit &&
+                        <button type="submit" className={styles.button} style={{backgroundColor: (darkTheme ? dark : light), outline: "none", border: "none", color: "white"}} onClick={onClick}>
+                            {icon}
+                            <p>{text}</p>
+                        </button>
                     }
                 </>
             )}

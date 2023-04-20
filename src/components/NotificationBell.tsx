@@ -9,17 +9,19 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Router from "next/router";
 import { UserContext } from "@/components/Layout";
+import { Notification } from "@/interfaces";
 
-const NotificationBell = () => {
+const NotificationBell = ({notificationsList}: {notificationsList: Notification[]}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [notifications, setNotifications] = useState([
-    { message: "sdjsadjasdjas" },
-    { message: "testeteseaw" },
-  ]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    setNotifications(notificationsList);
+  }, [notificationsList])
 
   const openNotifications = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget);
@@ -91,18 +93,23 @@ const NotificationBell = () => {
               />
             </div>
             {notifications.map((notification) => (
-              <div key={notification.message}>      
-                  <Divider sx={{ bgcolor: darkTheme ? "#2E2E2E" : "", margin: 0 }}/>
-                  <MenuItem
-                    onClick={() => Router.push({ pathname: "/app/settings" })}
-                    sx={{
-                      "&:hover": { backgroundColor: darkTheme ? "#181818" : "" },
-                    }}
-                    style={{ height: "75px" }}
-                  >
-                    <ListItemIcon></ListItemIcon>
-                    {notification.message}
-                  </MenuItem>
+              <div>
+                {notification.message && 
+                  <div key={notification.message.id}>      
+                    <Divider sx={{ bgcolor: darkTheme ? "#2E2E2E" : "", margin: 0 }}/>
+                    <MenuItem
+                      onClick={() => Router.push({ pathname: "/app/settings" })}
+                      sx={{
+                        "&:hover": { backgroundColor: darkTheme ? "#181818" : "" },
+                      }}
+                      style={{ height: "75px" }}
+                    >
+                      <ListItemIcon></ListItemIcon>
+                      {notification.message.content}
+                    </MenuItem>
+                </div>
+                }
+              
               </div>
             ))}
           </Menu>

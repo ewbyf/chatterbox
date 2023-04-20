@@ -72,14 +72,14 @@ export default function Login() {
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
-                    <form> 
+                    <form onSubmit={(e) => e.preventDefault()}> 
                         <label>Email</label>
                         <input type="email" required placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}} />
 
                         <label>Password</label>
                         <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}}/>
                         <Link href="/resetpassword" className={`${styles.link} ${styles.forgot}`}>Forgot password?</Link>
-                        <Button dark="#ff5c5c" light="#ff5c5c" text="LOG IN" onClick={loginHandler}/>
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="LOG IN" submit onClick={loginHandler}/>
                     </form>
                     <p className={styles.option}>Don't have an account? <Link href="/signup" className={styles.link}>Sign up</Link></p>
                 </div>
