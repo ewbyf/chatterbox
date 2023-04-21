@@ -105,6 +105,7 @@ export default function Layout({ children, theme }: IProps) {
                         setUser(snap.data);
                         api.get(`notifications?token=${userToken}`)
                         .then((resp) => {
+                            console.log(resp.data)
                             setNotifications(resp.data);
                             openSocket();
                             setInitializing(false);

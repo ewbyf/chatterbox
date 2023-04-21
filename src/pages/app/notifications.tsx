@@ -1,7 +1,4 @@
-import styles from "@/styles/components/NotificationBell.module.css";
-
 import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { useEffect, useState, useContext } from "react";
@@ -10,6 +7,8 @@ import { UserContext } from "@/components/Layout";
 import Header from "@/components/Header";
 import { Divider } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import InboxIcon from '@mui/icons-material/Inbox';
+
 
 const Notifications = () => {
   const {notifications} = useContext(UserContext);
@@ -29,6 +28,12 @@ const Notifications = () => {
         {({ darkTheme }) => (
           <>
               <Header center>NOTIFICATIONS</Header>
+              {notifications.length === 0 &&   
+                <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "15px", padding: "0px 30px"}}>
+                  <InboxIcon style={{fontSize: "60px"}}/>
+                  <p style={{fontSize: "20px"}}>You have no notifications</p>
+                </div>
+              }
               {notifications.map((notification) => (
                 <>
                 {notification.message && 

@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Router from "next/router";
 import { UserContext } from "@/components/Layout";
 import { Notification } from "@/interfaces";
+import InboxIcon from '@mui/icons-material/Inbox';
 
 const NotificationBell = ({notificationsList}: {notificationsList: Notification[]}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -40,9 +41,14 @@ const NotificationBell = ({notificationsList}: {notificationsList: Notification[
             onClick={openNotifications}
           >
             <Tooltip title="Notifications" arrow>
-              <Badge color="error" variant="dot" overlap="circular">
-                <IoNotifications size={25} className={styles.bellIcon} />
-              </Badge>
+              <>
+                {notifications.length > 0 && <Badge color="error" variant="dot" overlap="circular">
+                  <IoNotifications size={25} className={styles.bellIcon} />
+                </Badge>}
+                {
+                  notifications.length == 0 && <IoNotifications size={25} className={styles.bellIcon} />
+                }
+              </>
             </Tooltip>
           </div>
 
@@ -92,7 +98,16 @@ const NotificationBell = ({notificationsList}: {notificationsList: Notification[
                 sx={{ color: darkTheme ? "lightgrey" : "grey" }}
               />
             </div>
-            {notifications.map((notification) => (
+            {notifications.length === 0 &&
+              <div>      
+                <Divider sx={{ bgcolor: darkTheme ? "#2E2E2E" : "", margin: 0 }}/>
+                <div style={{height: "75px", display: "flex", alignItems: "center", gap: "15px", padding: "0px 30px"}}>
+                  <InboxIcon style={{fontSize: "26px"}}/>
+                  <p style={{fontSize: "18px"}}>You have no notifications</p>
+                </div>
+            </div>
+            }
+            {notifications.slice().reverse().map((notification) => (
               <div>
                 {notification.message && 
                   <div key={notification.message.id}>      
@@ -107,9 +122,8 @@ const NotificationBell = ({notificationsList}: {notificationsList: Notification[
                       <ListItemIcon></ListItemIcon>
                       {notification.message.content}
                     </MenuItem>
-                </div>
+                  </div>
                 }
-              
               </div>
             ))}
           </Menu>
