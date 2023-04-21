@@ -66,11 +66,8 @@ export default function Account() {
                     </TextInput>
                     <TextInput label="EMAIL" value={user.email} disabled={true}/>
                     <TextInput label="PASSWORD" value="filler" disabled={true} password/>
-                    <div className={styles.buttonRow}>
-                        <Button text="CHANGE EMAIL" dark="rgb(38, 38, 38)" light="lightgray" icon={<EmailIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
-                        <Button text="CHANGE PASSWORD" dark="rgb(38, 38, 38)" light="lightgray" icon={<LockIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
-                    </div>
-                    <Button text="DELETE ACCOUNT" dark="#ff5c5c" light="#ff5c5c" icon={<DeleteIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
+                    <Button text="CHANGE EMAIL" dark="rgb(38, 38, 38)" light="lightgray" icon={<EmailIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
+                    <Button text="CHANGE PASSWORD" dark="rgb(38, 38, 38)" light="lightgray" icon={<LockIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
                 </div>
 
                 <div className={styles.section} style={{gap: "20px"}}>
@@ -88,7 +85,7 @@ export default function Account() {
                     )}
                     </ThemeUpdateContext.Consumer>
                 </div>
-                <Button text="LOGOUT" dark="rgb(38, 38, 38)" light="lightgray" icon={<Logout fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
+                <Button text="LOGOUT" dark="#ff5c5c" light="#ff5c5c" icon={<Logout fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
             </div>
             <LogoutDialog open={openLogout} setOpen={setOpenLogout} />
           </main>

@@ -18,6 +18,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { IFriend, IRequest } from '../../interfaces';
 import { statusChange } from '@/utils/StatusChange';
+import NotificationBadge from '@/components/NotificationBadge';
 
 export default function Friends() {
     const [searchField, setSearchField] = useState<string>('');
@@ -35,7 +36,7 @@ export default function Friends() {
 
     useEffect(() => {
         if (friendStatus) {
-          statusChange(friends, user, setFriends, friendStatus);
+            statusChange(friends, user, setFriends, friendStatus);
         }
     }, [friendStatus]);
 
@@ -107,7 +108,7 @@ export default function Friends() {
     };
 
     const rejectRequest = (id: Number) => {
-        api.post('/accept-request', { token: user.token, id })
+        api.post('/reject-request', { token: user.token, id })
             .then((resp) => {
                 setRequests(requests!.filter((request) => request.from.id != id));
             })
@@ -145,7 +146,8 @@ export default function Friends() {
                                             justifyContent: 'center',
                                             backgroundColor: '#ff5c5c'
                                         }
-                                    }}>
+                                    }}
+                                >
                                     <Tab
                                         value={1}
                                         label="FRIENDS"
@@ -164,7 +166,7 @@ export default function Friends() {
                                     />
                                     <Tab
                                         value={2}
-                                        label="REQUESTS"
+                                        label={<NotificationBadge count={1} small rectangle>REQUESTS</NotificationBadge>}
                                         sx={{
                                             color: 'gray',
                                             fontFamily: 'MarkPro',
@@ -191,7 +193,8 @@ export default function Friends() {
                                             justifyContent: 'center',
                                             backgroundColor: '#ff5c5c'
                                         }
-                                    }}>
+                                    }}
+                                >
                                     <Tab
                                         value={1}
                                         label="FRIENDS"
@@ -210,7 +213,7 @@ export default function Friends() {
                                     />
                                     <Tab
                                         value={2}
-                                        label="REQUESTS"
+                                        label={<NotificationBadge count={1} rectangle>REQUESTS</NotificationBadge>}
                                         sx={{
                                             color: 'gray',
                                             fontFamily: 'MarkPro',

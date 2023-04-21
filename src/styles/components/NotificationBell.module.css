@@ -28,3 +28,18 @@
     color: #ff5c5c;
     cursor: pointer;
 }
+
+.noNotifications {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0px 30px;
+}
+
+.menuItem {
+    height: 75px;
+    padding-left: 30px;
+    gap: 10px;
+    color: #353535;
+}

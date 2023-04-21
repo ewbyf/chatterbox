@@ -110,7 +110,7 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                     </Link>
                     <Link href="/app/messages" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                         <div style={{ display: 'flex' }}>
-                            <NotificationBadge count={0}>
+                            <NotificationBadge count={1}>
                                 <IoChatbubbleEllipsesOutline color={router.pathname.startsWith(`/app/messages`) ? '#ff5c5c' : 'gray'} size={40} />
                             </NotificationBadge>
                         </div>

@@ -34,7 +34,7 @@ export default function Messages() {
   
   useEffect(() => {
     if (friendStatus) statusChangeMessages(friends, user, setFriends, friendStatus, selectedFriend, setSelectedFriend, router.query.selected);
-  }, [socket])
+  }, [socket, friendStatus])
 
   useEffect(() => {
     getFriends();
@@ -94,8 +94,10 @@ export default function Messages() {
   }
 
   const selectFriend = async(friend: IFriend) => {
-    setSelectedFriend(friend);
-    getMessages(friend.channelId);
+    if (friend) {
+      setSelectedFriend(friend);
+      getMessages(friend.channelId);
+    }
   }
 
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

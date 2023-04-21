@@ -9,7 +9,6 @@ import { Divider } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import InboxIcon from '@mui/icons-material/Inbox';
 
-
 const Notifications = () => {
   const {notifications} = useContext(UserContext);
   const mobile = useMediaQuery('(max-width: 800px)');

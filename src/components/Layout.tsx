@@ -6,7 +6,7 @@ import Router, { useRouter } from 'next/router';
 import api from '@/services/axiosConfig';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { SocketContext } from '@/pages/_app';
-import { IUser, Notification } from '../interfaces';
+import { IUser, INotifications } from '../interfaces';
 
 
 interface IProps {
@@ -22,17 +22,21 @@ interface Status {
 interface IUserContext {
     darkTheme: boolean;
     user: IUser;
-    notifications: Notification[];
+    notificationsList: INotifications;
     friendStatus: Status | null;
     updateUser: () => void;
+    clearNotifications: () => void;
+    removeNotification: (key: number) => void;
 }
 
 export const UserContext = React.createContext<IUserContext>({
     darkTheme: false,
     user: { id: 0, username: '', token: '', avatar: '', email: '' },
-    notifications: [],
+    notificationsList: {unread: 0, notifications: []},
     friendStatus: null,
-    updateUser: () => {}
+    updateUser: () => {},
+    clearNotifications: () => {},
+    removeNotification: () => {}
 });
 
 export const ThemeUpdateContext = React.createContext({
@@ -47,21 +51,22 @@ export default function Layout({ children, theme }: IProps) {
     const mobile = useMediaQuery('(max-width: 800px)');
     const router = useRouter();
     const { socket, openSocket, closeSocket } = useContext(SocketContext);
-    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [notificationsList, setNotificationsList] = useState<INotifications>({unread: 0, notifications: []});
     const [friendStatus, setFriendStatus] = useState<Status | null>(null);
 
     useEffect(() => {
         const changeStatus = async (e: MessageEvent) => {
-            console.log(JSON.parse(e.data));
-
             const obj = JSON.parse(e.data);
+            console.log(obj)
 
             if (obj.type == 'STATUS_CHANGE') {
                 setFriendStatus(obj);
             }
             else if (obj.type == 'MESSAGE') {
-                console.log(notifications);
-                setNotifications((notifications) => [...notifications, obj]);
+                setNotificationsList((notificationsList) => {return {unread: notificationsList.unread + 1, notifications: [...notificationsList.notifications, obj]}});
+            }
+            else if (obj.type == 'FRIEND_REQ') {
+                setNotificationsList((notificationsList) => {return {unread: notificationsList.unread + 1, notifications: [...notificationsList.notifications, obj]}});
             }
         }
         socket?.addEventListener('message', changeStatus);
@@ -103,10 +108,11 @@ export default function Layout({ children, theme }: IProps) {
                     .get(`me?token=${userToken}`)
                     .then((snap) => {
                         setUser(snap.data);
+                        console.log(userToken)
                         api.get(`notifications?token=${userToken}`)
                         .then((resp) => {
                             console.log(resp.data)
-                            setNotifications(resp.data);
+                            setNotificationsList({unread: resp.data.length, notifications: resp.data});
                             openSocket();
                             setInitializing(false);
                         })
@@ -154,14 +160,22 @@ export default function Layout({ children, theme }: IProps) {
         setDarkTheme(!darkTheme);
     };
 
+    const clearNotifications = () => {
+        setNotificationsList({...notificationsList, unread: 0});
+    }
+
+    const removeNotification = (key: number) => {
+        setNotificationsList({unread: 0, notifications: notificationsList.notifications.filter((notification) => notification.message.id != key)});
+    }
+
     if (initializing) return null; // loading screen here
 
     return (
         <div style={{ display: 'flex', height: '100vh' }}>
-            <UserContext.Provider value={{ darkTheme, user, notifications, friendStatus, updateUser }}>
+            <UserContext.Provider value={{ darkTheme, user, notificationsList, friendStatus, updateUser, clearNotifications, removeNotification }}>
                 <ThemeUpdateContext.Provider value={{ toggleTheme }}>
                     <Navbar noOverlap={noOverlap} />
-                    {!mobile && <NotificationBell notificationsList={notifications}/>}
+                    {!mobile && <NotificationBell notificationsList={notificationsList}/>}
                     <Theme noOverlap={noOverlap}>{children}</Theme>
                 </ThemeUpdateContext.Provider>
             </UserContext.Provider>

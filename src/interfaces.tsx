@@ -3,23 +3,30 @@ export interface IFriend {
     id: number;
     username: string;
     channelId: number;
-    status: "ONLINE" | "OFFLINE" | "IDLE" | "DO_NOT_DISTURB";
+    status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
+}
+
+interface IAuthor {
+    avatar: string;
+    id: number;
+    username: string;
 }
 
 export interface IMessage {
-    authorId: number,
-    channelId: number,
-    content: string,
-    createdAt: string,
-    id: number,
+    author: IAuthor;
+    authorId: number;
+    channelId: number;
+    content: string;
+    createdAt: string;
+    id: number;
 }
 
 export interface IRequest {
     from: {
-      avatar: string;
-      id: number;
-      username: string;
-    }
+        avatar: string;
+        id: number;
+        username: string;
+    };
     timestamp: string;
 }
 
@@ -34,4 +41,9 @@ export interface IUser {
 export interface Notification {
     message: IMessage;
     type: 'MESSAGE';
+}
+
+export interface INotifications {
+    unread: number;
+    notifications: Notification[];
 }
