@@ -14,6 +14,7 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import api from '@/services/axiosConfig';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import Moment from 'react-moment';
 
 const NotificationBell = ({ notificationsList }: { notificationsList: INotifications }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -134,9 +135,9 @@ const NotificationBell = ({ notificationsList }: { notificationsList: INotificat
                                             >
                                                 <Avatar src={notification.message.author.avatar} />
                                                 <div>
-                                                  <div style={{display: "flex"}}>
+                                                  <div style={{display: "flex", alignItems: 'center'}}>
                                                     <p style={{ fontWeight: 'bold' }}>{notification.message.author.username}</p>
-                                                    <p style={{ fontWeight: 'bold' }}>{notification.message.createdAt}</p>
+                                                    <Moment fromNow style={{marginLeft: '8px', fontSize: '14px'}}>{notification.message.createdAt}</Moment>
                                                   </div>
                                                     <p style={{ fontSize: '14px' }}>You have received a message</p>
                                                 </div>
