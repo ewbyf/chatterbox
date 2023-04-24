@@ -24,10 +24,11 @@ interface IUserContext {
     notificationsList: INotifications;
     friendStatus: Status | null;
     friendRequests: IRequest[];
+    dmsUnread: number;
     updateUser: () => void;
-    clearNotifications: () => void;
     removeNotification: (notificationObj: Notification) => void;
     removeFriendRequest: (id: number) => void;
+    setDmsUnread: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const UserContext = React.createContext<IUserContext>({
@@ -36,10 +37,11 @@ export const UserContext = React.createContext<IUserContext>({
     notificationsList: { unread: 0, notifications: [] },
     friendStatus: null,
     friendRequests: [],
+    dmsUnread: 0,
     updateUser: () => {},
-    clearNotifications: () => {},
     removeNotification: () => {},
-    removeFriendRequest: () => {}
+    removeFriendRequest: () => {},
+    setDmsUnread: () => {},
 });
 
 export const ThemeUpdateContext = React.createContext({
@@ -57,6 +59,7 @@ export default function Layout({ children, theme }: IProps) {
     const [notificationsList, setNotificationsList] = useState<INotifications>({ unread: 0, notifications: [] });
     const [friendStatus, setFriendStatus] = useState<Status | null>(null);
     const [friendRequests, setFriendRequests] = useState<IRequest[]>([]);
+    const [dmsUnread, setDmsUnread] = useState<number>(0);
 
     useEffect(() => {
         const changeStatus = async (e: MessageEvent) => {
@@ -161,12 +164,8 @@ export default function Layout({ children, theme }: IProps) {
         setDarkTheme(!darkTheme);
     };
 
-    const clearNotifications = () => {
-        setNotificationsList({ ...notificationsList, unread: 0 });
-    };
-
     const removeNotification = (notificationObj: Notification) => {
-        setNotificationsList({ unread: 0, notifications: notificationsList.notifications.filter((notification) => notification != notificationObj) });
+        setNotificationsList((notificationsList) => {return { unread: notificationsList.unread - 1, notifications: notificationsList.notifications.filter((notification) => notification != notificationObj) }});
         if (notificationObj.from) {
             api.post('/clear-notification', { token: user.token, from: notificationObj.from.id})
             .then((resp) => {
@@ -211,10 +210,11 @@ export default function Layout({ children, theme }: IProps) {
                     notificationsList,
                     friendStatus,
                     friendRequests,
+                    dmsUnread,
                     updateUser,
-                    clearNotifications,
                     removeNotification,
-                    removeFriendRequest
+                    removeFriendRequest,
+                    setDmsUnread,
                 }}
             >
                 <ThemeUpdateContext.Provider value={{ toggleTheme }}>

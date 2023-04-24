@@ -25,7 +25,7 @@ export default function Messages() {
     const [messageList, setMessageList] = useState<IMessage[]>([]);
     const [messageInit, setMessageInit] = useState<boolean>(true);
 
-    const { user, friendStatus } = useContext(UserContext);
+    const { user, friendStatus, setDmsUnread, dmsUnread } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const mobile = useMediaQuery('(max-width: 800px)');
     const anchorRef = useRef<null | HTMLDivElement>(null);
@@ -36,7 +36,12 @@ export default function Messages() {
             const obj = JSON.parse(e.data);
 
             if (obj.type == 'MESSAGE' && obj.message.channelId === selectedFriend?.channelId) {
-              setMessageList((messageList) => [...messageList, obj.message]);
+                setMessageList((messageList) => [...messageList, obj.message]);
+            } else if (obj.type == 'MESSAGE') {
+                let index = friends.findIndex((friend) => friend.channelId == obj.message.channelId);
+                friends[index].unread++;
+                setFriends([...friends]);
+                setDmsUnread((dmsUnread) => dmsUnread + 1);
             }
         };
         socket?.addEventListener('message', changeStatus);
@@ -62,6 +67,7 @@ export default function Messages() {
         api.get(`/friends?token=${user.token}`)
             .then((resp) => {
                 setFriends(resp.data);
+                console.log(resp.data);
                 if (resp.data.length > 0) {
                     if (router.query.selected) {
                         selectFriend(resp.data.find((friend: IFriend) => friend.channelId.toString() === router.query.selected));
@@ -111,6 +117,12 @@ export default function Messages() {
     const selectFriend = async (friend: IFriend) => {
         if (friend) {
             setSelectedFriend(friend);
+            const index = friends.findIndex((friendObj) => friendObj.id === friend.id);
+            if (index > -1) {
+                setDmsUnread(dmsUnread - friends[index].unread);
+                friends[index].unread = 0;
+                setFriends([...friends]);
+            }
             getMessages(friend.channelId);
         }
     };
@@ -179,7 +191,7 @@ export default function Messages() {
                                             {friends.map((friend) => (
                                                 <>
                                                     <FriendBox
-                                                        unread={1}
+                                                        unread={friend.unread}
                                                         notSelected={selectedFriend?.id !== friend.id}
                                                         friend={friend}
                                                         key={friend.id.toString()}

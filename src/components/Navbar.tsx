@@ -15,7 +15,7 @@ import { useContext } from 'react'
 const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
     const router = useRouter();
     const mobile = useMediaQuery('(max-width: 800px)');
-    const { friendRequests } = useContext(UserContext);
+    const { friendRequests, dmsUnread, notificationsList } = useContext(UserContext);
 
     if (mobile) {
         return (
@@ -40,13 +40,13 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                         </Link>
                         <Link href="/app/messages" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                             <div style={{ display: 'flex' }}>
-                                <NotificationBadge count={0}>
+                                <NotificationBadge count={dmsUnread}>
                                     <IoChatbubbleEllipsesOutline color={router.pathname.startsWith(`/app/messages`) ? '#ff5c5c' : 'gray'} size={32.5} />
                                 </NotificationBadge>
                             </div>
                         </Link>
                         <Link href="/app/notifications" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
-                            <NotificationBadge count={0}>
+                            <NotificationBadge count={notificationsList.unread}>
                                 <IoNotifications color={router.pathname.startsWith(`/app/notifications`) ? '#ff5c5c' : 'gray'} size={27.5} />
                             </NotificationBadge>
                         </Link>
@@ -112,7 +112,7 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                     </Link>
                     <Link href="/app/messages" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                         <div style={{ display: 'flex' }}>
-                            <NotificationBadge count={1}>
+                            <NotificationBadge count={dmsUnread}>
                                 <IoChatbubbleEllipsesOutline color={router.pathname.startsWith(`/app/messages`) ? '#ff5c5c' : 'gray'} size={40} />
                             </NotificationBadge>
                         </div>

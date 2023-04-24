@@ -24,7 +24,7 @@ export default function Friends() {
     const [searchField, setSearchField] = useState<string>('');
     const [friendsSelected, setFriendsSelected] = useState<number>(1);
     const [friends, setFriends] = useState<IFriend[]>([]);
-    const [requests, setRequests] = useState<IRequest[]>([]);
+    const [friendsShown, setFriendsShown] = useState<IFriend[]>([]);
     const [dropdown, setDropdown] = useState<'all' | 'online' | 'blocked'>('all');
     const [init, setInit] = useState<boolean>(true);
     const [success, setSuccess] = useState<boolean>(false);
@@ -50,6 +50,7 @@ export default function Friends() {
             .get(`/friends?token=${user.token}`)
             .then((resp) => {
                 setFriends(resp.data);
+                setFriendsShown(resp.data);
                 setFriendsSelected(router.query.requests ? 2 : 1);
                 setInit(false);
             })
@@ -92,6 +93,7 @@ export default function Friends() {
             .then((resp) => {
                 removeFriendRequest(id);
                 setFriends([...friends, resp.data]);
+                filterFriends(dropdown);
             })
             .catch((err) => {
                 console.log(err.response.data.message);
@@ -107,10 +109,33 @@ export default function Friends() {
                 console.log(err.response.data.message);
             });
     };
+    
+    const block = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => {
+        e.stopPropagation();
+        const token = localStorage.getItem('userToken');
+        api.post('/block', {token, id})
+        .then((resp) => {
+            setFriends(friends.filter((friend) => friend.id != id));
+            filterFriends(dropdown);
+        })
+        .catch((err) => {
+            console.log(err.response.data.message);
+        })
+    }
 
     const searchFriends = (val: string) => {
         console.log(val);
     };
+
+    const filterFriends = (val: 'all' | 'online' | 'blocked') => {
+        setDropdown(val);
+        if (val == 'online') {
+            setFriendsShown(friends.filter(friend => friend.status == 'ONLINE'));
+        }
+        else if (val == 'all') {
+            setFriendsShown([...friends]);
+        }
+    }
 
     const tabChange = (event: React.SyntheticEvent, newValue: number) => {
         setFriendsSelected(newValue);
@@ -224,19 +249,21 @@ export default function Friends() {
                         <div className={styles.section} style={{ padding: mobile ? '0px' : '30px 0px' }}>
                             {friendsSelected === 1 && (
                                 <div className={styles.friends}>
-                                    <Dropdown title="SHOW FRIENDS" value={dropdown} onChange={(e) => setDropdown(e.target.value)}>
+                                    <Dropdown title="SHOW FRIENDS" value={dropdown} onChange={(e) => filterFriends(e.target.value)}>
                                         [<MenuItem value="all">All</MenuItem>, <MenuItem value="online">Online</MenuItem>,{' '}
                                         <MenuItem value="blocked">Blocked</MenuItem>]
                                     </Dropdown>
                                     <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)} />
                                     <p className={styles.sectionTitle} style={{ marginTop: '20px' }}>
-                                        {dropdown.toUpperCase()} - {friends.length}
+                                        {dropdown.toUpperCase()} - {friendsShown.length}
                                     </p>
-                                    {friends.map((friend) => (
+                                    {friendsShown.map((friend) => (
                                         <FriendBox
                                             friend={friend}
                                             onClick={() => Router.push({ pathname: '/app/messages', query: { selected: friend.id.toString() } })}
                                             key={friend.id}
+                                            blockable
+                                            block={(e) => block(e, friend.id)}
                                         />
                                     ))}
                                 </div>

@@ -6,6 +6,7 @@ import CancelIcon from '@mui/icons-material/ClearRounded';
 import CheckIcon from '@mui/icons-material/CheckRounded';
 import Status from "./Status";
 import NotificationBadge from "./NotificationBadge";
+import BlockIcon from '@mui/icons-material/Block';
 
 interface IFriend {
     avatar: string;
@@ -20,12 +21,14 @@ interface Props {
     request?: boolean;
     notSelected?: boolean;
     unread?: number;
+    blockable?: boolean;
     accept?: (id: number) => any;
     reject?: (id: number) => any;
+    block?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => any;
     onClick?: () => any;
 }
 
-const FriendBox = ({ friend, request, notSelected, unread, accept, reject, onClick }: Props) => {
+const FriendBox = ({ friend, request, notSelected, unread, blockable, accept, reject, block, onClick }: Props) => {
     return (
         <UserContext.Consumer>
             {({ darkTheme }) => (
@@ -37,11 +40,19 @@ const FriendBox = ({ friend, request, notSelected, unread, accept, reject, onCli
                     
                     <p>{friend.username}</p>
                     <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{friend.id.toString()}</p>
-                    {unread &&
+                    {unread != undefined &&
                     <div style={{position: "absolute", right: "24px"}}>
-                       <NotificationBadge count={unread}><div></div></NotificationBadge>
+                       <NotificationBadge count={unread}><p></p></NotificationBadge>
                     </div>
-
+                    }
+                    {blockable &&
+                    <div className={styles.icons}>
+                        <Tooltip title="Block" arrow>
+                            <div onClick={block ? (e) => block(e, friend.id) : undefined} className={`${styles.iconCircle} ${darkTheme ? styles.xDark : styles.xLight}`}>
+                                <BlockIcon fontSize="medium"/>
+                            </div>
+                        </Tooltip>
+                    </div>
                     }
                     {request && 
                     <div className={styles.icons}>

@@ -9,22 +9,20 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState, useContext } from 'react';
 import Router from 'next/router';
 import { UserContext } from '@/components/Layout';
-import { INotifications, Notification } from '@/interfaces';
+import { Notification } from '@/interfaces';
 import InboxIcon from '@mui/icons-material/Inbox';
 import api from '@/services/axiosConfig';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import Moment from 'react-moment';
 import { IoCompassOutline, IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 
 const NotificationBell = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const { notificationsList, clearNotifications, removeNotification } = useContext(UserContext);
+    const { notificationsList, removeNotification } = useContext(UserContext);
 
     const openNotifications = (event: React.MouseEvent<HTMLElement>): void => {
         setAnchorEl(event.currentTarget);
-        clearNotifications();
     };
 
     const handleClose = (): void => {
@@ -202,7 +200,7 @@ const NotificationBell = () => {
                                                 }}
                                                 className={styles.menuItem}
                                             >
-                                                <IoChatbubbleEllipsesOutline color='gray' size={32.5} />
+                                                <IoChatbubbleEllipsesOutline color='gray' size={32} />
                                                 <div>
                                                   <div style={{display: "flex", alignItems: 'center'}}>
                                                     <p style={{ fontWeight: 'bold' }}>{notification.channel!.name.substring(0, notification.channel!.name.indexOf('-'))}</p>
