@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState, useContext } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import styles from '@/styles/app/Friends.module.css';
 import { UserContext } from '@/components/Layout';
 import api from '@/services/axiosConfig';
@@ -23,16 +23,17 @@ import NotificationBadge from '@/components/NotificationBadge';
 export default function Friends() {
     const [searchField, setSearchField] = useState<string>('');
     const [friendsSelected, setFriendsSelected] = useState<number>(1);
-    const [friends, setFriends] = useState<Array<IFriend>>([]);
-    const [requests, setRequests] = useState<Array<IRequest>>([]);
+    const [friends, setFriends] = useState<IFriend[]>([]);
+    const [requests, setRequests] = useState<IRequest[]>([]);
     const [dropdown, setDropdown] = useState<'all' | 'online' | 'blocked'>('all');
     const [init, setInit] = useState<boolean>(true);
     const [success, setSuccess] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
-    const { user, friendStatus } = useContext(UserContext);
+    const { user, friendStatus, friendRequests, removeFriendRequest } = useContext(UserContext);
     const mobile = useMediaQuery('(max-width: 800px)');
+    const router = useRouter();
 
     useEffect(() => {
         if (friendStatus) {
@@ -42,7 +43,6 @@ export default function Friends() {
 
     useEffect(() => {
         getFriends();
-        getRequests();
     }, []);
 
     const getFriends = async () => {
@@ -50,16 +50,7 @@ export default function Friends() {
             .get(`/friends?token=${user.token}`)
             .then((resp) => {
                 setFriends(resp.data);
-            })
-            .catch((err) => {
-                console.log(err.response.data.message);
-            });
-    };
-
-    const getRequests = () => {
-        api.get(`/friend-requests?token=${user.token}`)
-            .then((resp) => {
-                setRequests(resp.data);
+                setFriendsSelected(router.query.requests ? 2 : 1);
                 setInit(false);
             })
             .catch((err) => {
@@ -96,10 +87,10 @@ export default function Friends() {
         }
     };
 
-    const acceptRequest = (id: Number) => {
+    const acceptRequest = (id: number) => {
         api.post('/accept-request', { token: user.token, id })
             .then((resp) => {
-                setRequests(requests!.filter((request) => request.from.id != id));
+                removeFriendRequest(id);
                 setFriends([...friends, resp.data]);
             })
             .catch((err) => {
@@ -107,10 +98,10 @@ export default function Friends() {
             });
     };
 
-    const rejectRequest = (id: Number) => {
+    const rejectRequest = (id: number) => {
         api.post('/reject-request', { token: user.token, id })
             .then((resp) => {
-                setRequests(requests!.filter((request) => request.from.id != id));
+                removeFriendRequest(id);
             })
             .catch((err) => {
                 console.log(err.response.data.message);
@@ -166,7 +157,7 @@ export default function Friends() {
                                     />
                                     <Tab
                                         value={2}
-                                        label={<NotificationBadge count={1} small rectangle>REQUESTS</NotificationBadge>}
+                                        label={<NotificationBadge count={friendRequests.length} small rectangle>REQUESTS</NotificationBadge>}
                                         sx={{
                                             color: 'gray',
                                             fontFamily: 'MarkPro',
@@ -213,7 +204,7 @@ export default function Friends() {
                                     />
                                     <Tab
                                         value={2}
-                                        label={<NotificationBadge count={1} rectangle>REQUESTS</NotificationBadge>}
+                                        label={<NotificationBadge count={friendRequests.length} rectangle>REQUESTS</NotificationBadge>}
                                         sx={{
                                             color: 'gray',
                                             fontFamily: 'MarkPro',
@@ -267,10 +258,10 @@ export default function Friends() {
                                     <p className={styles.sectionTitle} style={{ marginTop: '20px' }}>
                                         RECEIVED REQUESTS
                                     </p>
-                                    {requests.map((request) => (
+                                    {friendRequests.map((request) => (
                                         <FriendBox friend={request.from} request accept={acceptRequest} reject={rejectRequest} key={request.from.id} />
                                     ))}
-                                    {requests.length === 0 && <p>You have not received any friend requests</p>}
+                                    {friendRequests.length === 0 && <p>You have not received any friend requests</p>}
 
                                     {/* <div>
                   <p className={styles.sectionTitle}>SENT</p>

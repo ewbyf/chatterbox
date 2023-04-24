@@ -6,8 +6,7 @@ import Router, { useRouter } from 'next/router';
 import api from '@/services/axiosConfig';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { SocketContext } from '@/pages/_app';
-import { IUser, INotifications } from '../interfaces';
-
+import { IUser, INotifications, IRequest, Notification } from '../interfaces';
 
 interface IProps {
     children: JSX.Element;
@@ -24,19 +23,23 @@ interface IUserContext {
     user: IUser;
     notificationsList: INotifications;
     friendStatus: Status | null;
+    friendRequests: IRequest[];
     updateUser: () => void;
     clearNotifications: () => void;
-    removeNotification: (key: number) => void;
+    removeNotification: (notificationObj: Notification) => void;
+    removeFriendRequest: (id: number) => void;
 }
 
 export const UserContext = React.createContext<IUserContext>({
     darkTheme: false,
     user: { id: 0, username: '', token: '', avatar: '', email: '' },
-    notificationsList: {unread: 0, notifications: []},
+    notificationsList: { unread: 0, notifications: [] },
     friendStatus: null,
+    friendRequests: [],
     updateUser: () => {},
     clearNotifications: () => {},
-    removeNotification: () => {}
+    removeNotification: () => {},
+    removeFriendRequest: () => {}
 });
 
 export const ThemeUpdateContext = React.createContext({
@@ -51,29 +54,30 @@ export default function Layout({ children, theme }: IProps) {
     const mobile = useMediaQuery('(max-width: 800px)');
     const router = useRouter();
     const { socket, openSocket, closeSocket } = useContext(SocketContext);
-    const [notificationsList, setNotificationsList] = useState<INotifications>({unread: 0, notifications: []});
+    const [notificationsList, setNotificationsList] = useState<INotifications>({ unread: 0, notifications: [] });
     const [friendStatus, setFriendStatus] = useState<Status | null>(null);
+    const [friendRequests, setFriendRequests] = useState<IRequest[]>([]);
 
     useEffect(() => {
         const changeStatus = async (e: MessageEvent) => {
             const obj = JSON.parse(e.data);
-            console.log(obj)
+            console.log(obj);
 
             if (obj.type == 'STATUS_CHANGE') {
                 setFriendStatus(obj);
+            } else if (obj.type == 'FRIEND_REQ') {
+                setFriendRequests((friendRequests) => [...friendRequests, obj]);
+            } else if (obj.type == 'NEW_FRIEND') {
+                setNotificationsList((notificationsList) => {
+                    return { unread: notificationsList.unread + 1, notifications: [obj, ...notificationsList.notifications] };
+                });
             }
-            else if (obj.type == 'MESSAGE') {
-                setNotificationsList((notificationsList) => {return {unread: notificationsList.unread + 1, notifications: [...notificationsList.notifications, obj]}});
-            }
-            else if (obj.type == 'FRIEND_REQ') {
-                setNotificationsList((notificationsList) => {return {unread: notificationsList.unread + 1, notifications: [...notificationsList.notifications, obj]}});
-            }
-        }
+        };
         socket?.addEventListener('message', changeStatus);
 
         return () => {
             socket?.removeEventListener('message', changeStatus);
-        }
+        };
     }, [socket]);
 
     useEffect(() => {
@@ -89,36 +93,24 @@ export default function Layout({ children, theme }: IProps) {
 
     useEffect(() => {
         const sendMsg = () => {
-          console.log('close')
-        }
-    
+            console.log('close');
+        };
+
         socket?.addEventListener('close', sendMsg);
-    
+
         return () => {
-          socket?.removeEventListener('close', sendMsg);
-        }
+            socket?.removeEventListener('close', sendMsg);
+        };
     });
-    
 
     useEffect(() => {
-        const getUser = async () => {
+        const getData = async () => {
             const userToken = localStorage.getItem('userToken');
             if (userToken) {
                 await api
-                    .get(`me?token=${userToken}`)
+                    .get(`/me?token=${userToken}`)
                     .then((snap) => {
                         setUser(snap.data);
-                        console.log(userToken)
-                        api.get(`notifications?token=${userToken}`)
-                        .then((resp) => {
-                            console.log(resp.data)
-                            setNotificationsList({unread: resp.data.length, notifications: resp.data});
-                            openSocket();
-                            setInitializing(false);
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        });
                     })
                     .catch((err) => {
                         localStorage.removeItem('userToken');
@@ -126,6 +118,15 @@ export default function Layout({ children, theme }: IProps) {
                             pathname: '/login'
                         });
                     });
+                await api.get(`/friend-requests?token=${userToken}`).then((resp) => {
+                    setFriendRequests(resp.data);
+                });
+                await api.get(`/notifications?token=${userToken}`).then((resp) => {
+                    console.log(resp.data);
+                    setNotificationsList({ unread: resp.data.length, notifications: resp.data });
+                    openSocket();
+                    setInitializing(false);
+                });
             } else {
                 router.push({
                     pathname: '/login'
@@ -133,7 +134,7 @@ export default function Layout({ children, theme }: IProps) {
             }
         };
 
-        getUser();
+        getData();
     }, []);
 
     useEffect(() => {
@@ -161,21 +162,64 @@ export default function Layout({ children, theme }: IProps) {
     };
 
     const clearNotifications = () => {
-        setNotificationsList({...notificationsList, unread: 0});
-    }
+        setNotificationsList({ ...notificationsList, unread: 0 });
+    };
 
-    const removeNotification = (key: number) => {
-        setNotificationsList({unread: 0, notifications: notificationsList.notifications.filter((notification) => notification.message.id != key)});
-    }
+    const removeNotification = (notificationObj: Notification) => {
+        setNotificationsList({ unread: 0, notifications: notificationsList.notifications.filter((notification) => notification != notificationObj) });
+        if (notificationObj.from) {
+            api.post('/clear-notification', { token: user.token, from: notificationObj.from.id})
+            .then((resp) => {
+                console.log(resp.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data.message);
+            })
+        }
+        else if (notificationObj.friend || notificationObj.to) {
+            api.post('/clear-notification', { token: user.token, to: (notificationObj.friend ? notificationObj.friend!.id : notificationObj.to!.id)})
+            .then((resp) => {
+                console.log(resp.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data.message);
+            })
+        }
+        else if (notificationObj.channel) {
+            api.post('/clear-notification', { token: user.token, channel: notificationObj.channel!.id})
+            .then((resp) => {
+                console.log(resp.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data.message);
+            })
+        }
+    };
+
+    const removeFriendRequest = (id: number) => {
+        setFriendRequests(friendRequests.filter((request) => request.from.id != id));
+    };
 
     if (initializing) return null; // loading screen here
 
     return (
         <div style={{ display: 'flex', height: '100vh' }}>
-            <UserContext.Provider value={{ darkTheme, user, notificationsList, friendStatus, updateUser, clearNotifications, removeNotification }}>
+            <UserContext.Provider
+                value={{
+                    darkTheme,
+                    user,
+                    notificationsList,
+                    friendStatus,
+                    friendRequests,
+                    updateUser,
+                    clearNotifications,
+                    removeNotification,
+                    removeFriendRequest
+                }}
+            >
                 <ThemeUpdateContext.Provider value={{ toggleTheme }}>
                     <Navbar noOverlap={noOverlap} />
-                    {!mobile && <NotificationBell notificationsList={notificationsList}/>}
+                    {!mobile && <NotificationBell />}
                     <Theme noOverlap={noOverlap}>{children}</Theme>
                 </ThemeUpdateContext.Provider>
             </UserContext.Provider>

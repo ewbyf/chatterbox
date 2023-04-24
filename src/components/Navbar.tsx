@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from '@/styles/components/Navbar.module.css';
-import { IoCompassOutline, IoPeopleOutline, IoChatbubbleEllipsesOutline, IoCogOutline } from 'react-icons/io5';
+import { IoCompassOutline, IoPeopleOutline, IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { UserContext } from '@/components/Layout';
@@ -10,10 +10,12 @@ import Avatar from '@mui/material/Avatar';
 import { IoNotifications } from 'react-icons/io5';
 import Status from './Status';
 import NotificationBadge from './NotificationBadge';
+import { useContext } from 'react'
 
 const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
     const router = useRouter();
     const mobile = useMediaQuery('(max-width: 800px)');
+    const { friendRequests } = useContext(UserContext);
 
     if (mobile) {
         return (
@@ -31,7 +33,7 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                         </Link>
                         <Link href="/app/friends" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                             <div style={{ display: 'flex' }}>
-                                <NotificationBadge count={0}>
+                                <NotificationBadge count={friendRequests.length}>
                                     <IoPeopleOutline color={router.pathname.startsWith(`/app/friends`) ? '#ff5c5c' : 'gray'} size={32.5} />
                                 </NotificationBadge>
                             </div>
@@ -95,7 +97,7 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                     </Link>
                     <Link href="/app/friends" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                         <div style={{ display: 'flex' }}>
-                            <NotificationBadge count={0}>
+                            <NotificationBadge count={friendRequests.length}>
                                 <IoPeopleOutline color={router.pathname.startsWith(`/app/friends`) ? '#ff5c5c' : 'gray'} size={40} />
                             </NotificationBadge>
                         </div>

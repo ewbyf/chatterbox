@@ -9,22 +9,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState, useContext } from 'react';
 import Router from 'next/router';
 import { UserContext } from '@/components/Layout';
-import { INotifications } from '@/interfaces';
+import { INotifications, Notification } from '@/interfaces';
 import InboxIcon from '@mui/icons-material/Inbox';
 import api from '@/services/axiosConfig';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Moment from 'react-moment';
+import { IoCompassOutline, IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 
-const NotificationBell = ({ notificationsList }: { notificationsList: INotifications }) => {
+const NotificationBell = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [notificationsObj, setNotificationsObj] = useState<INotifications>({unread: 0, notifications: []});
     const open = Boolean(anchorEl);
-    const { clearNotifications, removeNotification } = useContext(UserContext);
-
-    useEffect(() => {
-      setNotificationsObj(notificationsList);
-    }, [notificationsList]);
+    const { notificationsList, clearNotifications, removeNotification } = useContext(UserContext);
 
     const openNotifications = (event: React.MouseEvent<HTMLElement>): void => {
         setAnchorEl(event.currentTarget);
@@ -35,14 +31,23 @@ const NotificationBell = ({ notificationsList }: { notificationsList: INotificat
         setAnchorEl(null);
     };
 
-    const messageNotificiationHandler = (id: number, key: number) => {
-      setNotificationsObj({unread: notificationsObj.unread - 1, notifications: notificationsObj.notifications.filter((notification) => notification.message.id != key)});
-      Router.push({ pathname: '/app/messages', query: { selected: id.toString() } });
+    const messageNotificiationHandler = (id: number, notificationObj: Notification) => {
+        removeNotification(notificationObj);
+        Router.push({ pathname: '/app/messages', query: { selected: id.toString() } });
     };
 
-    const clearNotification = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, key : number) => {
-      e.stopPropagation();
-      removeNotification(key);
+    const friendNotificationHandler = (notificationObj: Notification) => {
+        removeNotification(notificationObj);
+        Router.push({ pathname: '/app/friends' });
+    };
+
+    const friendReqNotificationHandler = (notificationObj: Notification) => {
+        removeNotification( notificationObj);
+        Router.push({ pathname: '/app/friends', query: { requests: true } });
+    };
+    const clearNotification = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, notificationObj: Notification) => {
+        e.stopPropagation();
+        removeNotification(notificationObj);
     }
 
     return (
@@ -50,7 +55,7 @@ const NotificationBell = ({ notificationsList }: { notificationsList: INotificat
             {({ darkTheme }) => (
                 <>
                     <div className={styles.bellContainer} onClick={openNotifications}>
-                        <NotificationBadge count={notificationsObj.unread} small>
+                        <NotificationBadge count={notificationsList.unread} small>
                             <IoNotifications size={25} className={styles.bellIcon} />
                         </NotificationBadge>
                     </div>
@@ -109,7 +114,7 @@ const NotificationBell = ({ notificationsList }: { notificationsList: INotificat
                               <CloseIcon sx={{ color: 'inherit' }} />
                             </IconButton>
                         </div>
-                        {notificationsObj.notifications.length === 0 && (
+                        {notificationsList.notifications.length === 0 && (
                             <div>
                                 <Divider sx={{ bgcolor: darkTheme ? '#2E2E2E' : '', margin: 0 }} />
                                 <div className={styles.noNotifications}>
@@ -118,31 +123,94 @@ const NotificationBell = ({ notificationsList }: { notificationsList: INotificat
                                 </div>
                             </div>
                         )}
-                        {notificationsObj.notifications
-                            .slice()
-                            .reverse()
-                            .map((notification) => (
+                        {notificationsList.notifications
+                            .map((notification, i) => (
                                 <div>
-                                    {notification.message && (
-                                        <div key={notification.message.id}>
+                                    {(notification.friend || notification.to) && (
+                                        <div key={i}>
                                             <Divider sx={{ bgcolor: darkTheme ? '#2E2E2E' : '', margin: 0 }} />
                                             <MenuItem
-                                                onClick={() => messageNotificiationHandler(notification.message.authorId, notification.message.id)}
+                                                onClick={() => friendNotificationHandler(notification)}
                                                 sx={{
                                                     '&:hover': { backgroundColor: darkTheme ? '#181818' : '' }
                                                 }}
                                                 className={styles.menuItem}
                                             >
-                                                <Avatar src={notification.message.author.avatar} />
+                                                <Avatar src={notification.friend ? notification.friend!.avatar : notification.to!.avatar} />
                                                 <div>
                                                   <div style={{display: "flex", alignItems: 'center'}}>
-                                                    <p style={{ fontWeight: 'bold' }}>{notification.message.author.username}</p>
-                                                    <Moment fromNow style={{marginLeft: '8px', fontSize: '14px'}}>{notification.message.createdAt}</Moment>
+                                                    <p style={{ fontWeight: 'bold' }}>{notification.friend ? notification.friend!.username : notification.to!.username}</p>
                                                   </div>
-                                                    <p style={{ fontSize: '14px' }}>You have received a message</p>
+                                                    <p style={{ fontSize: '14px' }}>Your friend request has been accepted</p>
                                                 </div>
                                                 <IconButton
-                                                    onClick={(e) => clearNotification(e, notification.message.id)}
+                                                    onClick={(e) => clearNotification(e, notification)}
+                                                    style={{ position: 'absolute', right: 15 }}
+                                                    sx={{
+                                                        color: 'gray',
+                                                        '&:hover': {
+                                                            color: '#ff5c5c',
+                                                            backgroundColor: darkTheme ? '#2E2E2E' : 'lightgray',
+                                                        }
+                                                    }}
+                                                >
+                                                    <DeleteIcon sx={{ color: 'inherit' }}/>
+                                                </IconButton>
+                                            </MenuItem>
+                                        </div>
+                                    )}
+                                    {notification.from && (
+                                        <div key={i}>
+                                            <Divider sx={{ bgcolor: darkTheme ? '#2E2E2E' : '', margin: 0 }} />
+                                            <MenuItem
+                                                onClick={() => friendReqNotificationHandler(notification)}
+                                                sx={{
+                                                    '&:hover': { backgroundColor: darkTheme ? '#181818' : '' }
+                                                }}
+                                                className={styles.menuItem}
+                                            >
+                                                <Avatar src={notification.from!.avatar} />
+                                                <div>
+                                                  <div style={{display: "flex", alignItems: 'center'}}>
+                                                    <p style={{ fontWeight: 'bold' }}>{notification.from!.username}</p>
+                                                  </div>
+                                                    <p style={{ fontSize: '14px' }}>You have received a friend request</p>
+                                                </div>
+                                                <IconButton
+                                                    onClick={(e) => clearNotification(e,notification)}
+                                                    style={{ position: 'absolute', right: 15 }}
+                                                    sx={{
+                                                        color: 'gray',
+                                                        '&:hover': {
+                                                            color: '#ff5c5c',
+                                                            backgroundColor: darkTheme ? '#2E2E2E' : 'lightgray',
+                                                        }
+                                                    }}
+                                                >
+                                                    <DeleteIcon sx={{ color: 'inherit' }}/>
+                                                </IconButton>
+                                            </MenuItem>
+                                        </div>
+                                    )}
+                                    {notification.channel && (
+                                        <div key={i}>
+                                            <Divider sx={{ bgcolor: darkTheme ? '#2E2E2E' : '', margin: 0 }} />
+                                            <MenuItem
+                                                onClick={() => messageNotificiationHandler(notification.channel!.id, notification)}
+                                                sx={{
+                                                    '&:hover': { backgroundColor: darkTheme ? '#181818' : '' }
+                                                }}
+                                                className={styles.menuItem}
+                                            >
+                                                <IoChatbubbleEllipsesOutline color='gray' size={32.5} />
+                                                <div>
+                                                  <div style={{display: "flex", alignItems: 'center'}}>
+                                                    <p style={{ fontWeight: 'bold' }}>{notification.channel!.name.substring(0, notification.channel!.name.indexOf('-'))}</p>
+                                                  </div>
+                                                    <p style={{ fontSize: '14px' }}>You have {notification.count} unread messages</p>
+                                                </div>
+                                                <IconButton
+                                                    onClick={(e) => clearNotification(e, notification)}
                                                     style={{ position: 'absolute', right: 15 }}
                                                     sx={{
                                                         color: 'gray',

@@ -4,6 +4,7 @@ export interface IFriend {
     username: string;
     channelId: number;
     status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
+    unread: number;
 }
 
 interface IAuthor {
@@ -27,7 +28,6 @@ export interface IRequest {
         id: number;
         username: string;
     };
-    timestamp: string;
 }
 
 export interface IUser {
@@ -38,9 +38,32 @@ export interface IUser {
     email: string;
 }
 
-export interface Notification {
+interface IChannel {
+    id: number;
+    name: string;
+    type: string;
+}
+
+interface IFriendNoUnread {
+    avatar: string;
+    id: number;
+    username: string;
+    channelId: number;
+    status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
+}
+
+export interface MessageNotification {
+    type: "MESSAGE";
     message: IMessage;
-    type: 'MESSAGE';
+}
+
+export interface Notification {
+    channel?: IChannel;
+    friend?: IFriend;
+    to?: IFriendNoUnread;
+    from?: IAuthor;
+    type: string;
+    count?: number;
 }
 
 export interface INotifications {

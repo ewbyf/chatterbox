@@ -1,5 +1,6 @@
 import api from "@/services/axiosConfig";
 import { IFriend, IUser } from "../interfaces";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface StatusObj {
     id: number;
@@ -31,7 +32,7 @@ export const statusChange = async(friends: IFriend[], user: IUser, setFriends: R
       }
 }
 
-export const statusChangeMessages = async(friends: IFriend[], user: IUser, setFriends: React.Dispatch<React.SetStateAction<IFriend[]>>, obj: StatusObj, selectedFriend: IFriend | undefined, setSelectedFriend: React.Dispatch<React.SetStateAction<IFriend | undefined>>, query: string[]|string|undefined) => {
+export const statusChangeMessages = async(friends: IFriend[], user: IUser, setFriends: React.Dispatch<React.SetStateAction<IFriend[]>>, obj: StatusObj, selectedFriend: IFriend | undefined, setSelectedFriend: React.Dispatch<React.SetStateAction<IFriend | undefined>>, query: string[]|string|undefined, mobile: boolean) => {
     if (friends.length === 0) {
         await api.get(`/friends?token=${user.token}`)
         .then((resp) => {
@@ -44,7 +45,7 @@ export const statusChangeMessages = async(friends: IFriend[], user: IUser, setFr
           if (query) {
             setSelectedFriend(resp.data.find((friend: IFriend) => friend.id.toString() === query));
           }
-          else {
+          else if (!mobile) {
             setSelectedFriend(resp.data[0]);
           }
         })

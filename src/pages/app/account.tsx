@@ -45,6 +45,14 @@ export default function Account() {
         })
     }
 
+    const changeNotifications = (val: string) => {
+        console.log(val)
+    }
+
+    const changeStatus = (val: string) => {
+        console.log(val)
+    }
+
     return (
     <>
         <Head>
@@ -71,10 +79,10 @@ export default function Account() {
                 </div>
 
                 <div className={styles.section} style={{gap: "20px"}}>
-                    <Dropdown title="NOTIFICATIONS" value={darkTheme ? "all" : "messages"} onChange={(e) => console.log(e.target.value)}>
+                    <Dropdown title="NOTIFICATIONS" value={darkTheme ? "all" : "messages"} onChange={(e) => changeNotifications(e.target.value)}>
                         [<MenuItem value="all">All Notifications</MenuItem>, <MenuItem value="messages">Only Messages</MenuItem>, <MenuItem value="friends">Only Friend Requests</MenuItem>, <MenuItem value="none">None</MenuItem>]
                     </Dropdown>
-                    <Dropdown title="STATUS" value={darkTheme ? "online" : "dnd"} onChange={(e) => console.log(e.target.value)}>
+                    <Dropdown title="STATUS" value={darkTheme ? "online" : "dnd"} onChange={(e) => changeStatus(e.target.value)}>
                         [<MenuItem value="online">Online</MenuItem>, <MenuItem value="dnd">Do Not Disturb</MenuItem>,<MenuItem value="idle">Idle</MenuItem>,<MenuItem value="invisible">Invisible</MenuItem>]
                     </Dropdown>
                     <ThemeUpdateContext.Consumer>
