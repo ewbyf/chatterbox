@@ -93,7 +93,7 @@ export default function Friends() {
             .then((resp) => {
                 removeFriendRequest(id);
                 setFriends([...friends, resp.data]);
-                filterFriends(dropdown);
+                filterFriends(dropdown, [...friends, resp.data]);
             })
             .catch((err) => {
                 console.log(err.response.data.message);
@@ -116,7 +116,7 @@ export default function Friends() {
         api.post('/block', {token, id})
         .then((resp) => {
             setFriends(friends.filter((friend) => friend.id != id));
-            filterFriends(dropdown);
+            filterFriends(dropdown, friends.filter((friend) => friend.id != id));
         })
         .catch((err) => {
             console.log(err.response.data.message);
@@ -127,7 +127,7 @@ export default function Friends() {
         console.log(val);
     };
 
-    const filterFriends = (val: 'all' | 'online' | 'blocked') => {
+    const filterFriends = (val: 'all' | 'online' | 'blocked', friends: IFriend[]) => {
         setDropdown(val);
         if (val == 'online') {
             setFriendsShown(friends.filter(friend => friend.status == 'ONLINE'));
@@ -249,7 +249,7 @@ export default function Friends() {
                         <div className={styles.section} style={{ padding: mobile ? '0px' : '30px 0px' }}>
                             {friendsSelected === 1 && (
                                 <div className={styles.friends}>
-                                    <Dropdown title="SHOW FRIENDS" value={dropdown} onChange={(e) => filterFriends(e.target.value)}>
+                                    <Dropdown title="SHOW FRIENDS" value={dropdown} onChange={(e) => filterFriends(e.target.value, friends)}>
                                         [<MenuItem value="all">All</MenuItem>, <MenuItem value="online">Online</MenuItem>,{' '}
                                         <MenuItem value="blocked">Blocked</MenuItem>]
                                     </Dropdown>

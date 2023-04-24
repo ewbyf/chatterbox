@@ -20,6 +20,19 @@
     justify-content: center;
 }
 
+.save {
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    right: 75px;
+    color: #ff5c5c;
+    padding: 4px 9px;
+    background-color: rgba(255, 132, 132, 0.102);
+    cursor: pointer;
+    transform: translate(0, -50%);
+}
+
 .account {
     width: 35%;
     min-width: 325px;
@@ -44,8 +57,18 @@
     width: 100%;
 }
 
+.error {
+    position: absolute;
+    top: 6px;
+    left: 90px;
+    color: rgb(255, 121, 121);
+}
+
 @media screen and (max-width: 800px) {
     .main {
         padding-top: 30px;
+    }
+    .save {
+        font-size: 14px;
     }
 }

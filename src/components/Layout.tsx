@@ -121,14 +121,27 @@ export default function Layout({ children, theme }: IProps) {
                             pathname: '/login'
                         });
                     });
-                await api.get(`/friend-requests?token=${userToken}`).then((resp) => {
+                await api.get(`/friend-requests?token=${userToken}`)
+                .then((resp) => {
                     setFriendRequests(resp.data);
+                })
+                .catch((err) => {
+                    localStorage.removeItem('userToken');
+                    router.push({
+                        pathname: '/login'
+                    });
                 });
                 await api.get(`/notifications?token=${userToken}`).then((resp) => {
                     console.log(resp.data);
                     setNotificationsList({ unread: resp.data.length, notifications: resp.data });
                     openSocket();
                     setInitializing(false);
+                })
+                .catch((err) => {
+                    localStorage.removeItem('userToken');
+                    router.push({
+                        pathname: '/login'
+                    });
                 });
             } else {
                 router.push({

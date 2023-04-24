@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { ThemeUpdateContext, UserContext } from "@/components/Layout";
 import styles from "@/styles/app/Account.module.css";
 import api from "@/services/axiosConfig";
-import LogoutDialog from "../../components/LogoutDialog";
 import { Avatar } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
 import EmailIcon from '@mui/icons-material/Email';
@@ -15,10 +14,25 @@ import Header from "@/components/Header";
 import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
 import TextInput from "@/components/TextInput";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import LogoutDialog from "../../components/LogoutDialog";
+import EmailDialog from "@/components/EmailDialog";
+import PasswordDialog from "@/components/PasswordDialog";
 
 export default function Account() {
     const [openLogout, setOpenLogout] = useState<boolean>(false);
+    const [openPassword, setOpenPassword] = useState<boolean>(false);
+    const [openEmail, setOpenEmail] = useState<boolean>(false);
     const { updateUser, user } = useContext(UserContext);
+    const [username, setUsername] = useState<string>('');
+    const [error, setError] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const mobile = useMediaQuery('(max-width: 700px)');
+
+    useEffect(() => {
+        setUsername(user.username);
+    }, [user.username])
 
     const changeAvatar = (avatar: File) => {
         const formData = new FormData();
@@ -53,6 +67,20 @@ export default function Account() {
         console.log(val)
     }
 
+    const saveUsername = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
+        e.stopPropagation();
+        const token = localStorage.getItem('userToken');
+        api.patch(`/me`, { token, username })
+        .then((resp) => {
+            updateUser();
+            setError(false);
+        })
+        .catch((err) => {
+            console.log(err.response.data.message);
+            setError(true);
+        })
+    }
+
     return (
     <>
         <Head>
@@ -69,13 +97,19 @@ export default function Account() {
                         <Button type="input" text="CHANGE AVATAR" dark="rgb(38, 38, 38)" light="lightgray" icon={<PersonIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={(e: any) => {changeAvatar(e.target.files[0]); e.target.value = null}}/>
                         {!user.avatar.startsWith("https://ui-avatars.com") && <Button text="REMOVE AVATAR" dark="#ff5c5c" light="#ff5c5c" icon={<DeleteIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={removeAvatar}/>}
                     </div>
-                    <TextInput label="USERNAME" value={user.username} placeholder="Enter username">
-                        <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{user.id}</p>          
+                    <TextInput label="USERNAME" value={username} onChange={setUsername} maxLength={12}>
+                        <>
+                            {username != user.username && username != '' && <p className={styles.save} onClick={(e) => saveUsername(e)}>SAVE</p>}
+                            <p className={styles.id} style={{backgroundColor: (darkTheme ? "rgb(36, 36, 36)" : "rgb(212, 212, 212)"), color: (darkTheme ? "#868686" : "#5d5d5d")}}>#{user.id}</p> 
+                            {error && <p className={styles.error}>
+                                Already taken
+                            </p>}
+                        </>         
                     </TextInput>
                     <TextInput label="EMAIL" value={user.email} disabled={true}/>
                     <TextInput label="PASSWORD" value="filler" disabled={true} password/>
-                    <Button text="CHANGE EMAIL" dark="rgb(38, 38, 38)" light="lightgray" icon={<EmailIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
-                    <Button text="CHANGE PASSWORD" dark="rgb(38, 38, 38)" light="lightgray" icon={<LockIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
+                    <Button text="CHANGE EMAIL" dark="rgb(38, 38, 38)" light="lightgray" icon={<EmailIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenEmail(true)}/>
+                    <Button text="CHANGE PASSWORD" dark="rgb(38, 38, 38)" light="lightgray" icon={<LockIcon fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenPassword(true)}/>
                 </div>
 
                 <div className={styles.section} style={{gap: "20px"}}>
@@ -96,6 +130,8 @@ export default function Account() {
                 <Button text="LOGOUT" dark="#ff5c5c" light="#ff5c5c" icon={<Logout fontSize="small" sx={{ color: darkTheme ? "white" : "black" }}/>} onClick={() => setOpenLogout(true)}/>
             </div>
             <LogoutDialog open={openLogout} setOpen={setOpenLogout} />
+            <PasswordDialog open={openPassword} setOpen={setOpenPassword} />
+            <EmailDialog open={openEmail} setOpen={setOpenEmail} />
           </main>
         )}
         </UserContext.Consumer>
