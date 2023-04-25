@@ -70,3 +70,5 @@ export interface INotifications {
     unread: number;
     notifications: Notification[];
 }
+
+export type IFilter = 'RECENTLY_MESSAGED' | 'USERNAME_ASC' | 'USERNAME_DESC';

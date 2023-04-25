@@ -13,8 +13,9 @@ import { Avatar } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { IFriend, IMessage } from '../../interfaces';
+import { IFriend, IMessage, IFilter } from '../../interfaces';
 import { statusChangeMessages } from '@/utils/StatusChange';
+import Filter from '@/components/Filter';
 
 export default function Messages() {
     const [searchField, setSearchField] = useState<string>('');
@@ -40,6 +41,11 @@ export default function Messages() {
             } else if (obj.type == 'MESSAGE') {
                 let index = friends.findIndex((friend) => friend.channelId == obj.message.channelId);
                 friends[index].unread++;
+                if (index != 0) {
+                    let temp = friends[index];
+                    friends.splice(index, 1);
+                    friends.unshift(temp);
+                }
                 setFriends([...friends]);
                 setDmsUnread((dmsUnread) => dmsUnread + 1);
             }
@@ -56,15 +62,15 @@ export default function Messages() {
     }, [socket, friendStatus]);
 
     useEffect(() => {
-        getFriends();
+        getFriends('RECENTLY_MESSAGED');
     }, []);
 
     useEffect(() => {
         scrollToBottom();
     }, [messageList]);
 
-    const getFriends = () => {
-        api.get(`/friends?token=${user.token}`)
+    const getFriends = (filter: IFilter) => {
+        api.get(`/friends?token=${user.token}&filter=${filter}`)
             .then((resp) => {
                 setFriends(resp.data);
                 console.log(resp.data);
@@ -178,14 +184,17 @@ export default function Messages() {
                             </Header>
                         )}
                         {((mobile && !selectedFriend) || !mobile) && (
-                            <div className={styles.leftSection} style={{ width: mobile ? '100%' : '300px' }}>
+                            <div className={styles.leftSection} style={{ width: mobile ? '100%' : '325px' }}>
                                 {!mobile && (
                                     <p className={styles.leftSectionTitle} style={{ borderColor: darkTheme ? '#2e2e2e' : '#c4c4c4' }}>
                                         DIRECT MESSAGES
                                     </p>
                                 )}
                                 <div className={styles.addFriend} style={{ width: '100%' }}>
-                                    <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)} />
+                                    <div style={{display: "flex", alignItems: "center", gap: "10px", width: "100%"}}>
+                                        <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)} />
+                                        <Filter/>
+                                    </div>
                                     {friends.length > 0 && (
                                         <>
                                             {friends.map((friend) => (

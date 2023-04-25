@@ -88,14 +88,9 @@
     white-space: pre-line;
 }
 
-/* .messageBubble {
-    filter: drop-shadow(5px 7px 6px rgba(0,0,0,0.65));
-}    */
-
 .userMessageBubble {
     background-color: #ff5c5c;
     margin-left: auto;
-    /* filter: drop-shadow(-5px 7px 6px rgba(0,0,0,0.65)); */
 }
 
 .messageBox {

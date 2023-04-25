@@ -11,7 +11,6 @@ import Router from 'next/router';
 import { UserContext } from '@/components/Layout';
 import { Notification } from '@/interfaces';
 import InboxIcon from '@mui/icons-material/Inbox';
-import api from '@/services/axiosConfig';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { IoCompassOutline, IoChatbubbleEllipsesOutline } from 'react-icons/io5';

@@ -1,6 +1,7 @@
 import api from "@/services/axiosConfig";
 import { IFriend, IUser } from "../interfaces";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { sortFriends } from '@/utils/Sorting';
 
 interface StatusObj {
     id: number;
@@ -34,7 +35,7 @@ export const statusChange = async(friends: IFriend[], user: IUser, setFriends: R
 
 export const statusChangeMessages = async(friends: IFriend[], user: IUser, setFriends: React.Dispatch<React.SetStateAction<IFriend[]>>, obj: StatusObj, selectedFriend: IFriend | undefined, setSelectedFriend: React.Dispatch<React.SetStateAction<IFriend | undefined>>, query: string[]|string|undefined, mobile: boolean) => {
     if (friends.length === 0) {
-        await api.get(`/friends?token=${user.token}`)
+        await api.get(`/friends?token=${user.token}&filter=RECENTLY_MESSAGED`)
         .then((resp) => {
           let temp: IFriend[] = resp.data;
           const index = temp.findIndex(friend => friend.id === obj.id);
@@ -56,9 +57,8 @@ export const statusChangeMessages = async(friends: IFriend[], user: IUser, setFr
     else {
         const index = friends.findIndex(friend => friend.id === obj.id);
         if (index > -1) {
-          let temp = friends;
-          temp[index].status = obj.status;
-          setFriends([...temp]);
+          friends[index].status = obj.status;
+          setFriends([...friends]);
         }
         if (selectedFriend!.id === obj.id) {
             let temp = selectedFriend!;
