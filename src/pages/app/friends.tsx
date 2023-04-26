@@ -19,6 +19,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { IFriend, IRequest } from '../../interfaces';
 import { statusChange } from '@/utils/StatusChange';
 import NotificationBadge from '@/components/NotificationBadge';
+import Filter from '@/components/Filter';
 
 export default function Friends() {
     const [searchField, setSearchField] = useState<string>('');
@@ -47,7 +48,7 @@ export default function Friends() {
 
     const getFriends = async () => {
         await api
-            .get(`/friends?token=${user.token}`)
+            .get(`/friends?token=${user.token}&filter=USERNAME_ASC`)
             .then((resp) => {
                 setFriends(resp.data);
                 setFriendsShown(resp.data);
@@ -134,6 +135,13 @@ export default function Friends() {
         }
         else if (val == 'all') {
             setFriendsShown([...friends]);
+        }
+        else {
+            const token = localStorage.getItem('userToken');
+            api.get(`/blocked?token=${token}`)
+            .then((resp) => {
+                setFriendsShown([...resp.data]);
+            })
         }
     }
 
@@ -254,13 +262,16 @@ export default function Friends() {
                                         <MenuItem value="blocked">Blocked</MenuItem>]
                                     </Dropdown>
                                     <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)} />
-                                    <p className={styles.sectionTitle} style={{ marginTop: '20px' }}>
-                                        {dropdown.toUpperCase()} - {friendsShown.length}
-                                    </p>
+                                    <div style={{marginTop: '20px', display: "flex", justifyContent: 'space-between', alignItems: 'center'}}>
+                                        <p className={styles.sectionTitle}>
+                                            {dropdown.toUpperCase()} - {friendsShown.length}
+                                        </p>
+                                        <Filter friendsList={friendsShown} setFriendsList={setFriendsShown} dropdownVal={dropdown}/>
+                                    </div>
                                     {friendsShown.map((friend) => (
                                         <FriendBox
                                             friend={friend}
-                                            onClick={() => Router.push({ pathname: '/app/messages', query: { selected: friend.id.toString() } })}
+                                            onClick={() => Router.push({ pathname: '/app/messages', query: { selected: friend.channelId.toString() } })}
                                             key={friend.id}
                                             blockable
                                             block={(e) => block(e, friend.id)}

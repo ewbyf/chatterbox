@@ -15,7 +15,7 @@ import TextareaAutosize from '@mui/base/TextareaAutosize';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { IFriend, IMessage, IFilter } from '../../interfaces';
 import { statusChangeMessages } from '@/utils/StatusChange';
-import Filter from '@/components/Filter';
+import Moment from 'react-moment';
 
 export default function Messages() {
     const [searchField, setSearchField] = useState<string>('');
@@ -38,6 +38,7 @@ export default function Messages() {
 
             if (obj.type == 'MESSAGE' && obj.message.channelId === selectedFriend?.channelId) {
                 setMessageList((messageList) => [...messageList, obj.message]);
+                setDmsUnread((dmsUnread) => dmsUnread - 1);
             } else if (obj.type == 'MESSAGE') {
                 let index = friends.findIndex((friend) => friend.channelId == obj.message.channelId);
                 friends[index].unread++;
@@ -47,7 +48,6 @@ export default function Messages() {
                     friends.unshift(temp);
                 }
                 setFriends([...friends]);
-                setDmsUnread((dmsUnread) => dmsUnread + 1);
             }
         };
         socket?.addEventListener('message', changeStatus);
@@ -76,9 +76,9 @@ export default function Messages() {
                 console.log(resp.data);
                 if (resp.data.length > 0) {
                     if (router.query.selected) {
-                        selectFriend(resp.data.find((friend: IFriend) => friend.channelId.toString() === router.query.selected));
+                        selectFriend(resp.data.find((friend: IFriend) => friend.channelId.toString() === router.query.selected), resp.data);
                     } else if (!mobile) {
-                        selectFriend(resp.data[0]);
+                        selectFriend(resp.data[0], resp.data);
                     }
                 }
                 setInit(false);
@@ -98,6 +98,13 @@ export default function Messages() {
                 .then(async (resp) => {
                     setMessage('');
                     setMessageList([...messageList, resp.data]);
+                    let index = friends.findIndex(friend => friend.channelId === selectedFriend?.channelId);
+                    if (index > -1) {
+                        let temp = friends[index];
+                        friends.splice(index, 1);
+                        friends.unshift(temp);
+                        setFriends([...friends]);
+                    }
                 })
                 .catch((err) => {
                     console.log(err.response.data.message);
@@ -120,14 +127,15 @@ export default function Messages() {
             });
     };
 
-    const selectFriend = async (friend: IFriend) => {
+    const selectFriend = async (friend: IFriend, friends: IFriend[]) => {
         if (friend) {
             setSelectedFriend(friend);
             const index = friends.findIndex((friendObj) => friendObj.id === friend.id);
             if (index > -1) {
                 setDmsUnread(dmsUnread - friends[index].unread);
-                friends[index].unread = 0;
-                setFriends([...friends]);
+                let temp = friends;
+                temp[index].unread = 0;
+                setFriends([...temp]);
             }
             getMessages(friend.channelId);
         }
@@ -184,7 +192,7 @@ export default function Messages() {
                             </Header>
                         )}
                         {((mobile && !selectedFriend) || !mobile) && (
-                            <div className={styles.leftSection} style={{ width: mobile ? '100%' : '325px' }}>
+                            <div className={styles.leftSection} style={{ width: mobile ? '100%' : '300px' }}>
                                 {!mobile && (
                                     <p className={styles.leftSectionTitle} style={{ borderColor: darkTheme ? '#2e2e2e' : '#c4c4c4' }}>
                                         DIRECT MESSAGES
@@ -193,7 +201,6 @@ export default function Messages() {
                                 <div className={styles.addFriend} style={{ width: '100%' }}>
                                     <div style={{display: "flex", alignItems: "center", gap: "10px", width: "100%"}}>
                                         <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)} />
-                                        <Filter/>
                                     </div>
                                     {friends.length > 0 && (
                                         <>
@@ -204,7 +211,7 @@ export default function Messages() {
                                                         notSelected={selectedFriend?.id !== friend.id}
                                                         friend={friend}
                                                         key={friend.id.toString()}
-                                                        onClick={() => selectFriend(friend)}
+                                                        onClick={() => selectFriend(friend, friends)}
                                                     />
                                                 </>
                                             ))}
@@ -239,17 +246,23 @@ export default function Messages() {
                                             {messageList.map((msg) => (
                                                 <>
                                                     {msg.authorId != user.id && (
-                                                        <div
-                                                            className={styles.messageBubble}
-                                                            style={{ backgroundColor: darkTheme ? '#292929' : '#c0c0c0', opacity: messageInit ? 0 : 1 }}
-                                                        >
-                                                            <p>{msg.content}</p>
-                                                        </div>
+                                                        <>
+                                                            <Moment fromNow style={{fontSize: '12px', color: 'gray', padding: "0px 0px 3px 3px", opacity: messageInit ? 0 : 1}}>{msg.createdAt}</Moment>
+                                                            <div
+                                                                className={styles.messageBubble}
+                                                                style={{ backgroundColor: darkTheme ? '#292929' : '#c0c0c0', opacity: messageInit ? 0 : 1 }}
+                                                            >
+                                                                <p>{msg.content}</p>
+                                                            </div>
+                                                        </>
                                                     )}
                                                     {msg.authorId === user.id && (
-                                                        <div className={styles.userMessageBubble} style={{ opacity: messageInit ? 0 : 1 }}>
-                                                            <p>{msg.content}</p>
-                                                        </div>
+                                                        <>
+                                                            <Moment fromNow style={{fontSize: '12px', color: 'gray', marginLeft: 'auto', padding: "3px", opacity: messageInit ? 0 : 1}}>{msg.createdAt}</Moment>
+                                                            <div className={styles.userMessageBubble} style={{ opacity: messageInit ? 0 : 1 }}>
+                                                                <p>{msg.content}</p>
+                                                            </div>
+                                                        </>
                                                     )}
                                                 </>
                                             ))}

@@ -62,6 +62,14 @@ export default function Layout({ children, theme }: IProps) {
     const [dmsUnread, setDmsUnread] = useState<number>(0);
 
     useEffect(() => {
+        const interval = setInterval(() => {
+            socket?.send(JSON.stringify({ type: 'PING' }));
+        }, 25000);
+      
+        return () => clearInterval(interval); 
+      }, [socket])
+
+    useEffect(() => {
         const changeStatus = async (e: MessageEvent) => {
             const obj = JSON.parse(e.data);
             console.log(obj);
@@ -74,6 +82,9 @@ export default function Layout({ children, theme }: IProps) {
                 setNotificationsList((notificationsList) => {
                     return { unread: notificationsList.unread + 1, notifications: [obj, ...notificationsList.notifications] };
                 });
+            }
+            else if (obj.type == 'MESSAGE') {
+                setDmsUnread((dmsUnread) => dmsUnread + 1);
             }
         };
         socket?.addEventListener('message', changeStatus);
@@ -95,11 +106,11 @@ export default function Layout({ children, theme }: IProps) {
     });
 
     useEffect(() => {
-        const sendMsg = () => {
-            console.log('close');
+        const sendMsg = (e: CloseEvent) => {
+            console.log(e.code);
         };
 
-        socket?.addEventListener('close', sendMsg);
+        socket?.addEventListener('close', (e) => sendMsg(e));
 
         return () => {
             socket?.removeEventListener('close', sendMsg);

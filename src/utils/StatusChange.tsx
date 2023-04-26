@@ -10,7 +10,7 @@ interface StatusObj {
 
 export const statusChange = async(friends: IFriend[], user: IUser, setFriends: React.Dispatch<React.SetStateAction<IFriend[]>>, obj: StatusObj) => {
     if (friends.length === 0) {
-        await api.get(`/friends?token=${user.token}`)
+        await api.get(`/friends?token=${user.token}&filter=USERNAME_ASC`)
         .then((resp) => {
           let temp: IFriend[] = resp.data;
           const index = temp.findIndex(friend => friend.id === obj.id);

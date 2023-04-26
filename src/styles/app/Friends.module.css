@@ -38,7 +38,7 @@
 }
 
 .sectionTitle {
-    font-size: 18px;
+    font-size: 20px;
     font-family: MarkPro;
     color: gray;
 }
@@ -66,4 +66,10 @@
     padding: 15px;
     gap: 10px;
     font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+    .sectionTitle {
+        font-size: 18px;
+    }
 }
