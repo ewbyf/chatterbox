@@ -1,9 +1,10 @@
 import { Badge } from "@mui/material";
 import { useEffect, useState } from "react";
+import { IStatus } from "@/interfaces";
 
 interface Props {
     children?: JSX.Element;
-    status: "ONLINE" | "DO_NOT_DISTURB" | "OFFLINE" | "IDLE";
+    status: IStatus;
     bg: string;
   }
 

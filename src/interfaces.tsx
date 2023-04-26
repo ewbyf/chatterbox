@@ -53,7 +53,7 @@ interface IFriendNoUnread {
 }
 
 export interface MessageNotification {
-    type: "MESSAGE";
+    type: 'MESSAGE';
     message: IMessage;
 }
 
@@ -72,3 +72,7 @@ export interface INotifications {
 }
 
 export type IFilter = 'RECENTLY_MESSAGED' | 'USERNAME_ASC' | 'USERNAME_DESC';
+
+export type IStatus = 'ONLINE' | 'DO_NOT_DISTURB' | 'OFFLINE' | 'IDLE';
+
+export type INotificationSettings = 'ALL' | 'MESSAGES' | 'FRIEND_REQ' | 'NONE';

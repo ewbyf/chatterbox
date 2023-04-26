@@ -18,6 +18,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import LogoutDialog from "../../components/LogoutDialog";
 import EmailDialog from "@/components/EmailDialog";
 import PasswordDialog from "@/components/PasswordDialog";
+import { IStatus, INotificationSettings } from "@/interfaces";
 
 export default function Account() {
     const [openLogout, setOpenLogout] = useState<boolean>(false);
@@ -29,6 +30,9 @@ export default function Account() {
     const [success, setSuccess] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const mobile = useMediaQuery('(max-width: 700px)');
+
+    // const [notificationsVal, setNotificationsVal] = useState<INotificationSettings>('ALL');
+    // const [statusVal, setStatusVal] = useState<IStatus>('ONLINE');
 
     useEffect(() => {
         setUsername(user.username);
@@ -60,7 +64,19 @@ export default function Account() {
     }
 
     const changeNotifications = (val: string) => {
-        console.log(val)
+        let notifications = '';
+        if (val === 'all') {
+            notifications = 'ALL';
+        }
+        else if (val === 'messages') {
+            
+        }
+        else if (val === 'friends') {
+            
+        }
+        else if (val === 'none') {
+            
+        }
     }
 
     const changeStatus = (val: string) => {
@@ -113,10 +129,10 @@ export default function Account() {
                 </div>
 
                 <div className={styles.section} style={{gap: "20px"}}>
-                    <Dropdown title="NOTIFICATIONS" value={darkTheme ? "all" : "messages"} onChange={(e) => changeNotifications(e.target.value)}>
+                    <Dropdown title="NOTIFICATIONS" value={} onChange={(e) => changeNotifications(e.target.value)}>
                         [<MenuItem value="all">All Notifications</MenuItem>, <MenuItem value="messages">Only Messages</MenuItem>, <MenuItem value="friends">Only Friend Requests</MenuItem>, <MenuItem value="none">None</MenuItem>]
                     </Dropdown>
-                    <Dropdown title="STATUS" value={darkTheme ? "online" : "dnd"} onChange={(e) => changeStatus(e.target.value)}>
+                    <Dropdown title="STATUS" value={} onChange={(e) => changeStatus(e.target.value)}>
                         [<MenuItem value="online">Online</MenuItem>, <MenuItem value="dnd">Do Not Disturb</MenuItem>,<MenuItem value="idle">Idle</MenuItem>,<MenuItem value="invisible">Invisible</MenuItem>]
                     </Dropdown>
                     <ThemeUpdateContext.Consumer>
