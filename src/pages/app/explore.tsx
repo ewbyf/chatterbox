@@ -6,18 +6,13 @@ import { UserContext } from '@/components/Layout';
 import { SocketContext } from '../_app';
 import api from '@/services/axiosConfig';
 import Header from '@/components/Header';
-import SearchBar from '@/components/SearchBar';
-import Status from '@/components/Status';
-import { Avatar } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { IMessage, IFilter } from '../../interfaces';
-import { statusChangeMessages } from '@/utils/StatusChange';
-import Moment from 'react-moment';
+import { IMessage, IFilter, IChannel } from '../../interfaces';
 import Loading from '@/components/Loading';
 import ChannelBox from '@/components/ChannelBox';
-import { IChannel } from "@/interfaces";
+import MessageBubble from '@/components/MessageBubble';
 
 export default function Explore() {
     const [searchField, setSearchField] = useState<string>('');
@@ -175,45 +170,10 @@ export default function Explore() {
                                             {messageList.map((msg) => (
                                                 <>
                                                     {msg.authorId != user.id && (
-                                                        <>
-                                                            <Moment
-                                                                fromNow
-                                                                style={{
-                                                                    fontSize: '12px',
-                                                                    color: 'gray',
-                                                                    padding: '0px 0px 3px 3px',
-                                                                    opacity: messageInit ? 0 : 1
-                                                                }}
-                                                            >
-                                                                {msg.createdAt}
-                                                            </Moment>
-                                                            <div
-                                                                
-                                                                className={styles.messageBubble}
-                                                                style={{ backgroundColor: darkTheme ? '#292929' : '#c0c0c0', opacity: messageInit ? 0 : 1 }}
-                                                            >
-                                                                <p>{msg.content}</p>
-                                                            </div>
-                                                        </>
+                                                        <MessageBubble self={false} msg={msg} messageInit={messageInit}/>
                                                     )}
                                                     {msg.authorId === user.id && (
-                                                        <>
-                                                            <Moment
-                                                                fromNow
-                                                                style={{
-                                                                    fontSize: '12px',
-                                                                    color: 'gray',
-                                                                    marginLeft: 'auto',
-                                                                    padding: '3px',
-                                                                    opacity: messageInit ? 0 : 1
-                                                                }}
-                                                            >
-                                                                {msg.createdAt}
-                                                            </Moment>
-                                                            <div className={styles.userMessageBubble} style={{ opacity: messageInit ? 0 : 1 }}>
-                                                                <p>{msg.content}</p>
-                                                            </div>
-                                                        </>
+                                                        <MessageBubble self msg={msg} messageInit={messageInit}/>
                                                     )}
                                                 </>
                                             ))}

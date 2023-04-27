@@ -47,7 +47,7 @@ const Dropdown = ({ children, title, value, onChange }: Props) => {
                     MenuProps={{
                         PaperProps: {
                             sx: {
-                              bgcolor: darkTheme ? 'rgb(38, 38, 38)' : "lightgray",
+                              bgcolor: darkTheme ? 'rgb(38, 38, 38)' : "#DADADA",
 
                               '.MuiMenuItem-root': {
                                 color: darkTheme ? "white" : "black",
@@ -55,10 +55,10 @@ const Dropdown = ({ children, title, value, onChange }: Props) => {
                                 fontWeight: "bold",
                               },
                               '.MuiMenuItem-root:hover': {
-                                backgroundColor: darkTheme ? "rgb(33, 33, 33)" : "#A9A9A9",
+                                backgroundColor: darkTheme ? "rgb(33, 33, 33)" : "#BFBFBF",
                               },
                               '.Mui-selected': {
-                                backgroundColor: darkTheme ? "#191919 !important" : "#8B8B8B !important",
+                                backgroundColor: darkTheme ? "#191919 !important" : "#A4A4A4 !important",
                               },
                             },
                           },

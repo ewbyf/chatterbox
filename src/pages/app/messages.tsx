@@ -17,6 +17,7 @@ import { IFriend, IMessage, IFilter } from '../../interfaces';
 import { statusChangeMessages } from '@/utils/StatusChange';
 import Moment from 'react-moment';
 import Loading from '@/components/Loading';
+import MessageBubble from '@/components/MessageBubble';
 
 export default function Messages() {
     const [searchField, setSearchField] = useState<string>('');
@@ -249,27 +250,14 @@ export default function Messages() {
                                         )}
                                         <div className={styles.messages}>
                                             {messageList.map((msg) => (
-                                                <>
-                                                    {msg.authorId != user.id && (
-                                                        <>
-                                                            <Moment fromNow style={{fontSize: '12px', color: 'gray', padding: "0px 0px 3px 3px", opacity: messageInit ? 0 : 1}}>{msg.createdAt}</Moment>
-                                                            <div
-                                                                className={styles.messageBubble}
-                                                                style={{ backgroundColor: darkTheme ? '#292929' : '#c0c0c0', opacity: messageInit ? 0 : 1 }}
-                                                            >
-                                                                <p>{msg.content}</p>
-                                                            </div>
-                                                        </>
-                                                    )}
-                                                    {msg.authorId === user.id && (
-                                                        <>
-                                                            <Moment fromNow style={{fontSize: '12px', color: 'gray', marginLeft: 'auto', padding: "3px", opacity: messageInit ? 0 : 1}}>{msg.createdAt}</Moment>
-                                                            <div className={styles.userMessageBubble} style={{ opacity: messageInit ? 0 : 1 }}>
-                                                                <p>{msg.content}</p>
-                                                            </div>
-                                                        </>
-                                                    )}
-                                                </>
+                                               <>
+                                               {msg.authorId != user.id && (
+                                                   <MessageBubble self={false} msg={msg} messageInit={messageInit}/>
+                                               )}
+                                               {msg.authorId === user.id && (
+                                                   <MessageBubble self msg={msg} messageInit={messageInit}/>
+                                               )}
+                                            </>
                                             ))}
                                             {messageInit &&
                                                 <Loading />

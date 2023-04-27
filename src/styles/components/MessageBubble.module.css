@@ -1,0 +1,23 @@
+.messageBubble, .userMessageBubble {
+    min-width: 40px;
+    max-width: 75%;
+    border-radius: 20px;
+    padding: 6px 15px;
+    margin-bottom: 7.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-all;
+    white-space: pre-line;
+}
+
+.userMessageBubble {
+    background-color: #ff5c5c;
+    margin-left: auto;
+}
+
+.time {
+    font-size: 12px;
+    color: gray;
+    cursor: default;
+}
