@@ -7,6 +7,7 @@ import api from '@/services/axiosConfig';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { SocketContext } from '@/pages/_app';
 import { IUser, INotifications, IRequest, Notification } from '../interfaces';
+import Loading from './Loading';
 
 interface IProps {
     children: JSX.Element;
@@ -64,7 +65,7 @@ export default function Layout({ children, theme }: IProps) {
     useEffect(() => {
         const interval = setInterval(() => {
             socket?.send(JSON.stringify({ type: 'PING' }));
-        }, 25000);
+        }, 22000);
       
         return () => clearInterval(interval); 
       }, [socket])
@@ -223,7 +224,13 @@ export default function Layout({ children, theme }: IProps) {
         setFriendRequests(friendRequests.filter((request) => request.from.id != id));
     };
 
-    if (initializing) return null; // loading screen here
+    if (initializing) {
+        return (
+            <div style={{backgroundColor: darkTheme ? "#181818" : "white", height: "100vh"}}>
+                <Loading/>
+            </div>
+        );
+    }
 
     return (
         <div style={{ display: 'flex', height: '100vh' }}>

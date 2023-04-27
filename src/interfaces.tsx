@@ -38,7 +38,7 @@ export interface IUser {
     email: string;
 }
 
-interface IChannel {
+export interface IChannel {
     id: number;
     name: string;
     type: string;

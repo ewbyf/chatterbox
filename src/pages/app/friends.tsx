@@ -20,6 +20,7 @@ import { IFriend, IRequest } from '../../interfaces';
 import { statusChange } from '@/utils/StatusChange';
 import NotificationBadge from '@/components/NotificationBadge';
 import Filter from '@/components/Filter';
+import Loading from '@/components/Loading';
 
 export default function Friends() {
     const [searchField, setSearchField] = useState<string>('');
@@ -149,7 +150,11 @@ export default function Friends() {
         setFriendsSelected(newValue);
     };
 
-    if (init) return null;
+    if (init) {
+        return (
+            <Loading/>
+        )
+    };
 
     return (
         <>
@@ -300,11 +305,6 @@ export default function Friends() {
                                         <FriendBox friend={request.from} request accept={acceptRequest} reject={rejectRequest} key={request.from.id} />
                                     ))}
                                     {friendRequests.length === 0 && <p>You have not received any friend requests</p>}
-
-                                    {/* <div>
-                  <p className={styles.sectionTitle}>SENT</p>
-                  <p>You have not sent any friend requests</p>
-                </div> */}
                                 </div>
                             )}
                         </div>

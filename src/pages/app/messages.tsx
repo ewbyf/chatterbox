@@ -16,6 +16,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { IFriend, IMessage, IFilter } from '../../interfaces';
 import { statusChangeMessages } from '@/utils/StatusChange';
 import Moment from 'react-moment';
+import Loading from '@/components/Loading';
 
 export default function Messages() {
     const [searchField, setSearchField] = useState<string>('');
@@ -157,7 +158,11 @@ export default function Messages() {
         }
     };
 
-    if (init) return null;
+    if (init) {
+        return (
+            <Loading/>
+        )
+    };
 
     return (
         <>
@@ -266,6 +271,9 @@ export default function Messages() {
                                                     )}
                                                 </>
                                             ))}
+                                            {messageInit &&
+                                                <Loading />
+                                            }
                                             <div ref={anchorRef} />
                                         </div>
                                         <div className={styles.messageBox} style={{ backgroundColor: darkTheme ? '#1c1c1c' : '#f1f1f1' }}>
