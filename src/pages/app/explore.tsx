@@ -30,6 +30,21 @@ export default function Explore() {
     const router = useRouter();
 
     useEffect(() => {
+        const newMessage = async (e: MessageEvent) => {
+            const obj = JSON.parse(e.data);
+
+            if (obj.type == 'MESSAGE' && obj.message.channelId === selectedChannel?.id) {
+                setMessageList((messageList) => [...messageList, obj.message]);
+            }
+        };
+        socket?.addEventListener('message', newMessage);
+
+        return () => {
+            socket?.removeEventListener('message', newMessage);
+        };
+    }, [socket, selectedChannel]);
+
+    useEffect(() => {
       getChannels();
     }, []);
 
@@ -170,10 +185,10 @@ export default function Explore() {
                                             {messageList.map((msg) => (
                                                 <>
                                                     {msg.authorId != user.id && (
-                                                        <MessageBubble self={false} msg={msg} messageInit={messageInit}/>
+                                                        <MessageBubble showAvatar self={false} msg={msg} messageInit={messageInit}/>
                                                     )}
                                                     {msg.authorId === user.id && (
-                                                        <MessageBubble self msg={msg} messageInit={messageInit}/>
+                                                        <MessageBubble showAvatar self msg={msg} messageInit={messageInit}/>
                                                     )}
                                                 </>
                                             ))}

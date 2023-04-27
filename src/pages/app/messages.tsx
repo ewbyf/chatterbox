@@ -15,7 +15,6 @@ import TextareaAutosize from '@mui/base/TextareaAutosize';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { IFriend, IMessage, IFilter } from '../../interfaces';
 import { statusChangeMessages } from '@/utils/StatusChange';
-import Moment from 'react-moment';
 import Loading from '@/components/Loading';
 import MessageBubble from '@/components/MessageBubble';
 
@@ -35,7 +34,7 @@ export default function Messages() {
     const router = useRouter();
 
     useEffect(() => {
-        const changeStatus = async (e: MessageEvent) => {
+        const newMessage = async (e: MessageEvent) => {
             const obj = JSON.parse(e.data);
 
             if (obj.type == 'MESSAGE' && obj.message.channelId === selectedFriend?.channelId) {
@@ -52,10 +51,10 @@ export default function Messages() {
                 setFriends([...friends]);
             }
         };
-        socket?.addEventListener('message', changeStatus);
+        socket?.addEventListener('message', newMessage);
 
         return () => {
-            socket?.removeEventListener('message', changeStatus);
+            socket?.removeEventListener('message', newMessage);
         };
     }, [socket, selectedFriend]);
 
@@ -75,7 +74,6 @@ export default function Messages() {
         api.get(`/friends?token=${user.token}&filter=${filter}`)
             .then((resp) => {
                 setFriends(resp.data);
-                console.log(resp.data);
                 if (resp.data.length > 0) {
                     if (router.query.selected) {
                         selectFriend(resp.data.find((friend: IFriend) => friend.channelId.toString() === router.query.selected), resp.data);
@@ -123,6 +121,7 @@ export default function Messages() {
         })
             .then((resp) => {
                 setMessageList(resp.data);
+                console.log(resp.data)
             })
             .catch((err) => {
                 console.log(err.response.data.message);

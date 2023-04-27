@@ -3,31 +3,24 @@ import Moment from 'react-moment';
 import { IMessage } from '@/interfaces';
 import { useContext, useState } from 'react';
 import { UserContext } from '@/components/Layout';
+import { Avatar } from "@mui/material";
 
 interface IProps {
 	self: boolean;
 	msg: IMessage;
 	messageInit: boolean;
+	showAvatar?: boolean;
 }
 
-const MessageBubble = ({ self, msg, messageInit }: IProps) => {
+const MessageBubble = ({ self, msg, messageInit, showAvatar }: IProps) => {
 	const { darkTheme } = useContext(UserContext);
     const [showTime, setShowTime] = useState<boolean>(false);
 
 	return (
 		<>
 			{!self && (
-				<>
-					<Moment
-						fromNow
-                        className={styles.time}
-						style={{
-							padding: '0px 0px 3px 3px',
-                            display: showTime ? "flex" : "none"
-						}}
-					>
-						{msg.createdAt}
-					</Moment>
+				<div className={styles.container}>
+					{showAvatar && <Avatar sx={{ width: 35, height: 35 }} src={msg.author?.avatar} />}
 					<div
                         className={styles.messageBubble}
                         style={{ backgroundColor: darkTheme ? '#292929' : '#c0c0c0', opacity: messageInit ? 0 : 1 }}
@@ -36,16 +29,26 @@ const MessageBubble = ({ self, msg, messageInit }: IProps) => {
                     >
 						<p>{msg.content}</p>
 					</div>
-				</>
+					<Moment
+						fromNow
+                        className={styles.time}
+						style={{
+							padding: showTime ? '0px 0px 3px 3px' : 0,
+                            opacity: showTime ? 1 : 0
+						}}
+					>
+						{msg.createdAt}
+					</Moment>
+				</div>
 			)}
 			{self && (
-				<>
+				<div className={styles.container} style={{marginLeft: "auto"}}>
 					<Moment
 						fromNow
                         className={styles.time}
 						style={{
 							marginLeft: 'auto',
-							padding: '3px',
+							padding: showTime ? '3px' : 0,
                             opacity: showTime ? 1 : 0
 						}}
 					>
@@ -59,7 +62,7 @@ const MessageBubble = ({ self, msg, messageInit }: IProps) => {
                     >
 						<p>{msg.content}</p>
 					</div>
-				</>
+				</div>
 			)}
 		</>
 	);

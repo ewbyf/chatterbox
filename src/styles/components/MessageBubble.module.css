@@ -1,9 +1,16 @@
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 .messageBubble, .userMessageBubble {
     min-width: 40px;
     max-width: 75%;
     border-radius: 20px;
     padding: 6px 15px;
-    margin-bottom: 7.5px;
+    margin: 3.75px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,7 +20,7 @@
 
 .userMessageBubble {
     background-color: #ff5c5c;
-    margin-left: auto;
+
 }
 
 .time {
