@@ -23,7 +23,7 @@ export default function Explore() {
     const [messageList, setMessageList] = useState<IMessage[]>([]);
     const [messageInit, setMessageInit] = useState<boolean>(true);
 
-    const { user, friendStatus, setDmsUnread, dmsUnread } = useContext(UserContext);
+    const { user, friendStatus, setDmsUnread, dmsUnread, notificationsList, removeNotification } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const mobile = useMediaQuery('(max-width: 800px)');
     const anchorRef = useRef<null | HTMLDivElement>(null);
@@ -45,7 +45,7 @@ export default function Explore() {
     }, [socket, selectedChannel]);
 
     useEffect(() => {
-      getChannels();
+        getChannels();
     }, []);
 
     useEffect(() => {
@@ -53,13 +53,14 @@ export default function Explore() {
     }, [messageList]);
 
     const getChannels = () => {
-        api.get(`/channels?token=${user.token}`)
-            .then((resp) => {
+        console.log('getting channels')
+         api.get(`/channels?token=${user.token}`)
+            .then(async(resp) => {
                 setChannels(resp.data);
-                console.log(resp.data);
+                console.log('a');
                 if (resp.data.length > 0) {
                   if (!mobile) {
-                        selectChannel(resp.data[0]);
+                         selectChannel(resp.data[0]);
                     }
                 }
                 setInit(false);
@@ -101,10 +102,14 @@ export default function Explore() {
             });
     };
 
-    const selectChannel = async (channel: IChannel) => {
+    const selectChannel = (channel: IChannel) => {
         if (channel) {
             setSelectedChannel(channel);
             getMessages(channel.id);
+            const notificationIndex = notificationsList.notifications.findIndex((notification => notification.channel?.id == channel.id))
+            console.log(notificationsList.notifications)
+            if (notificationIndex > -1)
+                removeNotification(notificationsList.notifications[notificationIndex]);
         }
     };
 
@@ -184,10 +189,10 @@ export default function Explore() {
                                         <div className={styles.messages}>
                                             {messageList.map((msg) => (
                                                 <>
-                                                    {msg.authorId != user.id && (
+                                                    {msg.author.id != user.id && (
                                                         <MessageBubble showAvatar self={false} msg={msg} messageInit={messageInit}/>
                                                     )}
-                                                    {msg.authorId === user.id && (
+                                                    {msg.author.id === user.id && (
                                                         <MessageBubble showAvatar self msg={msg} messageInit={messageInit}/>
                                                     )}
                                                 </>

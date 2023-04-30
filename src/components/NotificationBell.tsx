@@ -39,7 +39,7 @@ const NotificationBell = () => {
     };
 
     const friendReqNotificationHandler = (notificationObj: Notification) => {
-        removeNotification( notificationObj);
+        removeNotification(notificationObj);
         Router.push({ pathname: '/app/friends', query: { requests: true } });
     };
     const clearNotification = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, notificationObj: Notification) => {

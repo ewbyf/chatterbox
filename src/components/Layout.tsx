@@ -1,6 +1,6 @@
 import Navbar from './Navbar';
 import Theme from './Theme';
-import React, { useEffect, useState, useContext, useMemo } from 'react';
+import React, { useEffect, useState, useContext, useMemo, useRef } from 'react';
 import NotificationBell from './NotificationBell';
 import Router, { useRouter } from 'next/router';
 import api from '@/services/axiosConfig';
@@ -26,7 +26,7 @@ interface IUserContext {
     friendStatus: Status | null;
     friendRequests: IRequest[];
     dmsUnread: number;
-    updateUser: () => void;
+    updateUser: (newUser: IUser) => void;
     removeNotification: (notificationObj: Notification) => void;
     removeFriendRequest: (id: number) => void;
     setDmsUnread: React.Dispatch<React.SetStateAction<number>>;
@@ -34,15 +34,15 @@ interface IUserContext {
 
 export const UserContext = React.createContext<IUserContext>({
     darkTheme: false,
-    user: { id: 0, username: '', token: '', avatar: '', email: '' },
+    user: { id: 0, username: '', token: '', avatar: '', email: '', settings: { notifications: 'ALL', lightmode: 0 }, status: 'ONLINE' },
     notificationsList: { unread: 0, notifications: [] },
     friendStatus: null,
     friendRequests: [],
     dmsUnread: 0,
     updateUser: () => {},
-    removeNotification: () => {},
+    removeNotification: async () => {},
     removeFriendRequest: () => {},
-    setDmsUnread: () => {},
+    setDmsUnread: () => {}
 });
 
 export const ThemeUpdateContext = React.createContext({
@@ -51,7 +51,15 @@ export const ThemeUpdateContext = React.createContext({
 
 export default function Layout({ children, theme }: IProps) {
     const [darkTheme, setDarkTheme] = useState<boolean>(theme);
-    const [user, setUser] = useState<IUser>({ id: 0, username: '', token: '', avatar: '', email: '' });
+    const [user, setUser] = useState<IUser>({
+        id: 0,
+        username: '',
+        token: '',
+        avatar: '',
+        email: '',
+        settings: { notifications: 'ALL', lightmode: 0 },
+        status: 'ONLINE'
+    });
     const [initializing, setInitializing] = useState<boolean>(true);
     const [noOverlap, setNoOverlap] = useState<boolean>(false);
     const mobile = useMediaQuery('(max-width: 800px)');
@@ -66,9 +74,9 @@ export default function Layout({ children, theme }: IProps) {
         const interval = setInterval(() => {
             socket?.send(JSON.stringify({ type: 'PING' }));
         }, 22000);
-      
-        return () => clearInterval(interval); 
-      }, [socket])
+
+        return () => clearInterval(interval);
+    }, [socket]);
 
     useEffect(() => {
         const changeStatus = async (e: MessageEvent) => {
@@ -79,13 +87,38 @@ export default function Layout({ children, theme }: IProps) {
                 setFriendStatus(obj);
             } else if (obj.type == 'FRIEND_REQ') {
                 setFriendRequests((friendRequests) => [...friendRequests, obj]);
+                setNotificationsList({ unread: notificationsList.unread + 1, notifications: [obj, ...notificationsList.notifications] });
             } else if (obj.type == 'NEW_FRIEND') {
-                setNotificationsList((notificationsList) => {
-                    return { unread: notificationsList.unread + 1, notifications: [obj, ...notificationsList.notifications] };
-                });
-            }
-            else if (obj.type == 'MESSAGE') {
-                setDmsUnread((dmsUnread) => dmsUnread + 1);
+                setNotificationsList({ unread: notificationsList.unread + 1, notifications: [obj, ...notificationsList.notifications] });
+            } else if (obj.type == 'MESSAGE') {
+                const index = notificationsList.notifications.findIndex((notification) => notification.channel?.id == obj.message.channel.id);
+                if (index > -1) {
+                    console.log(notificationsList.notifications);
+                    let temp = notificationsList.notifications;
+                    temp[index].count!++;
+                    setNotificationsList({ ...notificationsList, notifications: [...temp] });
+                } else {
+                    let temp = obj.message;
+                    temp.count = 1;
+                    setNotificationsList({ unread: notificationsList.unread + 1, notifications: [temp, ...notificationsList.notifications] });
+                }
+                if (obj.message.channel.type == 'direct') {
+                    setDmsUnread((dmsUnread) => dmsUnread + 1);
+                }
+            } else if (obj.type == 'CONNECT_SUCCESS') {
+                const userToken = localStorage.getItem('userToken');
+                if (userToken) {
+                    api.get(`/me?token=${userToken}`)
+                        .then((snap) => {
+                            setUser(snap.data);
+                        })
+                        .catch((err) => {
+                            localStorage.removeItem('userToken');
+                            router.push({
+                                pathname: '/login'
+                            });
+                        });
+                }
             }
         };
         socket?.addEventListener('message', changeStatus);
@@ -93,7 +126,7 @@ export default function Layout({ children, theme }: IProps) {
         return () => {
             socket?.removeEventListener('message', changeStatus);
         };
-    }, [socket]);
+    }, [socket, notificationsList]);
 
     useEffect(() => {
         const tabClose = () => {
@@ -133,28 +166,32 @@ export default function Layout({ children, theme }: IProps) {
                             pathname: '/login'
                         });
                     });
-                await api.get(`/friend-requests?token=${userToken}`)
-                .then((resp) => {
-                    setFriendRequests(resp.data);
-                })
-                .catch((err) => {
-                    localStorage.removeItem('userToken');
-                    router.push({
-                        pathname: '/login'
+                await api
+                    .get(`/friend-requests?token=${userToken}`)
+                    .then((resp) => {
+                        setFriendRequests(resp.data);
+                    })
+                    .catch((err) => {
+                        console.log(err);
                     });
-                });
-                await api.get(`/notifications?token=${userToken}`).then((resp) => {
-                    console.log(resp.data);
-                    setNotificationsList({ unread: resp.data.length, notifications: resp.data });
-                    openSocket();
-                    setInitializing(false);
-                })
-                .catch((err) => {
-                    localStorage.removeItem('userToken');
-                    router.push({
-                        pathname: '/login'
+                await api
+                    .get(`/notifications?token=${userToken}`)
+                    .then((resp) => {
+                        setNotificationsList({ unread: resp.data.length, notifications: resp.data.reverse() });
+                        openSocket();
+                    })
+                    .catch((err) => {
+                        console.log(err);
                     });
-                });
+                await api
+                    .get(`/unreads?token=${userToken}`)
+                    .then((resp) => {
+                        setDmsUnread(resp.data);
+                        setInitializing(false);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             } else {
                 router.push({
                     pathname: '/login'
@@ -173,11 +210,8 @@ export default function Layout({ children, theme }: IProps) {
         }
     }, [router]);
 
-    const updateUser = () => {
-        const userToken = localStorage.getItem('userToken');
-        api.get(`me?token=${userToken}`).then((snap) => {
-            setUser(snap.data);
-        });
+    const updateUser = (newUser: IUser) => {
+        setUser(newUser);
     };
 
     const toggleTheme = (val: string) => {
@@ -189,51 +223,59 @@ export default function Layout({ children, theme }: IProps) {
         setDarkTheme(!darkTheme);
     };
 
-    const removeNotification = (notificationObj: Notification) => {
-        setNotificationsList((notificationsList) => {return { unread: notificationsList.unread - 1, notifications: notificationsList.notifications.filter((notification) => notification != notificationObj) }});
+    const removeNotification = async (notificationObj: Notification) => {
+        setNotificationsList({
+            unread: notificationsList.unread - 1,
+            notifications: notificationsList.notifications.filter((notification) => notification != notificationObj)
+        });
         if (notificationObj.from) {
-            api.post('/clear-notification', { token: user.token, from: notificationObj.from.id})
-            .then((resp) => {
-                console.log(resp.data);
-            })
-            .catch((err) => {
-                console.log(err.response.data.message);
-            })
-        }
-        else if (notificationObj.friend || notificationObj.to) {
-            api.post('/clear-notification', { token: user.token, to: (notificationObj.friend ? notificationObj.friend!.id : notificationObj.to!.id)})
-            .then((resp) => {
-                console.log(resp.data);
-            })
-            .catch((err) => {
-                console.log(err.response.data.message);
-            })
-        }
-        else if (notificationObj.channel) {
-            api.post('/clear-notification', { token: user.token, channel: notificationObj.channel!.id})
-            .then((resp) => {
-                console.log(resp.data);
-            })
-            .catch((err) => {
-                console.log(err.response.data.message);
-            })
+            await api
+                .post('/clear-notification', { token: user.token, from: notificationObj.from.id })
+                .then((resp) => {
+                    console.log(resp.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data.message);
+                });
+        } else if (notificationObj.friend || notificationObj.to) {
+            await api
+                .post('/clear-notification', { token: user.token, to: notificationObj.friend ? notificationObj.friend!.id : notificationObj.to!.id })
+                .then((resp) => {
+                    console.log(resp.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data.message);
+                });
+        } else if (notificationObj.channel) {
+            await api
+                .post('/clear-notification', { token: user.token, channel: notificationObj.channel!.id })
+                .then(async (resp) => {
+                    console.log(resp.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data.message);
+                });
         }
     };
 
     const removeFriendRequest = (id: number) => {
+        const index = notificationsList.notifications.findIndex((noti) => noti.from?.id === id);
+        if (index > -1) {
+            removeNotification(notificationsList.notifications[index]);
+        }
         setFriendRequests(friendRequests.filter((request) => request.from.id != id));
     };
 
     if (initializing) {
         return (
-            <div style={{backgroundColor: darkTheme ? "#181818" : "white", height: "100vh"}}>
-                <Loading/>
+            <div style={{ backgroundColor: darkTheme ? '#181818' : 'white', height: '100vh' }}>
+                <Loading />
             </div>
         );
     }
 
     return (
-        <div style={{ display: 'flex', height: '100vh' }}>
+        <div style={{ display: 'flex', height: '100vh' }} >
             <UserContext.Provider
                 value={{
                     darkTheme,
@@ -245,7 +287,7 @@ export default function Layout({ children, theme }: IProps) {
                     updateUser,
                     removeNotification,
                     removeFriendRequest,
-                    setDmsUnread,
+                    setDmsUnread
                 }}
             >
                 <ThemeUpdateContext.Provider value={{ toggleTheme }}>

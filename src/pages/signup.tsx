@@ -73,10 +73,10 @@ export default function Signup() {
                     {error && <Alert severity="error" sx={{fontSize: mobile ? "13px" : "15px", alignItems: "center"}}>
                         {errorMessage}
                     </Alert>}
-                    <form onSubmit={(e) => e.preventDefault()}>
+                    <form onSubmit={(e) => { e.preventDefault(); signupHandler(); }}>
                         <label>
                             Username
-                            <input type="text" required placeholder='Enter username' value={username} onChange={(e) => {setUsername(e.target.value)}} />
+                            <input type="text" maxLength={12} required placeholder='Enter username' value={username} onChange={(e) => {setUsername(e.target.value)}} />
                         </label>
                         
                         <label>
@@ -86,7 +86,7 @@ export default function Signup() {
 
                         <label>
                             Password
-                            <input type="password" required placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} />
+                            <input type="password" required minLength={6} placeholder='Enter password' value={password} onChange={(e) => {setPassword(e.target.value)}} />
                         </label>
                         <FormControlLabel
                             style={{flexDirection: "row", marginTop: mobile ? "15px" : "20px", marginRight: "0px", marginBottom: "20px"}}
@@ -94,7 +94,7 @@ export default function Signup() {
                             label={<Typography style={{fontSize: mobile ? "13px" : "14px"}}>I agree to receive emails regarding my account details<span style={{color: "red"}}>*</span></Typography>}
                             labelPlacement="end"
                             />
-                        <Button dark="#ff5c5c" light="#ff5c5c" text="SIGN UP" submit onClick={signupHandler}/>
+                        <Button dark="#ff5c5c" light="#ff5c5c" text="SIGN UP" submit/>
                     </form>
                     <p className={styles.option}>Already have an account? <Link href="/login" className={styles.link}>Log in</Link></p>
                 </div>

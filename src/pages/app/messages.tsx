@@ -20,6 +20,7 @@ import MessageBubble from '@/components/MessageBubble';
 
 export default function Messages() {
     const [searchField, setSearchField] = useState<string>('');
+    const [originalFriends, setOriginalFriends] = useState<IFriend[]>([]);
     const [friends, setFriends] = useState<IFriend[]>([]);
     const [init, setInit] = useState<boolean>(true);
     const [selectedFriend, setSelectedFriend] = useState<IFriend>();
@@ -27,7 +28,7 @@ export default function Messages() {
     const [messageList, setMessageList] = useState<IMessage[]>([]);
     const [messageInit, setMessageInit] = useState<boolean>(true);
 
-    const { user, friendStatus, setDmsUnread, dmsUnread } = useContext(UserContext);
+    const { user, friendStatus, setDmsUnread, dmsUnread, removeNotification, notificationsList } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const mobile = useMediaQuery('(max-width: 800px)');
     const anchorRef = useRef<null | HTMLDivElement>(null);
@@ -42,13 +43,15 @@ export default function Messages() {
                 setDmsUnread((dmsUnread) => dmsUnread - 1);
             } else if (obj.type == 'MESSAGE') {
                 let index = friends.findIndex((friend) => friend.channelId == obj.message.channelId);
-                friends[index].unread++;
-                if (index != 0) {
-                    let temp = friends[index];
-                    friends.splice(index, 1);
-                    friends.unshift(temp);
+                if (index > -1) {
+                    friends[index].unread++;
+                    if (index != 0) {
+                        let temp = friends[index];
+                        friends.splice(index, 1);
+                        friends.unshift(temp);
+                    }
+                    setFriends([...friends]);
                 }
-                setFriends([...friends]);
             }
         };
         socket?.addEventListener('message', newMessage);
@@ -137,6 +140,9 @@ export default function Messages() {
                 let temp = friends;
                 temp[index].unread = 0;
                 setFriends([...temp]);
+                const notificationIndex = notificationsList.notifications.findIndex((notification => notification.channel?.id == temp[index].channelId))
+                if (notificationIndex > -1)
+                    removeNotification(notificationsList.notifications[notificationIndex]);
             }
             getMessages(friend.channelId);
         }
@@ -205,11 +211,11 @@ export default function Messages() {
                                 )}
                                 <div className={styles.addFriend} style={{ width: '100%' }}>
                                     <div style={{display: "flex", alignItems: "center", gap: "10px", width: "100%"}}>
-                                        <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)} />
+                                        <SearchBar value={searchField} placeholder="Search by username" onChange={(val) => setSearchField(val)} />
                                     </div>
                                     {friends.length > 0 && (
                                         <>
-                                            {friends.map((friend) => (
+                                            {friends.slice().filter(friend => friend.username.startsWith(searchField)).map((friend) => (
                                                 <>
                                                     <FriendBox
                                                         unread={friend.unread}

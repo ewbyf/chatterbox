@@ -31,9 +31,6 @@ export default function Account() {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const mobile = useMediaQuery('(max-width: 700px)');
 
-    // const [notificationsVal, setNotificationsVal] = useState<INotificationSettings>('ALL');
-    // const [statusVal, setStatusVal] = useState<IStatus>('ONLINE');
-
     useEffect(() => {
         setUsername(user.username);
     }, [user.username])
@@ -44,7 +41,7 @@ export default function Account() {
         formData.append("file", avatar);
         api.patch("/set-avatar", formData)
         .then((resp) => {
-            updateUser();
+            updateUser({...user, avatar: resp.data});
         })
         .catch((err) => {
             console.log(err.response.data.message);
@@ -56,7 +53,7 @@ export default function Account() {
             token: user.token
         })
         .then((resp) => {
-            updateUser();
+            updateUser({...user, avatar: resp.data.avatar});
         })
         .catch((err) => {
             console.log(err.response.data.message);
@@ -64,31 +61,24 @@ export default function Account() {
     }
 
     const changeNotifications = (val: string) => {
-        let notifications = '';
-        if (val === 'all') {
-            notifications = 'ALL';
-        }
-        else if (val === 'messages') {
-            
-        }
-        else if (val === 'friends') {
-            
-        }
-        else if (val === 'none') {
-            
-        }
+        api.patch('/me', { token: user.token, notifications: val })
+        .then((resp) => {
+            updateUser(resp.data)
+        })
     }
 
     const changeStatus = (val: string) => {
-        console.log(val)
+        api.patch('/me', { token: user.token, status: val })
+        .then((resp) => {
+            updateUser(resp.data)
+        })
     }
 
     const saveUsername = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
         e.stopPropagation();
-        const token = localStorage.getItem('userToken');
-        api.patch(`/me`, { token, username })
+        api.patch(`/me`, { token: user.token, username })
         .then((resp) => {
-            updateUser();
+            updateUser({...user, username: resp.data.username});
             setError(false);
         })
         .catch((err) => {
@@ -129,11 +119,11 @@ export default function Account() {
                 </div>
 
                 <div className={styles.section} style={{gap: "20px"}}>
-                    <Dropdown title="NOTIFICATIONS" value={darkTheme ? "all" : "all"} onChange={(e) => changeNotifications(e.target.value)}>
-                        [<MenuItem value="all">All Notifications</MenuItem>, <MenuItem value="messages">Only Messages</MenuItem>, <MenuItem value="friends">Only Friend Requests</MenuItem>, <MenuItem value="none">None</MenuItem>]
+                    <Dropdown title="NOTIFICATIONS" value={user.settings.notifications} onChange={(e) => changeNotifications(e.target.value)}>
+                        [<MenuItem value="ALL">All Notifications</MenuItem>, <MenuItem value="MESSAGES">Only Messages</MenuItem>, <MenuItem value="FRIEND_REQ">Only Friend Requests</MenuItem>, <MenuItem value="NONE">None</MenuItem>]
                     </Dropdown>
-                    <Dropdown title="STATUS" value={darkTheme ? "online" : "online"} onChange={(e) => changeStatus(e.target.value)}>
-                        [<MenuItem value="online">Online</MenuItem>, <MenuItem value="dnd">Do Not Disturb</MenuItem>,<MenuItem value="idle">Idle</MenuItem>,<MenuItem value="invisible">Invisible</MenuItem>]
+                    <Dropdown title="STATUS" value={user.status} onChange={(e) => changeStatus(e.target.value)}>
+                        [<MenuItem value="ONLINE">Online</MenuItem>, <MenuItem value="DO_NOT_DISTURB">Do Not Disturb</MenuItem>,<MenuItem value="IDLE">Idle</MenuItem>,<MenuItem value={user.status == "OFFLINE" ? "OFFLINE" : "INVISIBLE"}>Invisible</MenuItem>]
                     </Dropdown>
                     <ThemeUpdateContext.Consumer>
                     {({ toggleTheme }) => (

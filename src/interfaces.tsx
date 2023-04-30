@@ -30,12 +30,19 @@ export interface IRequest {
     };
 }
 
+interface ISettings {
+    notifications: string;
+    lightmode: number;
+}
+
 export interface IUser {
     id: number;
     username: string;
     token: string;
     avatar: string;
     email: string;
+    settings: ISettings;
+    status: IStatus;
 }
 
 export interface IChannel {

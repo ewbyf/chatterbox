@@ -15,7 +15,7 @@ import { useContext } from 'react'
 const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
     const router = useRouter();
     const mobile = useMediaQuery('(max-width: 800px)');
-    const { friendRequests, dmsUnread, notificationsList } = useContext(UserContext);
+    const { friendRequests, dmsUnread, notificationsList, user } = useContext(UserContext);
 
     if (mobile) {
         return (
@@ -126,7 +126,7 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                         </p>
                     </Link>
                     <Link href="/app/account" className={`${styles.section} ${darkTheme ? styles.dark : styles.light} ${styles.settings}`}>
-                        <Status status="ONLINE" bg={darkTheme ? '#141414' : '#ececec'}>
+                        <Status status={user.status} bg={darkTheme ? '#141414' : '#ececec'}>
                             <Avatar sx={{ width: 40, height: 40 }} src={user.avatar} />
                         </Status>
                         <p

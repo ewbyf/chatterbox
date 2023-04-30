@@ -44,6 +44,7 @@
     height: 65px;
     padding: 15px;
     gap: 10px;
+    flex-shrink: 0;
 }
 
 

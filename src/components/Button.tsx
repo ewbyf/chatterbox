@@ -8,7 +8,7 @@ interface Props {
     text: string;
     type?: string;
     submit?: boolean;
-    onClick: (e?: any) => void;
+    onClick?: (e?: any) => void;
 }
 
 const Button = ({ dark, light, icon, text, type, submit, onClick }: Props) => {
