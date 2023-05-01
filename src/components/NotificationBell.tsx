@@ -28,9 +28,9 @@ const NotificationBell = () => {
         setAnchorEl(null);
     };
 
-    const messageNotificiationHandler = (id: number, notificationObj: Notification) => {
+    const messageNotificiationHandler = (id: number, notificationObj: Notification, type: string) => {
         removeNotification(notificationObj);
-        Router.push({ pathname: '/app/messages', query: { selected: id.toString() } });
+        Router.push({ pathname: type === "direct" ? '/app/messages' : '/app/explore', query: { selected: id.toString() } });
     };
 
     const friendNotificationHandler = (notificationObj: Notification) => {
@@ -193,16 +193,17 @@ const NotificationBell = () => {
                                         <div key={i}>
                                             <Divider sx={{ bgcolor: darkTheme ? '#2E2E2E' : '', margin: 0 }} />
                                             <MenuItem
-                                                onClick={() => messageNotificiationHandler(notification.channel!.id, notification)}
+                                                onClick={() => messageNotificiationHandler(notification.channel!.id, notification, notification.channel!.type)}
                                                 sx={{
                                                     '&:hover': { backgroundColor: darkTheme ? '#181818' : '' }
                                                 }}
                                                 className={styles.menuItem}
                                             >
-                                                <IoChatbubbleEllipsesOutline color='gray' size={32} />
+                                                {notification.channel.type === "direct" && <IoChatbubbleEllipsesOutline color='gray' size={32} />}
+                                                {notification.channel.type === "public" && <IoCompassOutline color='gray' size={32} />}
                                                 <div>
                                                   <div style={{display: "flex", alignItems: 'center'}}>
-                                                    <p style={{ fontWeight: 'bold' }}>{notification.channel!.name.substring(0, notification.channel!.name.indexOf('-'))}</p>
+                                                    <p style={{ fontWeight: 'bold' }}>{notification.channel.type === "direct" ? notification.channel!.name.substring(0, notification.channel!.name.indexOf('-')) : notification.channel!.name}</p>
                                                   </div>
                                                     <p style={{ fontSize: '14px' }}>You have {notification.count} unread messages</p>
                                                 </div>

@@ -15,7 +15,6 @@ import ChannelBox from '@/components/ChannelBox';
 import MessageBubble from '@/components/MessageBubble';
 
 export default function Explore() {
-    const [searchField, setSearchField] = useState<string>('');
     const [channels, setChannels] = useState<IChannel[]>([]);
     const [init, setInit] = useState<boolean>(true);
     const [selectedChannel, setSelectedChannel] = useState<IChannel>();
@@ -45,6 +44,13 @@ export default function Explore() {
     }, [socket, selectedChannel]);
 
     useEffect(() => {
+        const index = notificationsList.notifications.findIndex((noti) => noti.channel?.id == selectedChannel?.id);
+        if (index > -1) {
+            removeNotification(notificationsList.notifications[index]);
+        }
+    }, [notificationsList]);
+
+    useEffect(() => {
         getChannels();
     }, []);
 
@@ -53,14 +59,14 @@ export default function Explore() {
     }, [messageList]);
 
     const getChannels = () => {
-        console.log('getting channels')
-         api.get(`/channels?token=${user.token}`)
-            .then(async(resp) => {
+        api.get(`/channels?token=${user.token}`)
+            .then(async (resp) => {
                 setChannels(resp.data);
-                console.log('a');
                 if (resp.data.length > 0) {
-                  if (!mobile) {
-                         selectChannel(resp.data[0]);
+                    if (router.query.selected) {
+                        selectChannel(resp.data.find((channel: IChannel) => channel.id.toString() === router.query.selected));
+                    } else if (!mobile) {
+                        selectChannel(resp.data[0]);
                     }
                 }
                 setInit(false);
@@ -106,10 +112,8 @@ export default function Explore() {
         if (channel) {
             setSelectedChannel(channel);
             getMessages(channel.id);
-            const notificationIndex = notificationsList.notifications.findIndex((notification => notification.channel?.id == channel.id))
-            console.log(notificationsList.notifications)
-            if (notificationIndex > -1)
-                removeNotification(notificationsList.notifications[notificationIndex]);
+            const notificationIndex = notificationsList.notifications.findIndex((notification) => notification.channel?.id == channel.id);
+            if (notificationIndex > -1) removeNotification(notificationsList.notifications[notificationIndex]);
         }
     };
 
@@ -189,12 +193,8 @@ export default function Explore() {
                                         <div className={styles.messages}>
                                             {messageList.map((msg) => (
                                                 <>
-                                                    {msg.author.id != user.id && (
-                                                        <MessageBubble showAvatar self={false} msg={msg} messageInit={messageInit}/>
-                                                    )}
-                                                    {msg.author.id === user.id && (
-                                                        <MessageBubble showAvatar self msg={msg} messageInit={messageInit}/>
-                                                    )}
+                                                    {msg.author.id != user.id && <MessageBubble showAvatar self={false} msg={msg} messageInit={messageInit} />}
+                                                    {msg.author.id === user.id && <MessageBubble showAvatar self msg={msg} messageInit={messageInit} />}
                                                 </>
                                             ))}
                                             <div ref={anchorRef} />

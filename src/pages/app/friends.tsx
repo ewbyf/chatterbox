@@ -25,6 +25,7 @@ import { SocketContext } from '../_app';
 
 export default function Friends() {
     const [searchField, setSearchField] = useState<string>('');
+    const [friendField, setFriendField] = useState<string>('');
     const [friendsSelected, setFriendsSelected] = useState<number>(1);
     const [friends, setFriends] = useState<IFriend[]>([]);
     const [friendsShown, setFriendsShown] = useState<IFriend[]>([]);
@@ -79,14 +80,14 @@ export default function Friends() {
             });
     };
 
-    const addFriend = (field: string) => {
-        if (field.charAt(0) === '#') {
-            field = field.replace('#', '');
+    const addFriend = () => {
+        if (friendField.charAt(0) === '#') {
+            const field = friendField.replace('#', '');
             api.post('/request-friend', { token: user.token, id: Number(field) })
                 .then((resp) => {
                     setSuccess(true);
                     setError(false);
-                    setSearchField('');
+                    setFriendField('');
                 })
                 .catch((err) => {
                     setErrorMessage(err.response.data.message);
@@ -94,11 +95,12 @@ export default function Friends() {
                     setSuccess(false);
                 });
         } else {
-            api.post('/request-friend', { token: user.token, username: field })
+            console.log(friendField)
+            api.post('/request-friend', { token: user.token, username: friendField })
                 .then((resp) => {
                     setSuccess(true);
                     setError(false);
-                    setSearchField('');
+                    setFriendField('');
                 })
                 .catch((err) => {
                     setErrorMessage(err.response.data.message);
@@ -143,8 +145,11 @@ export default function Friends() {
         })
     }
 
-    const searchFriends = (val: string) => {
-        console.log(val);
+    const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addFriend();
+        }
     };
 
     const filterFriends = (val: 'all' | 'online' | 'blocked', friends: IFriend[]) => {
@@ -308,13 +313,13 @@ export default function Friends() {
                                     <p className={styles.sectionTitle}>FIND YOUR FRIENDS</p>
                                     {success && <p style={{ color: '#5CC78E', fontWeight: 'bold', fontSize: '17px' }}>Friend request succesfully sent!</p>}
                                     {error && <p style={{ color: '#ff5c5c', fontWeight: 'bold', fontSize: '17px' }}>{errorMessage}</p>}
-                                    <SearchBar value={searchField} placeholder="Enter username or #ID" onChange={(val) => setSearchField(val)} />
+                                    <SearchBar value={friendField} placeholder="Enter username or #ID" onChange={(val) => setFriendField(val)} onKeyDown={(e) => onKeyDownHandler(e)}/>
                                     <Button
                                         text="ADD FRIEND"
                                         dark="#ff5c5c"
                                         light="#ff5c5c"
                                         icon={<PersonAddIcon fontSize="small" sx={{ color: darkTheme ? 'white' : 'black' }} />}
-                                        onClick={() => addFriend(searchField)}
+                                        onClick={addFriend}
                                     />
                                     <p className={styles.sectionTitle} style={{ marginTop: '20px' }}>
                                         RECEIVED REQUESTS

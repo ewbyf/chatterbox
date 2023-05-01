@@ -10,7 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import { IoNotifications } from 'react-icons/io5';
 import Status from './Status';
 import NotificationBadge from './NotificationBadge';
-import { useContext } from 'react'
+import { useContext } from 'react';
 
 const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
     const router = useRouter();
@@ -33,14 +33,30 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                         </Link>
                         <Link href="/app/friends" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                             <div style={{ display: 'flex' }}>
-                                <NotificationBadge count={friendRequests.length}>
+                                <NotificationBadge
+                                    count={
+                                        user.status !== 'DO_NOT_DISTURB' &&
+                                        user.settings.notifications !== 'NONE' &&
+                                        user.settings.notifications !== 'MESSAGES'
+                                            ? friendRequests.length
+                                            : 0
+                                    }
+                                >
                                     <IoPeopleOutline color={router.pathname.startsWith(`/app/friends`) ? '#ff5c5c' : 'gray'} size={32.5} />
                                 </NotificationBadge>
                             </div>
                         </Link>
                         <Link href="/app/messages" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                             <div style={{ display: 'flex' }}>
-                                <NotificationBadge count={dmsUnread}>
+                                <NotificationBadge
+                                    count={
+                                        user.status !== 'DO_NOT_DISTURB' &&
+                                        user.settings.notifications !== 'NONE' &&
+                                        user.settings.notifications !== 'FRIEND_REQ'
+                                            ? dmsUnread
+                                            : 0
+                                    }
+                                >
                                     <IoChatbubbleEllipsesOutline color={router.pathname.startsWith(`/app/messages`) ? '#ff5c5c' : 'gray'} size={32.5} />
                                 </NotificationBadge>
                             </div>
@@ -97,7 +113,13 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                     </Link>
                     <Link href="/app/friends" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                         <div style={{ display: 'flex' }}>
-                            <NotificationBadge count={friendRequests.length}>
+                            <NotificationBadge
+                                count={
+                                    user.status !== 'DO_NOT_DISTURB' && user.settings.notifications !== 'NONE' && user.settings.notifications !== 'MESSAGES'
+                                        ? friendRequests.length
+                                        : 0
+                                }
+                            >
                                 <IoPeopleOutline color={router.pathname.startsWith(`/app/friends`) ? '#ff5c5c' : 'gray'} size={40} />
                             </NotificationBadge>
                         </div>
@@ -112,7 +134,13 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                     </Link>
                     <Link href="/app/messages" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
                         <div style={{ display: 'flex' }}>
-                            <NotificationBadge count={dmsUnread}>
+                            <NotificationBadge
+                                count={
+                                    user.status !== 'DO_NOT_DISTURB' && user.settings.notifications !== 'NONE' && user.settings.notifications !== 'FRIEND_REQ'
+                                        ? dmsUnread
+                                        : 0
+                                }
+                            >
                                 <IoChatbubbleEllipsesOutline color={router.pathname.startsWith(`/app/messages`) ? '#ff5c5c' : 'gray'} size={40} />
                             </NotificationBadge>
                         </div>

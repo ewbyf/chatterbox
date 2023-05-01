@@ -62,6 +62,13 @@ export default function Messages() {
     }, [socket, selectedFriend]);
 
     useEffect(() => {
+        const index = notificationsList.notifications.findIndex(noti => noti.channel?.id == selectedFriend?.channelId);
+        if (index > -1) {
+            removeNotification(notificationsList.notifications[index]);
+        }
+    }, [notificationsList]);
+
+    useEffect(() => {
         if (friendStatus) statusChangeMessages(friends, user, setFriends, friendStatus, selectedFriend, setSelectedFriend, router.query.selected, mobile);
     }, [socket, friendStatus]);
 
@@ -124,7 +131,6 @@ export default function Messages() {
         })
             .then((resp) => {
                 setMessageList(resp.data);
-                console.log(resp.data)
             })
             .catch((err) => {
                 console.log(err.response.data.message);
@@ -256,10 +262,10 @@ export default function Messages() {
                                         <div className={styles.messages}>
                                             {messageList.map((msg) => (
                                                <>
-                                               {msg.authorId != user.id && (
+                                               {msg.author.id != user.id && (
                                                    <MessageBubble self={false} msg={msg} messageInit={messageInit}/>
                                                )}
-                                               {msg.authorId === user.id && (
+                                               {msg.author.id === user.id && (
                                                    <MessageBubble self msg={msg} messageInit={messageInit}/>
                                                )}
                                             </>

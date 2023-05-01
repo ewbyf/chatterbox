@@ -6,9 +6,10 @@ interface Props {
     value: string;
     placeholder?: string;
     onChange: (value: string) => any,
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => any,
 }
 
-const SearchBar = ({ value, placeholder, onChange }: Props) => {
+const SearchBar = ({ value, placeholder, onChange, onKeyDown }: Props) => {
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
     };
@@ -24,6 +25,7 @@ const SearchBar = ({ value, placeholder, onChange }: Props) => {
                         value={value}
                         className={styles.input}
                         onChange={changeHandler}
+                        onKeyDown={onKeyDown ? (e) => onKeyDown(e) : undefined}
                         style={darkTheme ? { color: "white" } : { color: "black" }}
                     />           
                 </label>

@@ -31,7 +31,7 @@ export interface IRequest {
 }
 
 interface ISettings {
-    notifications: string;
+    notifications: INotificationSettings;
     lightmode: number;
 }
 
