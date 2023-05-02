@@ -2,7 +2,7 @@ import Navbar from './Navbar';
 import Theme from './Theme';
 import React, { useEffect, useState, useContext, useMemo, useRef } from 'react';
 import NotificationBell from './NotificationBell';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import api from '@/services/axiosConfig';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { SocketContext } from '@/pages/_app';
@@ -87,12 +87,22 @@ export default function Layout({ children, theme }: IProps) {
                 setFriendStatus(obj);
             } else if (obj.type == 'FRIEND_REQ') {
                 setFriendRequests((friendRequests) => [...friendRequests, obj]);
-                if (user.status !== "DO_NOT_DISTURB" && (user.settings.notifications === "ALL" || user.settings.notifications === "FRIEND_REQ")) {
+                if (user.status !== 'DO_NOT_DISTURB' && (user.settings.notifications === 'ALL' || user.settings.notifications === 'FRIEND_REQ')) {
                     setNotificationsList({ unread: notificationsList.unread + 1, notifications: [obj, ...notificationsList.notifications] });
                 }
-            } else if (obj.type == 'NEW_FRIEND' && user.status !== "DO_NOT_DISTURB" && user.settings.notifications !== "NONE" && user.settings.notifications !== "MESSAGES") {
+            } else if (
+                obj.type == 'NEW_FRIEND' &&
+                user.status !== 'DO_NOT_DISTURB' &&
+                user.settings.notifications !== 'NONE' &&
+                user.settings.notifications !== 'MESSAGES'
+            ) {
                 setNotificationsList({ unread: notificationsList.unread + 1, notifications: [obj, ...notificationsList.notifications] });
-            } else if (obj.type == 'MESSAGE' && user.status !== "DO_NOT_DISTURB" && user.settings.notifications !== "NONE" && user.settings.notifications !== "FRIEND_REQ") {
+            } else if (
+                obj.type == 'MESSAGE' &&
+                user.status !== 'DO_NOT_DISTURB' &&
+                user.settings.notifications !== 'NONE' &&
+                user.settings.notifications !== 'FRIEND_REQ'
+            ) {
                 const index = notificationsList.notifications.findIndex((notification) => notification.channel?.id == obj.message.channel.id);
                 if (index > -1) {
                     let temp = notificationsList.notifications;
@@ -276,7 +286,7 @@ export default function Layout({ children, theme }: IProps) {
     }
 
     return (
-        <div style={{ display: 'flex', height: '100vh' }} >
+        <div style={{ display: 'flex', height: '100vh' }}>
             <UserContext.Provider
                 value={{
                     darkTheme,

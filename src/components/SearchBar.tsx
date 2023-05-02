@@ -1,12 +1,12 @@
-import styles from "@/styles/components/SearchBar.module.css";
-import { UserContext } from "@/components/Layout";
+import styles from '@/styles/components/SearchBar.module.css';
+import { UserContext } from '@/components/Layout';
 import SearchIcon from '@mui/icons-material/SearchRounded';
 
 interface Props {
     value: string;
     placeholder?: string;
-    onChange: (value: string) => any,
-    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => any,
+    onChange: (value: string) => any;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => any;
 }
 
 const SearchBar = ({ value, placeholder, onChange, onKeyDown }: Props) => {
@@ -26,12 +26,12 @@ const SearchBar = ({ value, placeholder, onChange, onKeyDown }: Props) => {
                         className={styles.input}
                         onChange={changeHandler}
                         onKeyDown={onKeyDown ? (e) => onKeyDown(e) : undefined}
-                        style={darkTheme ? { color: "white" } : { color: "black" }}
-                    />           
+                        style={darkTheme ? { color: 'white' } : { color: 'black' }}
+                    />
                 </label>
             )}
         </UserContext.Consumer>
-    ); 
-}
- 
+    );
+};
+
 export default SearchBar;

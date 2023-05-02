@@ -95,7 +95,7 @@ export default function Friends() {
                     setSuccess(false);
                 });
         } else {
-            console.log(friendField)
+            console.log(friendField);
             api.post('/request-friend', { token: user.token, username: friendField })
                 .then((resp) => {
                     setSuccess(true);
@@ -131,19 +131,22 @@ export default function Friends() {
                 console.log(err.response.data.message);
             });
     };
-    
+
     const block = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => {
         e.stopPropagation();
         const token = localStorage.getItem('userToken');
-        api.post('/block', {token, id})
-        .then((resp) => {
-            setFriends(friends.filter((friend) => friend.id != id));
-            filterFriends(dropdown, friends.filter((friend) => friend.id != id));
-        })
-        .catch((err) => {
-            console.log(err.response.data.message);
-        })
-    }
+        api.post('/block', { token, id })
+            .then((resp) => {
+                setFriends(friends.filter((friend) => friend.id != id));
+                filterFriends(
+                    dropdown,
+                    friends.filter((friend) => friend.id != id)
+                );
+            })
+            .catch((err) => {
+                console.log(err.response.data.message);
+            });
+    };
 
     const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -155,29 +158,24 @@ export default function Friends() {
     const filterFriends = (val: 'all' | 'online' | 'blocked', friends: IFriend[]) => {
         setDropdown(val);
         if (val == 'online') {
-            setFriendsShown(friends.filter(friend => friend.status == 'ONLINE'));
-        }
-        else if (val == 'all') {
+            setFriendsShown(friends.filter((friend) => friend.status == 'ONLINE'));
+        } else if (val == 'all') {
             setFriendsShown([...friends]);
-        }
-        else {
+        } else {
             const token = localStorage.getItem('userToken');
-            api.get(`/blocked?token=${token}`)
-            .then((resp) => {
+            api.get(`/blocked?token=${token}`).then((resp) => {
                 setFriendsShown([...resp.data]);
-            })
+            });
         }
-    }
+    };
 
     const tabChange = (event: React.SyntheticEvent, newValue: number) => {
         setFriendsSelected(newValue);
     };
 
     if (init) {
-        return (
-            <Loading/>
-        )
-    };
+        return <Loading />;
+    }
 
     return (
         <>
@@ -218,7 +216,11 @@ export default function Friends() {
                                     />
                                     <Tab
                                         value={2}
-                                        label={<NotificationBadge count={friendRequests.length} small rectangle>REQUESTS</NotificationBadge>}
+                                        label={
+                                            <NotificationBadge count={friendRequests.length} small rectangle>
+                                                REQUESTS
+                                            </NotificationBadge>
+                                        }
                                         sx={{
                                             color: 'gray',
                                             fontFamily: 'MarkPro',
@@ -265,7 +267,11 @@ export default function Friends() {
                                     />
                                     <Tab
                                         value={2}
-                                        label={<NotificationBadge count={friendRequests.length} rectangle>REQUESTS</NotificationBadge>}
+                                        label={
+                                            <NotificationBadge count={friendRequests.length} rectangle>
+                                                REQUESTS
+                                            </NotificationBadge>
+                                        }
                                         sx={{
                                             color: 'gray',
                                             fontFamily: 'MarkPro',
@@ -289,22 +295,25 @@ export default function Friends() {
                                         [<MenuItem value="all">All</MenuItem>, <MenuItem value="online">Online</MenuItem>,{' '}
                                         <MenuItem value="blocked">Blocked</MenuItem>]
                                     </Dropdown>
-                                    <SearchBar value={searchField} placeholder="Search by username" onChange={(val) => setSearchField(val)}/>
-                                    <div style={{marginTop: '20px', display: "flex", justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <SearchBar value={searchField} placeholder="Search by username" onChange={(val) => setSearchField(val)} />
+                                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <p className={styles.sectionTitle}>
                                             {dropdown.toUpperCase()} - {friendsShown.length}
                                         </p>
-                                        <Filter friendsList={friendsShown} setFriendsList={setFriendsShown} dropdownVal={dropdown}/>
+                                        <Filter friendsList={friendsShown} setFriendsList={setFriendsShown} dropdownVal={dropdown} />
                                     </div>
-                                    {friendsShown.slice().filter(friend => friend.username.startsWith(searchField)).map((friend) => (
-                                        <FriendBox
-                                            friend={friend}
-                                            onClick={() => Router.push({ pathname: '/app/messages', query: { selected: friend.channelId.toString() } })}
-                                            key={friend.id}
-                                            blockable
-                                            block={(e) => block(e, friend.id)}
-                                        />
-                                    ))}
+                                    {friendsShown
+                                        .slice()
+                                        .filter((friend) => friend.username.startsWith(searchField))
+                                        .map((friend) => (
+                                            <FriendBox
+                                                friend={friend}
+                                                onClick={() => Router.push({ pathname: '/app/messages', query: { selected: friend.channelId.toString() } })}
+                                                key={friend.id}
+                                                blockable
+                                                block={(e) => block(e, friend.id)}
+                                            />
+                                        ))}
                                 </div>
                             )}
 
@@ -313,7 +322,12 @@ export default function Friends() {
                                     <p className={styles.sectionTitle}>FIND YOUR FRIENDS</p>
                                     {success && <p style={{ color: '#5CC78E', fontWeight: 'bold', fontSize: '17px' }}>Friend request succesfully sent!</p>}
                                     {error && <p style={{ color: '#ff5c5c', fontWeight: 'bold', fontSize: '17px' }}>{errorMessage}</p>}
-                                    <SearchBar value={friendField} placeholder="Enter username or #ID" onChange={(val) => setFriendField(val)} onKeyDown={(e) => onKeyDownHandler(e)}/>
+                                    <SearchBar
+                                        value={friendField}
+                                        placeholder="Enter username or #ID"
+                                        onChange={(val) => setFriendField(val)}
+                                        onKeyDown={(e) => onKeyDownHandler(e)}
+                                    />
                                     <Button
                                         text="ADD FRIEND"
                                         dark="#ff5c5c"

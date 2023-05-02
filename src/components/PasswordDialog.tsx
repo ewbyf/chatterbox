@@ -5,15 +5,12 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Divider from '@mui/material/Divider';
-import Router from 'next/router';
 import styles from '@/styles/components/LogoutDialog.module.css';
-import { SocketContext } from '../pages/_app';
 import { useContext } from 'react';
-import TextField from '@mui/material/TextField';
 import DialogContentText from '@mui/material/DialogContentText';
 import api from '@/services/axiosConfig';
 import { useState } from 'react';
-import { UserContext } from "@/components/Layout";
+import { UserContext } from '@/components/Layout';
 
 interface Props {
     open: boolean;
@@ -23,16 +20,14 @@ interface Props {
 const PasswordDialog = ({ open, setOpen }: Props) => {
     const { user } = useContext(UserContext);
     const [email, setEmail] = useState<string>('');
-    const [error, setError] = useState<boolean>(false);
 
     const sendReset = () => {
         api.post('/reset-password', {
             email: user.email
-        })
-        .then((resp) => {
+        }).then((resp) => {
             console.log(resp);
             close();
-        })
+        });
     };
 
     const close = () => {

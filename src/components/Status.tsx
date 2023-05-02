@@ -1,46 +1,45 @@
-import { Badge } from "@mui/material";
-import { useEffect, useState } from "react";
-import { IStatus } from "@/interfaces";
+import { Badge } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { IStatus } from '@/interfaces';
 
 interface Props {
     children?: JSX.Element;
     status: IStatus;
     bg: string;
-  }
+}
 
 const Status = ({ children, status, bg }: Props) => {
     const [color, setColor] = useState<string>('gray');
 
     useEffect(() => {
-        switch(status) {
-            case "ONLINE":
-                setColor("#05B770");
+        switch (status) {
+            case 'ONLINE':
+                setColor('#05B770');
                 break;
-            case "DO_NOT_DISTURB":
-                setColor("#ff5c5c");
+            case 'DO_NOT_DISTURB':
+                setColor('#ff5c5c');
                 break;
-            case "IDLE":
-                setColor("#F7C600");
+            case 'IDLE':
+                setColor('#F7C600');
                 break;
             default:
-                setColor("gray");
+                setColor('gray');
                 break;
         }
-    }, [status])
-
+    }, [status]);
 
     return (
         <Badge
             overlap="circular"
-            badgeContent=" "  
+            badgeContent=" "
             anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right',
+                horizontal: 'right'
             }}
             sx={{
                 '.MuiBadge-badge': {
-                    height: "15px",
-                    width: "15px",
+                    height: '15px',
+                    width: '15px',
                     minWidth: 0,
                     padding: 0,
                     backgroundColor: color,
@@ -51,6 +50,6 @@ const Status = ({ children, status, bg }: Props) => {
             {children}
         </Badge>
     );
-}
- 
+};
+
 export default Status;

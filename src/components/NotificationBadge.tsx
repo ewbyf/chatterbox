@@ -11,7 +11,7 @@ const NotificationBadge = ({ count, small, rectangle, children }: Props) => {
     if (small) {
         return (
             <Badge
-                overlap={rectangle ? "rectangular" : "circular"}
+                overlap={rectangle ? 'rectangular' : 'circular'}
                 badgeContent={count}
                 sx={{
                     '.MuiBadge-badge': {
@@ -32,7 +32,7 @@ const NotificationBadge = ({ count, small, rectangle, children }: Props) => {
     }
     return (
         <Badge
-            overlap={rectangle ? "rectangular" : "circular"}
+            overlap={rectangle ? 'rectangular' : 'circular'}
             badgeContent={count}
             sx={{
                 '.MuiBadge-badge': {

@@ -1,5 +1,5 @@
-import styles from "@/styles/components/TextInput.module.css";
-import { UserContext } from "@/components/Layout";
+import styles from '@/styles/components/TextInput.module.css';
+import { UserContext } from '@/components/Layout';
 
 interface Props {
     label: string;
@@ -9,34 +9,36 @@ interface Props {
     password?: boolean;
     children?: JSX.Element;
     maxLength?: number;
-    onChange?: (value: string) => any,
+    onChange?: (value: string) => any;
 }
 
 const TextInput = ({ label, value, disabled, placeholder, password, children, maxLength, onChange }: Props) => {
-    const changeHandler = !onChange ? undefined : (event: React.ChangeEvent<HTMLInputElement>) => {
-        onChange(event.target.value);
-    };
+    const changeHandler = !onChange
+        ? undefined
+        : (event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange(event.target.value);
+          };
 
     return (
         <UserContext.Consumer>
             {({ darkTheme }) => (
-                <label className={`${styles.box} ${!disabled ? (darkTheme ? styles.darkEditable : styles.lightEditable) : ""}`}>
+                <label className={`${styles.box} ${!disabled ? (darkTheme ? styles.darkEditable : styles.lightEditable) : ''}`}>
                     {label}
                     <input
                         disabled={disabled}
                         placeholder={placeholder}
-                        type={password ? "password" : ""}
+                        type={password ? 'password' : ''}
                         value={value}
                         className={styles.input}
                         onChange={changeHandler}
                         maxLength={maxLength}
-                        style={darkTheme ? { color: "white" } : { color: "black" }}
+                        style={darkTheme ? { color: 'white' } : { color: 'black' }}
                     />
-                    {children}              
+                    {children}
                 </label>
             )}
         </UserContext.Consumer>
-    ); 
-}
- 
+    );
+};
+
 export default TextInput;

@@ -1,6 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import Router from 'next/router';
 import styles from '@/styles/components/NotificationBell.module.css';
 import { UserContext } from '@/components/Layout';
@@ -26,7 +26,7 @@ const Notifications = () => {
     }, []);
 
     const messageNotificiationHandler = (id: number, notificationObj: Notification, type: string) => {
-        Router.push({ pathname: type === "direct" ? '/app/messages' : '/app/explore', query: { selected: id.toString() } });
+        Router.push({ pathname: type === 'direct' ? '/app/messages' : '/app/explore', query: { selected: id.toString() } });
     };
 
     const friendNotificationHandler = (notificationObj: Notification) => {

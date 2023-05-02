@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState, useContext, useRef } from 'react';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import styles from '@/styles/app/Messages.module.css';
 import { UserContext } from '@/components/Layout';
 import { SocketContext } from '../_app';

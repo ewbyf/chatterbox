@@ -15,7 +15,7 @@ interface IProps {
     dropdownVal: string;
 }
 
-const Filter = ({ friendsList, setFriendsList, dropdownVal } : IProps) => {
+const Filter = ({ friendsList, setFriendsList, dropdownVal }: IProps) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [option, setOption] = useState<string>('alphabetical');
     const open = Boolean(anchorEl);
@@ -35,29 +35,24 @@ const Filter = ({ friendsList, setFriendsList, dropdownVal } : IProps) => {
         const token = localStorage.getItem('userToken');
         if (dropdownVal != 'blocked') {
             if (val == 'alphabetical') {
-                api.get(`/friends?token=${user.token}&filter=USERNAME_ASC`)
-                .then((resp) => {
+                api.get(`/friends?token=${user.token}&filter=USERNAME_ASC`).then((resp) => {
                     if (dropdownVal == 'online') {
                         setFriendsList(resp.data.filter((friend: IFriend) => friend.status == 'ONLINE'));
-                    }
-                    else {
+                    } else {
                         setFriendsList(resp.data);
                     }
-                })
-            }
-            else if (val == 'reverse') {
-                api.get(`/friends?token=${user.token}&filter=USERNAME_DESC`)
-                .then((resp) => {
+                });
+            } else if (val == 'reverse') {
+                api.get(`/friends?token=${user.token}&filter=USERNAME_DESC`).then((resp) => {
                     if (dropdownVal == 'online') {
                         setFriendsList(resp.data.filter((friend: IFriend) => friend.status == 'ONLINE'));
-                    }
-                    else {
+                    } else {
                         setFriendsList(resp.data);
                     }
-                })
+                });
             }
         }
-    }
+    };
 
     return (
         <UserContext.Consumer>
@@ -105,7 +100,7 @@ const Filter = ({ friendsList, setFriendsList, dropdownVal } : IProps) => {
                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-						<p style={{fontFamily: "MarkPro", fontSize: "18px"}}>SORT BY</p>
+                        <p style={{ fontFamily: 'MarkPro', fontSize: '18px' }}>SORT BY</p>
                         <RadioGroup defaultValue="alphabetical" value={option} onChange={(e) => filter(e.target.value)}>
                             <FormControlLabel
                                 value="alphabetical"
