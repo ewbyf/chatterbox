@@ -27,7 +27,7 @@ const nextConfig = {
   basePath: basePath,
   images: {
     loader: 'imgix',
-    path: 'https://chatterbox.imgix.net',
+    path: 'https://chatterbox.imgix.net/',
   }
 }
 
