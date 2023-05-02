@@ -4,7 +4,6 @@ import styles from '@/styles/Home.module.css';
 import Router from 'next/router';
 import { motion } from 'framer-motion';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { imgixLoader } from '@/utils/ImgixLoader';
 
 export default function Home() {
     const mobile = useMediaQuery('(max-width: 999px)');
@@ -31,7 +30,7 @@ export default function Home() {
             <main className={styles.main}>
                 <div className={styles.left}>
                     <div className={styles.logo}>
-                        <Image loader={imgixLoader} src="/logo.png" alt="logo" width={mobile ? 40 : 50} height={mobile ? 40 : 50} />
+                        <Image src="https://chatterbox.imgix.net/logo.png" alt="logo" width={mobile ? 40 : 50} height={mobile ? 40 : 50} />
                         <p>Chatterbox</p>
                     </div>
                     <motion.p

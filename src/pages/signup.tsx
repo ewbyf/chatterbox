@@ -14,7 +14,6 @@ import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import api from '@/services/axiosConfig';
 import Button from '@/components/Button';
-import { imgixLoader } from '@/utils/ImgixLoader';
 
 export default function Signup() {
     const [username, setUsername] = useState<string>('');
@@ -69,7 +68,7 @@ export default function Signup() {
                     className={styles.container}
                 >
                     <div className={styles.signup}>
-                        <Image loader={imgixLoader} src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                        <Image src="https://chatterbox.imgix.net/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                         {error && (
                             <Alert severity="error" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center' }}>
                                 {errorMessage}
