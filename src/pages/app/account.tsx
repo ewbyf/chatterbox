@@ -18,7 +18,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import LogoutDialog from "../../components/LogoutDialog";
 import EmailDialog from "@/components/EmailDialog";
 import PasswordDialog from "@/components/PasswordDialog";
-import { IStatus, INotificationSettings } from "@/interfaces";
 
 export default function Account() {
     const [openLogout, setOpenLogout] = useState<boolean>(false);

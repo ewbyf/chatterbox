@@ -87,7 +87,7 @@ export default function Layout({ children, theme }: IProps) {
                 setFriendStatus(obj);
             } else if (obj.type == 'FRIEND_REQ') {
                 setFriendRequests((friendRequests) => [...friendRequests, obj]);
-                if (user.status !== "DO_NOT_DISTURB" || user.settings.notifications === "ALL" || user.settings.notifications === "FRIEND_REQ") {
+                if (user.status !== "DO_NOT_DISTURB" && (user.settings.notifications === "ALL" || user.settings.notifications === "FRIEND_REQ")) {
                     setNotificationsList({ unread: notificationsList.unread + 1, notifications: [obj, ...notificationsList.notifications] });
                 }
             } else if (obj.type == 'NEW_FRIEND' && user.status !== "DO_NOT_DISTURB" && user.settings.notifications !== "NONE" && user.settings.notifications !== "MESSAGES") {

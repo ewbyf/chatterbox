@@ -67,7 +67,7 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                             </NotificationBadge>
                         </Link>
                         <Link href="/app/account" className={`${styles.section} ${darkTheme ? styles.dark : styles.light}`}>
-                            <Status status="ONLINE" bg={darkTheme ? '#141414' : '#ececec'}>
+                            <Status status={user.status} bg={darkTheme ? '#141414' : '#ececec'}>
                                 <Avatar sx={{ width: 32.5, height: 32.5 }} src={user.avatar} />
                             </Status>
                         </Link>

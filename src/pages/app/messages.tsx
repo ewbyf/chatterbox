@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState, useContext, useRef } from 'react';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import styles from '@/styles/app/Messages.module.css';
 import { UserContext } from '@/components/Layout';
 import { SocketContext } from '../_app';
@@ -20,7 +20,6 @@ import MessageBubble from '@/components/MessageBubble';
 
 export default function Messages() {
     const [searchField, setSearchField] = useState<string>('');
-    const [originalFriends, setOriginalFriends] = useState<IFriend[]>([]);
     const [friends, setFriends] = useState<IFriend[]>([]);
     const [init, setInit] = useState<boolean>(true);
     const [selectedFriend, setSelectedFriend] = useState<IFriend>();

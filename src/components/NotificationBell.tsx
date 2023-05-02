@@ -29,7 +29,6 @@ const NotificationBell = () => {
     };
 
     const messageNotificiationHandler = (id: number, notificationObj: Notification, type: string) => {
-        removeNotification(notificationObj);
         Router.push({ pathname: type === "direct" ? '/app/messages' : '/app/explore', query: { selected: id.toString() } });
     };
 

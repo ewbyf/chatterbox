@@ -16,7 +16,7 @@ import Tab from '@mui/material/Tab';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { IFriend, IRequest } from '../../interfaces';
+import { IFriend } from '../../interfaces';
 import { statusChange } from '@/utils/StatusChange';
 import NotificationBadge from '@/components/NotificationBadge';
 import Filter from '@/components/Filter';
