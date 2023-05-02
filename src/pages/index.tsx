@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import styles from '@/styles/Home.module.css';
 import Router from 'next/router';
 import { motion } from 'framer-motion';
@@ -30,7 +29,7 @@ export default function Home() {
             <main className={styles.main}>
                 <div className={styles.left}>
                     <div className={styles.logo}>
-                        <Image src="https://chatterbox.imgix.net/logo.png" alt="logo" width={mobile ? 40 : 50} height={mobile ? 40 : 50} />
+                        <img src="/logo.png" alt="logo" width={mobile ? 40 : 50} height={mobile ? 40 : 50} />
                         <p>Chatterbox</p>
                     </div>
                     <motion.p
@@ -92,7 +91,7 @@ export default function Home() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 2, delay: 1 }}
-                        src="https://chatterbox.imgix.net/graphic.png"
+                        src="/graphic.png"
                         alt="graphic"
                         width={mobile ? 550 : 750}
                         height={mobile ? 550 : 750}

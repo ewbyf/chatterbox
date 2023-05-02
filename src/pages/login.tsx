@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import Head from 'next/head';
-import Image from 'next/image';
 import styles from '@/styles/Login.module.css';
 import { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
@@ -66,7 +65,7 @@ export default function Login() {
                     className={styles.container}
                 >
                     <div className={styles.login}>
-                        <Image src="https://chatterbox.imgix.net/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                        <img src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                         {success && (
                             <Alert severity="success" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center' }}>
                                 Account successfully created!

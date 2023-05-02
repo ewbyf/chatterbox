@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import Head from 'next/head';
-import Image from 'next/image';
 import styles from '@/styles/ResetPassword.module.css';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -91,7 +90,7 @@ export default function ForgotPassword() {
                 >
                     {!change && (
                         <div className={styles.forgotPassword}>
-                            <Image src="https://chatterbox.imgix.net/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                            <img src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                             {success && (
                                 <Alert severity="success" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center' }}>
                                     Password reset email has been sent!
@@ -123,7 +122,7 @@ export default function ForgotPassword() {
                     )}
                     {change && (
                         <div className={styles.forgotPassword}>
-                            <Image src="https://chatterbox.imgix.net/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                            <img src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                             {success && (
                                 <Alert severity="success" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center', maxWidth: '350px' }}>
                                     Password successfully reset! You may now close this window and log in.
