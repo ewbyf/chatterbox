@@ -67,9 +67,9 @@ const Notifications = () => {
                             </div>
                         )}
                         {notificationsList.notifications.map((notification, i) => (
-                            <div>
+                            <div key={i}>
                                 {(notification.friend || notification.to) && (
-                                    <div key={i}>
+                                    <div>
                                         <Divider sx={{ bgcolor: darkTheme ? '#2E2E2E' : '', margin: 0 }} />
                                         <MenuItem
                                             onClick={() => friendNotificationHandler(notification)}
@@ -104,7 +104,7 @@ const Notifications = () => {
                                     </div>
                                 )}
                                 {notification.from && (
-                                    <div key={i}>
+                                    <div>
                                         <Divider sx={{ bgcolor: darkTheme ? '#2E2E2E' : '', margin: 0 }} />
                                         <MenuItem
                                             onClick={() => friendReqNotificationHandler(notification)}
@@ -137,7 +137,7 @@ const Notifications = () => {
                                     </div>
                                 )}
                                 {notification.channel && (
-                                    <div key={i}>
+                                    <div>
                                         <Divider sx={{ bgcolor: darkTheme ? '#2E2E2E' : '', margin: 0 }} />
                                         <MenuItem
                                             onClick={() => messageNotificiationHandler(notification.channel!.id, notification, notification.channel!.type)}
