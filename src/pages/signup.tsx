@@ -67,7 +67,7 @@ export default function Signup() {
                     className={styles.container}
                 >
                     <div className={styles.signup}>
-                        <img src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                        <img src="/chatterbox/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                         {error && (
                             <Alert severity="error" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center' }}>
                                 {errorMessage}

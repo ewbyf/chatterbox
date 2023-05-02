@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import styles from '@/styles/components/Navbar.module.css';
 import { IoCompassOutline, IoPeopleOutline, IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 import { motion } from 'framer-motion';
@@ -93,7 +92,7 @@ const Navbar = ({ noOverlap }: { noOverlap: boolean }) => {
                     transition={{ type: 'tween', duration: 0.2 }}
                 >
                     <div className={styles.logo}>
-                        <Image src="/logo.png" alt="logo" height={40} width={40} />
+                        <img src="/chatterbox/logo.png" alt="logo" height={40} width={40} />
                         <p className={styles.expandText} style={{ fontSize: '18.5px' }}>
                             ChatterBox
                         </p>

@@ -90,7 +90,7 @@ export default function ForgotPassword() {
                 >
                     {!change && (
                         <div className={styles.forgotPassword}>
-                            <img src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                            <img src="/chatterbox/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                             {success && (
                                 <Alert severity="success" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center' }}>
                                     Password reset email has been sent!
@@ -122,7 +122,7 @@ export default function ForgotPassword() {
                     )}
                     {change && (
                         <div className={styles.forgotPassword}>
-                            <img src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                            <img src="/chatterbox/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                             {success && (
                                 <Alert severity="success" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center', maxWidth: '350px' }}>
                                     Password successfully reset! You may now close this window and log in.
