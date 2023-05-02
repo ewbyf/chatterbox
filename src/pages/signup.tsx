@@ -2,7 +2,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '@/styles/Signup.module.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -14,7 +14,7 @@ import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import api from '@/services/axiosConfig';
 import Button from '@/components/Button';
-import TextInput from '@/components/TextInput';
+import { imgixLoader } from '@/utils/ImgixLoader';
 
 export default function Signup() {
     const [username, setUsername] = useState<string>('');
@@ -69,7 +69,7 @@ export default function Signup() {
                     className={styles.container}
                 >
                     <div className={styles.signup}>
-                        <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                        <Image loader={imgixLoader} src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                         {error && (
                             <Alert severity="error" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center' }}>
                                 {errorMessage}

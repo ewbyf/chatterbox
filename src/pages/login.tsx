@@ -10,6 +10,7 @@ import api from '@/services/axiosConfig';
 import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@/components/Button';
+import { imgixLoader } from '@/utils/ImgixLoader';
 
 export default function Login() {
     const [email, setEmail] = useState<string>('');
@@ -66,7 +67,7 @@ export default function Login() {
                     className={styles.container}
                 >
                     <div className={styles.login}>
-                        <Image src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
+                        <Image loader={imgixLoader} src="/logo.png" alt="logo" width={mobile ? 85 : 100} height={mobile ? 85 : 100} style={{ marginBottom: '15px' }} />
                         {success && (
                             <Alert severity="success" sx={{ fontSize: mobile ? '13px' : '15px', alignItems: 'center' }}>
                                 Account successfully created!

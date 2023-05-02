@@ -4,6 +4,7 @@ import styles from '@/styles/Home.module.css';
 import Router from 'next/router';
 import { motion } from 'framer-motion';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { imgixLoader } from '@/utils/ImgixLoader';
 
 export default function Home() {
     const mobile = useMediaQuery('(max-width: 999px)');
@@ -22,18 +23,6 @@ export default function Home() {
     };
 
 
-    // const imgixLoader = ({ src, width, quality } : {src: any, width: any, quality?: any}) => {
-    //   const url = new URL("https://chatterbox.imgix.net" + src);
-    //   const params = url.searchParams;
-    //   params.set("auto", params.getAll("auto").join(",") || "format");
-    //   params.set("fit", params.get("fit") || "max");
-    //   params.set("w", params.get("w") || width.toString());
-    //   if (quality) {
-    //     params.set("q", quality.toString());
-    //   }
-    //   return url.href;
-    // };
-
     return (
         <>
             <Head>
@@ -42,7 +31,7 @@ export default function Home() {
             <main className={styles.main}>
                 <div className={styles.left}>
                     <div className={styles.logo}>
-                        <Image src="/logo.png" alt="logo" width={mobile ? 40 : 50} height={mobile ? 40 : 50} />
+                        <Image loader={imgixLoader} src="/logo.png" alt="logo" width={mobile ? 40 : 50} height={mobile ? 40 : 50} />
                         <p>Chatterbox</p>
                     </div>
                     <motion.p
@@ -104,7 +93,7 @@ export default function Home() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 2, delay: 1 }}
-                        src="/graphic.png"
+                        src="https://chatterbox.imgix.net/graphic.png"
                         alt="graphic"
                         width={mobile ? 550 : 750}
                         height={mobile ? 550 : 750}
