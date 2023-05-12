@@ -25,10 +25,11 @@ interface Props {
     accept?: (id: number) => any;
     reject?: (id: number) => any;
     block?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => any;
+    unblock?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => any;
     onClick?: () => any;
 }
 
-const FriendBox = ({ friend, request, notSelected, unread, blockable, accept, reject, block, onClick }: Props) => {
+const FriendBox = ({ friend, request, notSelected, unread, blockable, accept, reject, block, unblock, onClick }: Props) => {
     return (
         <UserContext.Consumer>
             {({ darkTheme }) => (
@@ -61,9 +62,9 @@ const FriendBox = ({ friend, request, notSelected, unread, blockable, accept, re
                     )}
                     {blockable && (
                         <div className={styles.icons}>
-                            <Tooltip title="Block" arrow>
+                            <Tooltip title={block ? "Block" : "Unblock"} arrow>
                                 <div
-                                    onClick={block ? (e) => block(e, friend.id) : undefined}
+                                    onClick={block ? (e) => block(e, friend.id) : (unblock ? (e) => unblock(e, friend.id) : undefined)}
                                     className={`${styles.iconCircle} ${darkTheme ? styles.xDark : styles.xLight}`}
                                 >
                                     <BlockIcon fontSize="medium" />

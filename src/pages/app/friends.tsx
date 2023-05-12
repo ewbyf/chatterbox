@@ -134,13 +134,26 @@ export default function Friends() {
 
     const block = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => {
         e.stopPropagation();
-        const token = localStorage.getItem('userToken');
-        api.post('/block', { token, id })
+        api.post('/block', { token: user.token, id })
             .then((resp) => {
                 setFriends(friends.filter((friend) => friend.id != id));
                 filterFriends(
                     dropdown,
                     friends.filter((friend) => friend.id != id)
+                );
+            })
+            .catch((err) => {
+                console.log(err.response.data.message);
+            });
+    };
+
+    const unblock = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => {
+        e.stopPropagation();
+        api.post('/unblock', { token: user.token, id })
+            .then((resp) => {
+                filterFriends(
+                    dropdown,
+                    friends
                 );
             })
             .catch((err) => {
@@ -162,8 +175,7 @@ export default function Friends() {
         } else if (val == 'all') {
             setFriendsShown([...friends]);
         } else {
-            const token = localStorage.getItem('userToken');
-            api.get(`/blocked?token=${token}`).then((resp) => {
+            api.get(`/blocked?token=${user.token}`).then((resp) => {
                 setFriendsShown([...resp.data]);
             });
         }
@@ -311,7 +323,8 @@ export default function Friends() {
                                                 onClick={() => Router.push({ pathname: '/app/messages', query: { selected: friend.channelId.toString() } })}
                                                 key={friend.id}
                                                 blockable
-                                                block={(e) => block(e, friend.id)}
+                                                block={dropdown != "blocked" ? (e) => block(e, friend.id) : undefined}
+                                                unblock={dropdown == "blocked" ? (e) => unblock(e, friend.id) : undefined}
                                             />
                                         ))}
                                 </div>
