@@ -18,6 +18,8 @@ import LogoutDialog from '../../components/LogoutDialog';
 import EmailDialog from '@/components/EmailDialog';
 import PasswordDialog from '@/components/PasswordDialog';
 
+// TODO: testingggg
+
 export default function Account() {
     const [openLogout, setOpenLogout] = useState<boolean>(false);
     const [openPassword, setOpenPassword] = useState<boolean>(false);
