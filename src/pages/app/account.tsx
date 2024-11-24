@@ -18,7 +18,6 @@ import LogoutDialog from '../../components/LogoutDialog';
 import EmailDialog from '@/components/EmailDialog';
 import PasswordDialog from '@/components/PasswordDialog';
 
-// TODO: [um0lrxup] fix bugs yay
 // In progress: fixing even more bugs
 // Ready for testing: bugs that should be fixed
 
