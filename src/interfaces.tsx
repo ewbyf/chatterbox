@@ -7,6 +7,7 @@ export interface IFriend {
     unread: number;
 }
 
+interface// TODO: [qjqxuot1] add new interfaces
 interface IAuthor {
     avatar: string;
     id: number;
