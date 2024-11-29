@@ -18,8 +18,8 @@ import LogoutDialog from '../../components/LogoutDialog';
 import EmailDialog from '@/components/EmailDialog';
 import PasswordDialog from '@/components/PasswordDialog';
 
-// In progress: fixing even more bugs
-// Ready for testing: bugs that should be fixed
+// In progress: [oo1nvulm] fixing even more bugs
+// Ready for testing: [ivaai7c6] bugs that should be fixed
 
 
 export default function Account() {
