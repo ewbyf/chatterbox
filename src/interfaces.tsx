@@ -9,12 +9,11 @@ export interface IFriend {
 
 interface// TODO: [qjqxuot1] add new interfaces
 interface IAuthor {
-// ready for testing: [i6w6sm2n] aaaaaaaaaaaaaaaaaa
+// ready for testing: [^i6w6sm2n] aaaaaaaaaaaaaaaaaa
     avatar: string;
     id: number;
     username: string;
 }
-// ready for testing: [^glnx2d5z] aaaaaa
 
 export interface IMessage {
     author: IAuthor;
