@@ -9,7 +9,7 @@ import api from '@/services/axiosConfig';
 import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@/components/Button';
-// Ready For Testing: [rupudylt] Ready to test login page
+// TODO: [rupudylt] Ready to test login page
 
 export default function Login() {
     const [email, setEmail] = useState<string>('');
