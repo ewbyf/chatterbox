@@ -3,7 +3,7 @@ import styles from '@/styles/Home.module.css';
 import Router from 'next/router';
 import { motion } from 'framer-motion';
 import useMediaQuery from '@mui/material/useMediaQuery';
-// aaaa: [q0hkxvoa] i need to fix this
+// aaaa: [^q0hkxvoa] i need to fix this
 
 export default function Home() {
     const mobile = useMediaQuery('(max-width: 999px)');
