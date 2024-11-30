@@ -6,7 +6,6 @@ export interface IFriend {
     status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
     unread: number;
 }
-// aaa: [^b35xfnkk] test test
 
 interface// TODO: [qjqxuot1] add new interfaces
 interface IAuthor {
@@ -15,7 +14,7 @@ interface IAuthor {
     id: number;
     username: string;
 }
-// ready for testing: [glnx2d5z] aaaaaa
+// ready for testing: [^glnx2d5z] aaaaaa
 
 export interface IMessage {
     author: IAuthor;
