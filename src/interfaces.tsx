@@ -22,6 +22,8 @@ export interface IMessage {
     id: number;
 }
 
+// TODO: add more interfaces
+
 export interface IRequest {
     from: {
         avatar: string;
