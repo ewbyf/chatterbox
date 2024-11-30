@@ -8,7 +8,7 @@ export interface IFriend {
 }
 // TODO: [nfjwhvri] add new interface
 
-// TODO: [qjqxuot1] add new interfacesaaaa
+// TODO: [qjqxuot1] add new interfacesaaaabbbbb
 interface IAuthor {
     avatar: string;
     id: number;
