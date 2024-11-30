@@ -22,7 +22,7 @@ export interface IMessage {
     id: number;
 }
 
-// TODO: [qv0hv19c] add more interfaces
+// Ready for Testing: [qv0hv19c] add more interfaces
 export interface IRequest {
     from: {
         avatar: string;
