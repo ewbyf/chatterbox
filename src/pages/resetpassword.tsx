@@ -8,6 +8,7 @@ import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@/components/Button';
 import api from '@/services/axiosConfig';
+// Ready for Testing: [mhw26wqf] Create reset password page
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
