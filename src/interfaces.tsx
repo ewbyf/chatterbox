@@ -15,6 +15,7 @@ interface IAuthor {
     id: number;
     username: string;
 }
+// ready for testing: [glnx2d5z] aaaaaa
 
 export interface IMessage {
     author: IAuthor;
