@@ -22,7 +22,6 @@ export interface IMessage {
     id: number;
 }
 
-// TODO: [n8jbjlmo] add more interfaces
 
 export interface IRequest {
     from: {
