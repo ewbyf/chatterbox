@@ -6,6 +6,7 @@ export interface IFriend {
     status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
     unread: number;
 }
+// TODO: [jbfvzuc4] Update interfaces with correct fields
 
 interface IAuthor {
     avatar: string;
