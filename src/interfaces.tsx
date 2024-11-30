@@ -6,7 +6,7 @@ export interface IFriend {
     status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
     unread: number;
 }
-// aaaa: [nfjwhvri] add new interface
+// aaaa: [^nfjwhvri] add new interface
 
 // aaaa: [qjqxuot1] add new interfacesaaaabbbbb
 interface IAuthor {
