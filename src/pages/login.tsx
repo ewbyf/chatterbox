@@ -9,6 +9,7 @@ import api from '@/services/axiosConfig';
 import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@/components/Button';
+// Ready for Testing: [dg7ijajz] Test login page
 
 export default function Login() {
     const [email, setEmail] = useState<string>('');
