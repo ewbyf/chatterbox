@@ -6,7 +6,6 @@ export interface IFriend {
     status: 'ONLINE' | 'OFFLINE' | 'IDLE' | 'DO_NOT_DISTURB';
     unread: number;
 }
-// todo: [ktelrzz8] test test
 
 interface IAuthor {
     avatar: string;
